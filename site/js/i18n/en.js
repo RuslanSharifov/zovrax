@@ -1,4 +1,9 @@
 export default {
+  statsTitle: "Community statistics",
+  statsFavorites: "Favorites",
+  statsViews: "Unique views (approx.)",
+  statsLoading: "Loading statistics…",
+  statsUnavailable: "Statistics are temporarily unavailable.",
   sponsorTitle: "Support Zovrax",
   sponsorText: "Help keep the Zovrax mod catalog running and growing. You can make a voluntary contribution through Ko-fi. Donations are handled by Ko-fi, not by Zovrax.",
   actionPremium: "Get Premium",
