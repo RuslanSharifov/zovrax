@@ -12,6 +12,61 @@ function kv(label, value) {
   return [h('dt', null, label), h('dd', null, value)];
 }
 
+// A mod may point to the contributor's own GitHub repository in zovrax.json.
+// Use its owner only as a fallback: explicit author IDs and registered developer
+// GitHub accounts take precedence, so a shared hosting repository is not
+// incorrectly credited as the creator of every contributed mod.
+function githubOwnerFromSource(source) {
+  if (typeof source !== 'string') return null;
+  try {
+    const url = new URL(source);
+    const [owner, repository] = url.pathname.split('/').filter(Boolean);
+    if (url.protocol !== 'https:' || url.hostname.toLowerCase() !== 'github.com' ||
+        !repository || !/^[A-Za-z0-9-]{1,39}$/.test(owner ?? '')) return null;
+    return owner;
+  } catch {
+    return null;
+  }
+}
+
+function creatorProfiles(mod, devById) {
+  const sourceOwner = githubOwnerFromSource(mod.source);
+  const ids = [...new Set(mod.authors || [])];
+  if (!ids.length && sourceOwner) ids.push(sourceOwner);
+
+  return ids.map(id => {
+    const dev = devById.get(id);
+    // A single author without a GitHub account may inherit the source
+    // repository owner. Multiple authors must specify their own accounts.
+    const github = dev?.github || (ids.length === 1 ? sourceOwner : null);
+    return {
+      id: dev ? id : null,
+      github,
+      name: dev?.displayName || github || id,
+      avatar: dev?.avatarUrl || (github ? `https://github.com/${encodeURIComponent(github)}.png?size=112` : null),
+      bio: dev?.bio ? pick(dev.bio) : null,
+    };
+  });
+}
+
+function creatorCard(creator) {
+  const profile = creator.id ? `#/developers/${encodeURIComponent(creator.id)}` : null;
+  const github = creator.github ? `https://github.com/${encodeURIComponent(creator.github)}` : null;
+  return h('div', { class: 'mod-creator-profile' },
+    creator.avatar
+      ? h('img', { class: 'avatar avatar-md', src: creator.avatar, alt: '', width: 56, height: 56, loading: 'lazy', decoding: 'async' })
+      : h('span', { class: 'mod-creator-avatar-placeholder', 'aria-hidden': 'true' }, icon('github', { size: 24 })),
+    h('div', { class: 'mod-creator-identity' },
+      h('strong', null, creator.name),
+      creator.github ? h('span', { class: 'muted small' }, `@${creator.github}`) : null,
+      creator.bio ? h('p', { class: 'muted small' }, creator.bio) : null),
+    h('div', { class: 'mod-creator-links' },
+      profile ? h('a', { class: 'btn btn-ghost btn-sm', href: profile },
+        icon('user', { size: 15 }), t('modCreatorProfile')) : null,
+      github ? h('a', { class: 'btn btn-ghost btn-sm', href: github, target: '_blank', rel: 'noopener noreferrer' },
+        icon('github', { size: 15 }), t('modGithubAccount'), icon('external', { size: 12 })) : null));
+}
+
 function releaseCard(release, isLatest, downloads = release.downloads) {
   return h('article', { class: 'card release-card' },
     h('div', { class: 'release-head' },
@@ -57,6 +112,15 @@ export async function modView({ params, catalog, onCleanup }) {
   const resolveFile = file => modFileUrl(mod.slug, file);
   const render = source => renderMarkdown(source, { slug: mod.slug, repository: site.repository, resolveFile });
   const readme = mod.readme[lang] ?? mod.readme.en ?? null;
+  const creators = creatorProfiles(mod, devById);
+
+  // Put the profile immediately under the mod heading, rather than only
+  // in a sidebar that moves below content on narrow screens.
+  const creatorSection = creators.length
+    ? h('section', { class: 'card mod-creators', 'aria-label': t('modAuthors') },
+      h('h2', { class: 'block-title' }, t('modAuthors')),
+      h('div', { class: 'mod-creators-grid' }, creators.map(creatorCard)))
+    : null;
 
   const hero = h('section', { class: 'mod-hero card', 'data-accent': mod.accent },
     h('div', { class: 'mod-hero-top' },
@@ -263,14 +327,6 @@ export async function modView({ params, catalog, onCleanup }) {
         selectTab('downloads');
         tabList.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } }, icon('download', { size: 16 }), t('modDownloads'))),
-    h('section', { class: 'card' },
-      h('h2', { class: 'block-title' }, t('modAuthors')),
-      h('ul', { class: 'author-list' }, mod.authors.map(id => {
-        const dev = devById.get(id);
-        return h('li', null, h('a', { class: 'author-row', href: `#/developers/${encodeURIComponent(id)}` },
-          h('img', { class: 'avatar avatar-sm', src: dev?.avatarUrl ?? '', alt: '', loading: 'lazy' }),
-          h('span', null, dev?.displayName ?? id)));
-      }))),
     related.length
       ? h('section', { class: 'related' },
         h('h2', { class: 'block-title' }, t('modRelated')),
@@ -279,6 +335,7 @@ export async function modView({ params, catalog, onCleanup }) {
 
   return h('div', { class: 'page page-mod container' },
     hero,
+    creatorSection,
     h('div', { class: 'mod-layout' },
       h('div', { class: 'mod-main' },
         tabList,

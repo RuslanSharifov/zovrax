@@ -80,6 +80,8 @@ export default {
   modScreenshots: 'Screenshots',
   modInfo: 'Details',
   modAuthors: 'Authors',
+  modCreatorProfile: 'Zovrax profile',
+  modGithubAccount: 'GitHub profile',
   modRelated: 'Related mods',
   modMinecraft: 'Minecraft',
   modLoaders: 'Loaders',
