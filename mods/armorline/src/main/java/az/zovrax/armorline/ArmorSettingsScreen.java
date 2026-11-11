@@ -24,8 +24,8 @@ public final class ArmorSettingsScreen extends Screen {
         int w = Math.min(300, Math.max(150, width - 24));
         int x = (width - w) / 2;
         // Compact enough for small Minecraft GUI scales / mobile launchers.
-        int gap = Math.min(24, Math.max(17, (height - 34) / 9));
-        int y = Math.max(19, (height - (7 * gap + 20)) / 2);
+        int gap = Math.min(24, Math.max(20, (height - 38) / 10));
+        int y = Math.max(19, (height - (9 * gap + 20)) / 2);
 
         if (!appearancePage) {
             addDrawableChild(ButtonWidget.builder(Text.literal(
@@ -53,14 +53,26 @@ public final class ArmorSettingsScreen extends Screen {
                 b.setMessage(Text.literal(sideLabel()));
             }).dimensions(x, y + gap * 3, w, 20).build());
 
+            addDrawableChild(ButtonWidget.builder(Text.literal("Main hand (tools): " +
+                (config.showMainHand ? "ON" : "OFF")), b -> {
+                    config.showMainHand = !config.showMainHand;
+                    config.save();
+                    b.setMessage(Text.literal("Main hand (tools): " + (config.showMainHand ? "ON" : "OFF")));
+                }).dimensions(x, y + gap * 4, w, 20).build());
+            addDrawableChild(ButtonWidget.builder(Text.literal("Offhand (shield / totem): " +
+                (config.showOffHand ? "ON" : "OFF")), b -> {
+                    config.showOffHand = !config.showOffHand;
+                    config.save();
+                    b.setMessage(Text.literal("Offhand (shield / totem): " + (config.showOffHand ? "ON" : "OFF")));
+                }).dimensions(x, y + gap * 5, w, 20).build());
             addDrawableChild(ButtonWidget.builder(Text.literal("Customize HUD position"), b -> openEditor())
-                .dimensions(x, y + gap * 4, w, 20).build());
+                .dimensions(x, y + gap * 6, w, 20).build());
             addDrawableChild(ButtonWidget.builder(Text.literal("Appearance and transparency"), b -> {
                 appearancePage = true;
                 clearAndInit();
-            }).dimensions(x, y + gap * 5, w, 20).build());
+            }).dimensions(x, y + gap * 7, w, 20).build());
             addDrawableChild(ButtonWidget.builder(Text.literal("Done"), b -> close())
-                .dimensions(x, y + gap * 6, w, 20).build());
+                .dimensions(x, y + gap * 8, w, 20).build());
         } else {
             addDrawableChild(new ArmorSlider(x, y, w, "HUD size", "%", 50, 200, 5,
                 () -> config.scale, v -> config.scale = v));

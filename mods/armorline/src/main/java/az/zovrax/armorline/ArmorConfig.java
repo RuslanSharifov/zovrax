@@ -16,13 +16,15 @@ public final class ArmorConfig {
     // Indicator side: 0 = auto (inside screen), 1 = right, 2 = left, 3 = hidden.
     public boolean enabled = true;
     public boolean vertical = true;
-    public int durabilityMode = 0;
+    public int durabilityMode = 2;
     public int indicatorSide = 0;
     public int scale = 100;
     public int opacity = 100;           // overall HUD alpha
-    public int backgroundOpacity = 55; // independent 0-100% panel alpha
+    public int backgroundOpacity = 0; // independent 0-100% panel alpha
     public int iconsOpacity = 100;      // icon/slot layer alpha
     public int textOpacity = 100;       // numerical labels layer alpha
+    public boolean showMainHand = true;
+    public boolean showOffHand = true;
     public double x = -1;
     public double y = -1;
 

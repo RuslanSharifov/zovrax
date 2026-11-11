@@ -11,3 +11,10 @@ L'opacité **globale**, celle du **fond**, des **icônes** et des **valeurs/barr
 Dans **Customize HUD position**, déplacez l'ensemble à la souris, puis cliquez dessus pour modifier les options. La bêta 0.2.0 corrige les clics interprétés par erreur comme des déplacements et conserve les changements après **Done**. Les réglages de la version 0.1.0 sont récupérés.
 
 Nécessite Minecraft 1.21.10, Fabric API et Java 21. Retirez l'ancien JAR avant l'installation. Le build est validé, mais les tests en jeu restent nécessaires.
+
+
+## Nouveautés de la bêta 0.3.0
+
+Le HUD reprend l'apparence de l'exemple : **quatre icônes d'armure à la verticale**, avec les chiffres blancs de durabilité restante à gauche. **L'outil en main principale** apparaît à droite et, s'il est équipé, **le bouclier ou le Totem d'immortalité de la main secondaire** est affiché en dessous. Les objets sans durabilité n'ont pas de faux compteur.
+
+Les options avec **P** permettent de masquer séparément la main principale et secondaire. Les nouveaux réglages utilisent un **fond transparent à 0 %**. Les anciens paramètres sont conservés ; vous pouvez mettre manuellement l'opacité du fond à 0 %.

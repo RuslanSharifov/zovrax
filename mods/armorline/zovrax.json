@@ -8,10 +8,10 @@
   "accent": "teal",
   "icon": "assets/icon.svg",
   "summary": {
-    "en": "ArmorLine 0.2.0: a vertical, connected armor HUD with configurable durability labels, side placement, and separate layer opacity.",
-    "ru": "ArmorLine 0.2.0: единый вертикальный HUD брони с выбором полосок/чисел, стороны отображения и прозрачности слоёв.",
-    "fr": "ArmorLine 0.2.0 : HUD d’armure vertical relié, durabilité personnalisable et transparence séparée des éléments.",
-    "az": "ArmorLine 0.2.0: şaquli zireh HUD-u, sağ/sol davamlılıq göstəriciləri və ayrı-ayrı şəffaflıq ayarları."
+    "en": "ArmorLine 0.3.0: screenshot-style armor column with main-hand tools and offhand shield or Totem of Undying.",
+    "ru": "ArmorLine 0.3.0: компактная броня столбцом, предмет в основной руке, щит или тотем во второй.",
+    "fr": "ArmorLine 0.3.0 : armure compacte en colonne, outil en main principale, bouclier ou totem en main secondaire.",
+    "az": "ArmorLine 0.3.0: şəkildəki kimi zireh sütunu, əsas əldə alət, digər əldə qalxan və ya ölümsüzlük totemi."
   },
   "tags": [
     "HUD",
@@ -33,38 +33,66 @@
   "source": "https://github.com/RuslanSharifov/zovrax/tree/main/mods/armorline",
   "features": [
     {
-      "en": "Connected vertical armor column by default; horizontal layout remains optional",
-      "ru": "Единая вертикальная колонка брони по умолчанию, горизонтальное расположение по желанию",
-      "fr": "Colonne d'armure verticale reliée par défaut, disposition horizontale possible"
+      "en": "Screenshot-inspired transparent armor HUD: helmet, chestplate, leggings and boots stacked vertically",
+      "ru": "Компактный прозрачный HUD: шлем, нагрудник, поножи и ботинки",
+      "fr": "HUD transparent compact : casque, plastron, pantalon et bottes"
     },
     {
-      "en": "Durability: bars and numbers, bar only, numbers only, or hidden",
-      "ru": "Прочность: полоска с числами, только полоска, только числа или скрыть",
-      "fr": "Durabilité : barres et valeurs, barres seules, valeurs seules ou masquées"
+      "en": "Live main-hand tool (pickaxe, axe, sword, etc.) shown to the right of armor; toggle independently",
+      "ru": "Предмет основной руки справа от брони, можно отключить",
+      "fr": "Objet de la main principale affiché à droite, désactivable"
     },
     {
-      "en": "Durability indicators on auto, left, right, or hidden side",
-      "ru": "Индикаторы автоматически, слева, справа или скрыты",
-      "fr": "Indicateurs automatiques, à gauche, à droite ou masqués"
+      "en": "Automatically shows held shield, Totem of Undying or other offhand item when equipped; separate toggle",
+      "ru": "Отображение щита, тотема бессмертия и других предметов второй руки",
+      "fr": "Affiche bouclier, totem d'immortalité ou tout autre objet en main secondaire"
     },
     {
-      "en": "Separate opacity sliders for whole HUD, background, armor icons, and durability labels",
-      "ru": "Отдельная прозрачность всего HUD, фона, иконок брони и чисел",
-      "fr": "Opacité indépendante : HUD, fond, icônes d'armure et valeurs"
+      "en": "White remaining durability numbers near damageable equipment; non-damageable totems have no fake durability",
+      "ru": "Оставшаяся прочность белыми числами без выдуманной прочности тотема",
+      "fr": "Durabilité restante en chiffres blancs, sans fausse valeur pour le totem"
     },
     {
-      "en": "Fixed layout changes from the draggable HUD editor; settings persist after Done",
-      "ru": "Исправлено сохранение расположения после Done в редакторе HUD",
-      "fr": "Correction des changements de disposition dans l'éditeur après validation"
+      "en": "Default background 0%; opacity, text, item icons, scale, layout and indicator side still adjustable",
+      "ru": "Фон 0 % по умолчанию, прозрачность, размер и расположение настраиваются",
+      "fr": "Fond transparent par défaut, opacité, taille et disposition personnalisables"
     },
     {
-      "en": "Live armor changes, empty slots, rebindable P settings, free HUD positioning",
-      "ru": "Обновление брони, пустые слоты, настройки по P и перемещение HUD",
-      "fr": "Armure en direct, emplacements vides, réglages par P et HUD déplaçable"
+      "en": "P opens settings; whole HUD remains draggable, with vertical or horizontal layouts",
+      "ru": "Настройки по P; перетаскивание HUD, вертикальный или горизонтальный режим",
+      "fr": "Réglages avec P ; HUD déplaçable, vertical ou horizontal"
     }
   ],
   "screenshots": [],
   "releases": [
+    {
+      "version": "0.3.0",
+      "releasedAt": "2026-11-11",
+      "prerelease": true,
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "loaders": [
+        "Fabric"
+      ],
+      "downloads": [
+        {
+          "file": "releases/zovrax-armorline-0.3.0-fabric-1.21.10.jar",
+          "label": "Fabric 1.21.10 · Beta 0.3.0",
+          "minecraftVersions": [
+            "1.21.10"
+          ],
+          "loaders": [
+            "Fabric"
+          ]
+        }
+      ],
+      "changelog": {
+        "en": "**Beta 0.3.0.** HUD redesigned to match the user reference: four centered armor icons, white durability numbers beside them, selected main-hand tool on the right and equipped offhand shield/totem beneath it. New main-hand and offhand visibility toggles. Fresh installs use fully transparent background and numeric durability by default; previous custom settings are preserved. Existing opacity, layout and position controls remain. Java/Fabric build tested; live gameplay test still needed.",
+        "ru": "**Бета 0.3.0.** Новый вид по образцу: четыре предмета брони столбцом, числа прочности, инструмент справа, щит или тотем второй руки. Отдельное отключение предметов рук. Фон по умолчанию прозрачный для новых настроек.",
+        "fr": "**Bêta 0.3.0.** Nouveau HUD inspiré de l'exemple : quatre armures en colonne, nombres de durabilité, outil à droite, bouclier ou totem en main secondaire. Affichage des mains réglable, fond transparent par défaut pour une nouvelle configuration."
+      }
+    },
     {
       "version": "0.2.0",
       "releasedAt": "2026-11-11",
