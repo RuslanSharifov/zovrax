@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 2,
+  "slug": "my-mod",
+  "name": "My Mod",
+  "category": "hud",
+  "status": "planned",
+  "featured": false,
+  "accent": "lime",
+  "icon": "assets/icon.svg",
+  "summary": {
+    "en": "A short, clear description of what your Minecraft mod does.",
+    "ru": "Краткое описание того, что делает ваш мод для Minecraft.",
+    "fr": "Une description courte et précise de votre mod Minecraft."
+  },
+  "tags": [
+    "QoL"
+  ],
+  "minecraftVersions": [
+    "1.21.10"
+  ],
+  "loaders": [
+    "Fabric"
+  ],
+  "authors": [
+    "your-developer-id"
+  ],
+  "updatedAt": null,
+  "license": null,
+  "source": "https://github.com/RuslanSharifov/zovrax/tree/main/mods/my-mod",
+  "features": [
+    {
+      "en": "Describe the first feature",
+      "ru": "Опишите первую функцию",
+      "fr": "Décrivez la première fonctionnalité"
+    }
+  ],
+  "screenshots": [],
+  "releases": []
+}
