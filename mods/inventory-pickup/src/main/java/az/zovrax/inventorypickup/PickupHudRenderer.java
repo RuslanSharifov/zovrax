@@ -74,14 +74,14 @@ public final class PickupHudRenderer {
                     (scaledHeight(config) + Math.round(GAP * config.notificationScale / 100f));
             // Anchor remains on-screen; slide motion is relative to its chosen position.
             drawNotification(context, client, toast.stack, toast.gain, toast.total,
-                    x + dx, dy, opacity, config);
+                    x + dx, dy, opacity * config.notificationOpacity / 100f, config);
         }
     }
 
     public static void drawPreview(DrawContext ctx, PickupConfig config, int x, int y) {
         MinecraftClient client = MinecraftClient.getInstance();
         drawNotification(ctx, client, new ItemStack(net.minecraft.item.Items.DIAMOND), 4, 9,
-                x, y, 1f, config);
+                x, y, config.notificationOpacity / 100f, config);
     }
 
     private static void drawNotification(DrawContext ctx, MinecraftClient client,
