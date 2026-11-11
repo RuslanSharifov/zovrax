@@ -1,11 +1,46 @@
-# Inventory Pickup
+# Zovrax Inventory Pickup
 
-Status: PLANNED — NOT IMPLEMENTED OR DOWNLOADABLE.
+**Status: development.** Real Fabric Java source is committed, but there is **no tested public JAR release** yet.
 
-Target: Minecraft Java Edition 1.21.10, Fabric.
+## Target
 
-Concept: display a small configurable HUD notification whenever items are picked up from the ground or transferred from a chest to inventory. Show item icon, name, total count and number added. For example: Oak Log | In inventory: 9 | +4.
+- Minecraft Java Edition **1.21.10**, **Fabric** Loader 0.17.3+.
+- Fabric API `0.136.0+1.21.10`, Java **21**.
+- Client-side only; a dedicated multiplayer server installation is unnecessary.
+- Unique mod ID: `zovrax_inventory_pickup`.
 
-Planned features: positioning, opacity, display duration, merging repeated pickups, correct handling of inventory slot movement and player pickup events.
+## Behavior
 
-No Java source code or .jar artifact exists yet. Implementation, build configuration and testing will follow in a separate PR.
+Each client tick, the mod aggregates the player inventory by item **and item components**, compares totals against the previous tick, and displays a toast on a net increase. Moving stacks between slots does not generate false notifications. Toasts can be merged by item and show the native item icon, item name, **+N gained** and **inventory total**. Cards slide in and out; text and background opacity animate from **0 to 1 to 0**.
+
+No mixins, packets, commands, server interactions, or inventory changes. The first snapshot after joining/rejoining a world is silent.
+
+## In-game settings
+
+Press **O** in gameplay to open the dedicated settings screen. Rebind the key under **Options → Controls → Key Binds**. Settings include four corners, opacity, display duration, animation time, max cards, merge repeats, on/off state, edge margin, display over menus, and show/hide gains/total. Settings persist at `config/zovrax-inventory-pickup.json`.
+
+## Build
+
+From inside this folder, with **Java 21** and **Gradle 9.1** installed:
+
+```bash
+gradle --no-daemon build
+```
+
+Build output: `build/libs/`. The remapped JAR (not `-dev` or `-sources`) is the one to test in a matching Fabric client alongside Fabric API. The GitHub PR workflow performs a real Gradle compile; publishing a download additionally requires hands-on in-game tests.
+
+## Verification checklist
+
+1. Join a Minecraft 1.21.10 Fabric world: no initial pickup flood.
+2. Pick up items from ground; inspect the icon, +N and running total.
+3. Transfer chest items into player inventory; inspect the new totals.
+4. Move stacks among inventory/hotbar slots; **no false gains**.
+5. Press O, change all options, save, restart, verify persistence.
+6. Test multiplayer and screen GUI scale, Sodium/Mod Menu and other HUD mods.
+7. Confirm exit animation and fully faded text/background.
+
+**Limitations:** Any net inventory gain may be reported, including crafting and creative item changes. Icon rendering uses vanilla drawing and appears as the card fades in. No guarantee of zero conflicts is possible without real multi-mod game testing.
+
+## Licensing
+
+MIT; see [LICENSE](LICENSE). Public Zovrax page: [ZOVRAX.md](ZOVRAX.md).
