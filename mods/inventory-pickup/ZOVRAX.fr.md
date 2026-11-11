@@ -1,15 +1,15 @@
 # Inventory Pickup
 
-> **Bêta publique 0.1.0 — Minecraft Java 1.21.10, Fabric.** Un JAR est disponible pour les tests. Le build est réussi, mais le fonctionnement dans Minecraft et avec d'autres mods n'est pas encore vérifié.
+> **Bêta publique 0.2.1 — Minecraft Java 1.21.10, Fabric.** Le JAR est disponible pour les essais. La compilation a réussi, mais les tests en jeu restent nécessaires.
 
-Le mod affiche les objets nouvellement reçus dans des notifications HUD animées. La carte **glisse et passe de 0 à 100 % d'opacité**, montre l'icône, le nom, le gain **+N** et le total. Elle glisse ensuite hors de l'écran en s'effaçant à 0 %.
+Les notifications HUD animées apparaissent uniquement pour les **objets réellement ramassés au sol et les orbes d'expérience**. Si vous ramassez à nouveau le même objet pendant que sa notification est visible, le compteur **+N** augmente dans la carte existante et sa durée est **réinitialisée**. Les gains **+N XP** se regroupent de la même manière.
 
-Les objets ramassés au sol et transférés depuis un coffre sont détectés. Les déplacements entre vos propres emplacements n'entraînent aucune fausse alerte.
+Déplacer des objets entre les emplacements, user un outil, fabriquer des objets ou transférer depuis un coffre ne génère plus de faux ramassages. La valeur XP est celle de l'orbe ramassée ; Raccommodage peut consommer une partie de cette expérience.
 
-## Options dans le jeu
+## Réglages
 
-Appuyez sur **O** (raccourci personnalisable). Ajustez la position, la durée, la vitesse d'animation, la transparence, le nombre de notifications, les marges et le regroupement des gains.
+Appuyez sur **O** pour régler la durée, l'animation, l'opacité de fond avec un pas de 1 % et le nombre d'alertes. Vous pouvez déplacer la notification avec la souris et cliquer dessus pour modifier visuellement sa taille et son opacité. Les réglages sont enregistrés.
 
 ## Compatibilité et téléchargement
 
-Minecraft Java **1.21.10**, Fabric et Fabric API. Mod uniquement client, sans modifier l'inventaire ni le serveur. La **bêta 0.1.0** est téléchargeable depuis l'onglet **Downloads** (Minecraft 1.21.10 → Fabric → 0.1.0). Installez les versions correspondantes de Fabric Loader et Fabric API, puis copiez le JAR dans le dossier `mods`. Java 21 est requis. Il s'agit d'une version de test non encore vérifiée en jeu. [Code source](https://github.com/RuslanSharifov/zovrax/tree/main/mods/inventory-pickup).
+Minecraft **1.21.10**, **Fabric Loader**, **Fabric API**, **Java 21**. Téléchargez la **bêta 0.2.1** depuis **Downloads**. Retirez l'ancien JAR du dossier `mods` avant d'installer la nouvelle version. Les versions 0.2.0 et 0.1.0 restent disponibles. Tests en jeu encore nécessaires.
