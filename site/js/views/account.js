@@ -50,10 +50,13 @@ export async function accountView({ catalog, query }) {
         }
         replaceFavorites([...remote, ...missing]);
       }
+      const developer = catalog.developers.find(dev => dev.github?.toLowerCase() === profile?.login?.toLowerCase());
       panel.append(h('div', { class: 'account-profile' },
         profile?.avatar_url ? h('img', { src: profile.avatar_url, alt: '', loading: 'lazy' }) : icon('user', { size: 42 }),
         h('div', null, h('h2', { class: 'block-title' }, profile?.name || profile?.login || 'GitHub user'),
           h('p', { class: 'muted' }, '@' + (profile?.login || 'GitHub')))),
+      developer ? h('a', { class: 'btn btn-primary btn-sm', href: `#/developers/${encodeURIComponent(developer.id)}` },
+        t('modCreatorProfile')) : null,
       h('button', { class: 'btn btn-ghost btn-sm', onclick: () => {
         signOut(); location.reload();
       } }, 'Sign out'));
