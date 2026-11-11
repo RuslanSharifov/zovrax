@@ -4,10 +4,10 @@ import { setPageMeta, toast } from '../layout.js';
 import { asset } from '../layout.js';
 
 const TEMPLATE_FILES = [
-  { file: 'templates/mod.json', label: 'mod.json' },
-  { file: 'templates/releases.json', label: 'releases.json' },
-  { file: 'templates/README.md', label: 'README.md' },
-  { file: 'templates/developer.json', label: 'developers/<id>.json' },
+  { file: 'templates/zovrax.json', label: 'zovrax.json' },
+  { file: 'templates/ZOVRAX.md', label: 'ZOVRAX.md · website description' },
+  { file: 'templates/README.md', label: 'README.md · source documentation' },
+  { file: 'templates/releases-example.json', label: 'JAR releases example' },
 ];
 
 const TUTORIAL = [
@@ -19,12 +19,12 @@ const TUTORIAL = [
   {
     title: 'tutorialStep2Title',
     text: 'tutorialStep2Text',
-    commands: ['mkdir -p mods/my-mod/assets', 'cp templates/mod.json mods/my-mod/mod.json', 'cp templates/releases.json mods/my-mod/releases.json', 'cp templates/README.md mods/my-mod/README.md'],
+    commands: ['mkdir -p mods/my-mod/assets', 'cp site/templates/zovrax.json mods/my-mod/zovrax.json', 'cp site/templates/ZOVRAX.md mods/my-mod/ZOVRAX.md', 'cp site/templates/README.md mods/my-mod/README.md'],
   },
   {
     title: 'tutorialStep3Title',
     text: 'tutorialStep3Text',
-    commands: ['node scripts/build-catalog.mjs', 'npm test'],
+    commands: ['node .github/scripts/build-catalog.mjs', 'node .github/scripts/validate-catalog.mjs'],
   },
   {
     title: 'tutorialStep4Title',
@@ -132,6 +132,7 @@ function generator(catalog) {
       authors: state.developer ? [state.developer] : [],
       screenshots: [],
       updatedAt: null,
+      releases: [],
     };
     return `${JSON.stringify(mod, null, 2)}\n`;
   };
@@ -174,7 +175,7 @@ function generator(catalog) {
     class: 'btn btn-ghost btn-sm',
     onclick: () => {
       const url = URL.createObjectURL(new Blob([outputJson()], { type: 'application/json' }));
-      const link = h('a', { href: url, download: `${state.slug || 'mod'}.json` });
+      const link = h('a', { href: url, download: 'zovrax.json' });
       document.body.append(link);
       link.click();
       link.remove();
@@ -226,7 +227,7 @@ export function contributeView({ catalog }) {
         h('div', null,
           h('h2', { class: 'block-title' }, t('templatesTitle')),
           h('p', { class: 'muted' }, t('templatesLead'))),
-        h('a', { class: 'btn btn-ghost btn-sm', href: `${repo}/tree/main/templates`, target: '_blank', rel: 'noopener noreferrer' },
+        h('a', { class: 'btn btn-ghost btn-sm', href: `${repo}/tree/main/site/templates`, target: '_blank', rel: 'noopener noreferrer' },
           icon('github', { size: 15 }), t('templatesRepoLink'))),
       h('ul', { class: 'template-list' }, TEMPLATE_FILES.map(({ file, label }) => h('li', { class: 'card template-row' },
         h('div', null,
