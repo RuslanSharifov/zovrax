@@ -3,15 +3,15 @@
   "slug": "inventory-pickup",
   "name": "Inventory Pickup",
   "category": "hud",
-  "status": "development",
+  "status": "released",
   "featured": true,
   "accent": "lime",
   "icon": "assets/icon.png",
   "summary": {
-    "en": "Client-only Fabric 1.21.10 HUD in development: animated notifications with item icon, +gains, totals and in-game settings.",
-    "ru": "Клиентский мод Fabric 1.21.10 в разработке: анимация уведомлений, иконки и настройки в игре.",
-    "fr": "Mod client Fabric 1.21.10 en développement : notifications animées, icônes et réglages en jeu.",
-    "az": "Fabric 1.21.10 üçün hazırlanmaqda olan mod: ikonlu animasiyalar, +artım, inventar sayı və oyun daxili ayarlar."
+    "en": "Public beta 0.1.0 for Fabric 1.21.10: animated pickup HUD and in-game settings. Gameplay testing is in progress.",
+    "ru": "Публичная бета 0.1.0 для Fabric 1.21.10: анимированный HUD. Тестирование в игре продолжается.",
+    "fr": "Bêta publique 0.1.0 pour Fabric 1.21.10 : HUD animé. Les tests en jeu sont en cours.",
+    "az": "Fabric 1.21.10 üçün 0.1.0 açıq beta: animasiyalı inventar HUD-u. Oyun daxilində testlər davam edir."
   },
   "tags": [
     "HUD",
@@ -63,5 +63,34 @@
     }
   ],
   "screenshots": [],
-  "releases": []
+  "releases": [
+    {
+      "version": "0.1.0",
+      "releasedAt": "2026-11-11",
+      "prerelease": true,
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "loaders": [
+        "Fabric"
+      ],
+      "downloads": [
+        {
+          "file": "releases/zovrax-inventory-pickup-0.1.0-fabric-1.21.10.jar",
+          "label": "Fabric 1.21.10 · Beta 0.1.0",
+          "minecraftVersions": [
+            "1.21.10"
+          ],
+          "loaders": [
+            "Fabric"
+          ]
+        }
+      ],
+      "changelog": {
+        "en": "**Public beta / preview build.** Real compiled Fabric 1.21.10 JAR is available. Automatic Java compilation and catalog validation passed. **Not yet tested in a live Minecraft session or with other mods.** Please report crashes or HUD conflicts.",
+        "ru": "**Публичная бета.** Настоящий JAR для Fabric 1.21.10 прошёл автоматическую компиляцию. **Проверка в Minecraft и совместимость с другими модами пока не подтверждены.**",
+        "fr": "**Bêta publique.** Le fichier JAR réel pour Fabric 1.21.10 a été compilé automatiquement. **Les tests en jeu et avec d'autres mods restent à faire.**"
+      }
+    }
+  ]
 }
