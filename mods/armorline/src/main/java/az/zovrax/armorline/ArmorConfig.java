@@ -17,7 +17,7 @@ public final class ArmorConfig {
     public boolean enabled = true;
     public boolean vertical = true;
     public int durabilityMode = 2;
-    public int indicatorSide = 2;
+    public int indicatorSide = 0;
     public int scale = 100;
     public int opacity = 100;           // overall HUD alpha
     public int backgroundOpacity = 0; // independent 0-100% panel alpha
