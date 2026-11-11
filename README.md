@@ -4,7 +4,7 @@
 
 Independent, open-source Minecraft Java Edition mod library.
 
-**Website:** https://ruslansharifov.github.io/zovrax/ (requires GitHub Pages activation)  
+**Live website:** https://ruslansharifov.github.io/zovrax/  
 **Interactive developer guide:** https://ruslansharifov.github.io/zovrax/guide.html  
 **Contributions:** https://github.com/RuslanSharifov/zovrax/pulls
 
@@ -20,7 +20,7 @@ Documentation is in [CONTRIBUTING.md](CONTRIBUTING.md) and [AGENTS.md](AGENTS.md
 
 ## Current status
 
-The site is being developed and the Inventory Pickup mod is a **planned concept** targeting Minecraft Java Edition 1.21.10/Fabric. No mod .jar exists yet. A mod only shows a download link after a real release is published and recorded in site/data/mods.json.
+The website is published via GitHub Pages. The Inventory Pickup mod is a **planned concept** targeting Minecraft Java Edition 1.21.10/Fabric. No mod .jar exists yet. A mod only shows a download link after a real release is published and recorded in site/data/mods.json.
 
 ## Run locally
 
@@ -40,7 +40,7 @@ The website is framework-free. There is no Node package installation for the web
 
 Developers submit mod source code under mods/<id>/, add metadata and author attribution under site/data/mods.json and open a Pull Request. The maintainer reviews source, safety, licensing and compatibility before merging. Each author can optionally add their GitHub and social links and a real coffee support link. If no coffee link is provided, the site does not show a support button.
 
-The GitHub Pages site is published by .github/workflows/deploy.yml after accepted pushes to main. **The owner must first configure Settings → Pages → Source: GitHub Actions.** The owner must also enable a main branch ruleset or branch protection; CODEOWNERS and workflow files alone do not protect the branch.
+The GitHub Pages site is published by .github/workflows/deploy.yml after accepted pushes to main. GitHub Pages is configured to use GitHub Actions. The owner must separately enable a main branch ruleset or branch protection; CODEOWNERS and workflow files alone do not protect the branch.
 
 ## License
 
