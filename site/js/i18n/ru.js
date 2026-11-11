@@ -7,6 +7,19 @@ const plural = (n, one, few, many) => {
 };
 
 export default {
+  sponsorTitle: "Поддержать Zovrax",
+  sponsorText: "Помогите развитию каталога Zovrax добровольным пожертвованием через Ko-fi. Платёж обрабатывает Ko-fi, а не Zovrax.",
+  actionPremium: "Получить Premium",
+  premiumOnlyTitle: "Премиум-версия",
+  premiumOnlyText: "Эта версия продаётся на внешнем сайте автора. Zovrax не обрабатывает платежи и не хранит платные файлы.",
+  officialAccount: "Официальный разработчик Zovrax",
+  accountLead: "Аккаунт сообщества",
+  accountSetup: "Вход GitHub и облачные избранные станут доступны после настройки безопасного сервиса аккаунтов.",
+  favoritesLocal: "Избранное сохранено на устройстве",
+  actionLogin: "Войти через GitHub",
+  navAccount: "Мой профиль",
+  accountNotConfigured: "Вход GitHub пока не настроен. Избранное можно сохранять локально.",
+  premiumPolicy: "Авторы могут публиковать бесплатные, премиальные версии и отдельные платные моды. Покупка проходит у продавца.",
   navHome: 'Главная',
   navExplore: 'Моды',
   navDevelopers: 'Разработчики',
