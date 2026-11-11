@@ -1,6 +1,6 @@
 # Zovrax Inventory Pickup
 
-**Status: public beta 0.1.0.** A genuine Fabric JAR is published under `releases/` and on the Zovrax Downloads tab. Java compile and catalog checks passed. **Live gameplay and coexistence with other mods have not yet been verified.**
+**Status: public beta 0.2.0 (0.1.0 remains downloadable).** A genuine Fabric JAR is published under `releases/` and on the Zovrax Downloads tab. Java compile and catalog checks passed. **Live gameplay and coexistence with other mods have not yet been verified.**
 
 ## Target
 
@@ -17,7 +17,7 @@ No mixins, packets, commands, server interactions, or inventory changes. The fir
 
 ## In-game settings
 
-Press **O** in gameplay to open the dedicated settings screen. Rebind the key under **Options → Controls → Key Binds**. Settings include four corners, opacity, display duration, animation time, max cards, merge repeats, on/off state, edge margin, display over menus, and show/hide gains/total. Settings persist at `config/zovrax-inventory-pickup.json`.
+Press **O** during gameplay to open Minecraft-style settings with the normal blurred background, no colored panel. Native sliders set duration (800–10,000 ms), fade speed (100–900 ms), background opacity in 1% steps, and 1–6 visible notifications. Toggle mod enabled, +N, and inventory total. Choose **Customize position & appearance** to drag the live sample HUD anywhere. Click the sample to edit its size (50–200%) and entire-card opacity (0–100%) while watching the result. Settings persist in `config/zovrax-inventory-pickup.json`; old corner preferences migrate automatically.
 
 ## Build
 
@@ -27,13 +27,13 @@ From inside this folder, with **Java 21** and **Gradle 9.1** installed:
 gradle --no-daemon build
 ```
 
-Build output: `build/libs/`. The remapped JAR (not `-dev` or `-sources`) is the one to test in a matching Fabric client alongside Fabric API. The GitHub Actions workflow performs a real Gradle compile; the public **0.1.0 beta** JAR is available in `releases/` for hands-on in-game testing. The public build has not yet passed that testing.
+Build output: `build/libs/`. The remapped JAR (not `-dev` or `-sources`) is the one to test in a matching Fabric client alongside Fabric API. The GitHub Actions workflow performs a real Gradle compile; the public **0.2.0 beta** JAR is available in `releases/` for hands-on in-game testing. The public build has not yet passed that testing. The 0.1.0 beta is retained for rollback.
 
 ## Install public beta
 
 1. Install Minecraft Java Edition **1.21.10** and compatible **Fabric Loader**.
 2. Install **Fabric API** for 1.21.10. Use Java **21**.
-3. Download `zovrax-inventory-pickup-0.1.0-fabric-1.21.10.jar` from the Zovrax website or `releases/`.
+3. Download `zovrax-inventory-pickup-0.2.0-fabric-1.21.10.jar` from the Zovrax website or `releases/`.
 4. Copy the JAR to the Minecraft instance's `mods/` folder; launch the game.
 5. Press **O** while playing to open the in-game settings panel.
 
