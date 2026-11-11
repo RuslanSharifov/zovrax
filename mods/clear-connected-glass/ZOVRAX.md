@@ -18,7 +18,13 @@ Clear Connected Glass removes the distracting diagonal scratches on ordinary **c
 
 ## Status
 
-**Development preview — download unavailable on Zovrax until a tested release JAR is reviewed and committed.** The source includes a zero-Java build script and a ZIP/JAR structure check. In-game compatibility and visual verification are pending. The initial implementation targets regular uncolored glass blocks; stained glass and full pane seam handling are not claimed.
+**0.1.0 preview available for free download.** Source and JAR packaging are verified; visual testing in Minecraft remains pending.
+
+## Download 0.1.0 (Fabric 1.21.10)
+
+**Version 0.1.0 preview is available as a real free JAR** from the Zovrax download selector. Install Fabric Loader 0.17.3+ and a compatible **Continuity** version on Minecraft Java 1.21.10; place the JAR in `mods/`. This is a client-side resource-only mod and uses Continuity for compact connected-texture processing.
+
+The JAR and PNG decoding were validated, but **in-game appearance and Continuity integration have not been verified yet**. Please report issues with glass borders. There are no paid features or premium downloads.
 
 The icon contrasts regular outlined Minecraft-style glass (left) with the new clean connected look (right).
 
