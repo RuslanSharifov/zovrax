@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "az.zovrax.inventorypickup",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "PickupPacketMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
