@@ -1,0 +1,4 @@
+{
+  "apiBase": null,
+  "note": "Set apiBase to your deployed secure Worker HTTPS URL after OAuth + D1 setup. No GitHub credentials belong in this file."
+}
