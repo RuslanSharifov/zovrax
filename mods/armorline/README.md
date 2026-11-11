@@ -42,3 +42,12 @@ gradle --no-daemon --project-dir mods/armorline build
 **0.2.0 is a beta**: Java compilation and JAR validation passed; gameplay testing on the user's launcher and with other HUD mods is still pending.
 
 License: MIT.
+
+
+## ArmorLine 0.3.0 — screenshot-style equipment HUD
+
+The new default display is a compact, background-free **vertical armor stack**. Helmet, chestplate, leggings and boots appear in that order, centered; remaining durability is drawn as a white number to the **left**. The selected **main-hand item** (pickaxe, sword, axe, etc.) appears to the right, with remaining durability on its right. An equipped **offhand item** (shield, Totem of Undying or other item) appears beneath it. If the offhand is empty, nothing is drawn. A totem has no durability and so no made-up durability number is shown. Equipped items update live.
+
+Use **P → ArmorLine settings** to turn main-hand and offhand icons on/off separately. Positioning, vertical/horizontal layout, scale, item/text/overall opacity, durability modes and indicator placement are still adjustable. Fresh configurations default to **0% background opacity** and **numbers only**. Existing saved configurations are preserved; choose **Appearance and transparency → Background opacity: 0%** to match the screenshot after upgrading. The new release does not alter Inventory Pickup.
+
+To upgrade, remove older ArmorLine JARs and install **0.3.0** (Fabric 1.21.10, Fabric API, Java 21). This beta passed compilation and structure checks; test it in Minecraft and report visual or compatibility issues.
