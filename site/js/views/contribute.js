@@ -160,7 +160,7 @@ function generator(catalog) {
     selectOptions([['free', 'Free'], ['free-premium', 'Free + Premium'], ['premium-only', 'Premium only']], state.monetization));
   const premiumInput = h('input', { class: 'input', type: 'url', placeholder: 'https://your-store.lemonsqueezy.com/', 'aria-label': 'Premium purchase URL (HTTPS)' });
   const statusSelect = h('select', { class: 'select', 'aria-label': t('genStatus') },
-    selectOptions([['planned', t('statusPlanned')], ['development', t('statusDevelopment')]], state.status));
+    selectOptions([['planned', t('statusPlanned')], ['development', t('statusDevelopment')], ['released', t('statusReleased')]], state.status));
 
   nameInput.addEventListener('input', () => {
     state.name = nameInput.value;
