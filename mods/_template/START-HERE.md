@@ -56,7 +56,7 @@ See the working [zovrax.json](zovrax.json) file alongside this guide. Only valid
 | `authors` | Yes | Nonempty array of **developer IDs**, not arbitrary profile links. IDs must exist in the catalog's `developers` array. |
 | `updatedAt` | Optional | ISO date such as `2026-11-11`, or `null` if not recorded. |
 | `license` | Optional | Actual mod license, e.g. `MIT`, or `null` until declared. |
-| `source` | Optional | HTTPS source repository or source-folder URL. Defaults to its folder in Zovrax; use a valid URL. |
+| `source` | Optional | HTTPS source repository or source-folder URL. Can be null for proprietary code. |
 | `features` | Optional | Array of translated text objects `{"en":"...","ru":"...","fr":"..."}`. |
 | `screenshots` | Optional | Image objects `{"src":"assets/preview.png","alt":{"en":"Screenshot"}}`. File must exist. |
 | `releases` | Yes | `[]` when not released; real release objects only after tested JARs have been committed. |
@@ -137,3 +137,55 @@ The public developer card comes from `site/data/catalog.json`, not directly from
 ### Rights and safety
 
 Use code and art you have rights to publish. Never commit secrets, malware, spyware, counterfeit mod files or unlicensed Minecraft resources. The project is independent and not endorsed by Mojang or Microsoft.
+
+
+## Free and premium publishing
+
+Zovrax accepts **free**, **free + premium** and **premium-only** mod listings.
+Premium downloads may be distributed by the developer through
+[Lemon Squeezy](https://www.lemonsqueezy.com/) or another legitimate HTTPS store.
+A premium-only listing does **not** need its proprietary source or paid JAR
+inside the Zovrax repository. Only approved public listing metadata,
+`ZOVRAX.md` and any permitted assets belong here.
+
+Add `monetization` to `mods/<slug>/zovrax.json`:
+
+```json
+{
+  "monetization": {
+    "type": "free-premium",
+    "premiumUrl": "https://your-store.lemonsqueezy.com/buy/your-product",
+    "premiumLabel": "Get Premium"
+  }
+}
+```
+
+Allowed types: `free`, `free-premium`, `premium-only`.
+For a **free** mod, set `premiumUrl` to `null`.
+For a **premium-only** mod, use `"status": "released"` and `"releases": []`;
+the site shows the external purchase button, not a fictional free download.
+An optional `source` field may be `null` when source is proprietary.
+The default remains `free`, so older listings continue to work.
+
+The **Get Premium** action appears in the mod header only when a valid
+premium URL is supplied. Developers may also link their external stores
+from public Markdown or their own mod UI, but purchase actions must be
+voluntary, clearly labeled and require user consent before opening a
+browser. Zovrax does not handle payment, license keys, refunds or deliver
+the premium binary. Developers must accurately represent ownership,
+compatibility, dependencies and any included third-party assets.
+
+## Sponsor and community features
+
+- **Platform donations:** [Ko-fi](https://ko-fi.com/ruslansharifov)
+  through [Zovrax Support](https://ruslansharifov.github.io/zovrax/#/support).
+- **Creator donations:** Registered developers can specify their own
+  `support.kofi` (optional). The official founder profile is explicitly
+  marked with a Zovrax blue verification badge; regular GitHub users do not
+  gain that badge automatically.
+- **Accounts and statistics:** GitHub OAuth, cloud favorites, and aggregated
+  per-mod stats have an optional Cloudflare Worker + D1 implementation
+  under `community-worker/`. **They are not live until
+  an operator configures OAuth, deploys the Worker and sets
+  `site/config/community.json`.** Without it, favorites remain local
+  in the browser and no fabricated global statistics appear.
