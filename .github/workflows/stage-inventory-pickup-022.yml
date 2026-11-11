@@ -48,5 +48,7 @@ jobs:
           git add mods/inventory-pickup/releases/zovrax-inventory-pickup-0.2.2-fabric-1.21.10.jar
           if ! git diff --cached --quiet; then
             git commit -m "build: add verified Inventory Pickup 0.2.2 JAR"
+            git fetch origin fix/inventory-pickup-mixin-crash-022
+            git rebase origin/fix/inventory-pickup-mixin-crash-022
             git push origin HEAD:refs/heads/fix/inventory-pickup-mixin-crash-022
           fi
