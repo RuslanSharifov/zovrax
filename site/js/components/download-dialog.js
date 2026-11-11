@@ -19,6 +19,7 @@ export function createDownloadDialog(mod) {
   const details = h('p', { class: 'muted small download-picker-detail', 'aria-live': 'polite' });
   const downloadLink = h('a', { class: 'btn btn-primary', href: '#', rel: 'noopener noreferrer' },
     icon('download', { size: 17 }), t('actionDownload'));
+  downloadLink.hidden = true;
   const form = h('form', { class: 'download-picker-fields', onsubmit: event => {
     event.preventDefault();
     if (downloadLink.getAttribute('aria-disabled') !== 'true') downloadLink.click();
@@ -29,7 +30,7 @@ export function createDownloadDialog(mod) {
       h('span', { class: 'field-label' }, t('filterLoader')), loaderSelect),
     h('label', { class: 'field' },
       h('span', { class: 'field-label' }, t('filterRelease')), releaseSelect),
-    fileField, details,
+    fileField, details, downloadLink,
     h('div', { class: 'download-dialog-actions' },
       h('button', { type: 'button', class: 'btn btn-ghost', onclick: () => dialog.close() }, t('downloadPickerCancel')),
       h('button', { type: 'submit', class: 'btn btn-primary', id: 'quick-download-submit' },
