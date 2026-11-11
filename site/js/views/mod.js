@@ -46,6 +46,7 @@ function creatorProfiles(mod, devById) {
       avatar: dev?.avatarUrl || (github ? `https://github.com/${encodeURIComponent(github)}.png?size=112` : null),
       bio: dev?.bio ? pick(dev.bio) : null,
       official: dev?.official === true,
+      kofi: dev?.support?.kofi || null,
     };
   });
 }
@@ -66,7 +67,9 @@ function creatorCard(creator) {
       profile ? h('a', { class: 'btn btn-ghost btn-sm', href: profile },
         icon('user', { size: 15 }), t('modCreatorProfile')) : null,
       github ? h('a', { class: 'btn btn-ghost btn-sm', href: github, target: '_blank', rel: 'noopener noreferrer' },
-        icon('github', { size: 15 }), t('modGithubAccount'), icon('external', { size: 12 })) : null));
+        icon('github', { size: 15 }), t('modGithubAccount'), icon('external', { size: 12 })) : null,
+      creator.kofi ? h('a', { class: 'btn btn-ghost btn-sm', href: creator.kofi, target: '_blank', rel: 'noopener noreferrer' },
+        icon('coffee', { size: 15 }), t('actionKofi')) : null));
 }
 
 function releaseCard(release, isLatest, downloads = release.downloads) {
