@@ -149,7 +149,7 @@ export default {
   genLoader: 'Chargeur',
   genDeveloper: 'ID du développeur',
   genStatus: 'Statut',
-  genOutput: 'mod.json',
+  genOutput: 'zovrax.json',
   templatesTitle: 'Modèles',
   templatesLead: 'Points de départ réutilisables. Chacun correspond à la version actuelle du schéma.',
   templatesRepoLink: 'Voir les modèles sur GitHub',
