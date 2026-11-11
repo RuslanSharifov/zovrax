@@ -65,6 +65,13 @@ export function isFavorite(slug) {
   return getFavorites().has(slug);
 }
 
+export function replaceFavorites(values) {
+  if (!Array.isArray(values)) return;
+  const list = [...new Set(values.filter(value => typeof value === 'string' && /^[a-z0-9-]{2,63}$/.test(value)))];
+  write(KEYS.favorites, list);
+  emit('favorites', list);
+}
+
 export function toggleFavorite(slug) {
   const favorites = getFavorites();
   if (favorites.has(slug)) favorites.delete(slug);
