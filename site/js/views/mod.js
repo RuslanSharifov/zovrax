@@ -29,6 +29,9 @@ function releaseCard(release, isLatest, downloads = release.downloads) {
         h('div', { class: 'file-info' },
           h('strong', null, file.label),
           h('span', { class: 'muted small' }, formatBytes(file.size) ?? ''),
+          h('span', { class: 'chip-row chip-row-tight' },
+            (file.minecraftVersions || release.minecraftVersions).map(version => chip(version)),
+            (file.loaders || release.loaders).map(loader => chip(loader, 'chip-soft'))),
           file.sha256 ? h('code', { class: 'hash', title: file.sha256 }, `${t('fileSha256')}: ${file.sha256}`) : null),
         h('a', { class: 'btn btn-primary btn-sm', href: file.url,
           download: file.url.startsWith('data/') ? file.name : null,
@@ -88,15 +91,16 @@ export async function modView({ params, catalog, onCleanup }) {
   const panel = h('div', { class: 'tab-panel', role: 'tabpanel', tabindex: '0' });
   const tabList = h('div', { class: 'tabs', role: 'tablist', 'aria-label': t('modInfo') });
   let activeTab = 'overview';
-  const downloadFilters = { version: 'all', loader: 'all' };
+  const downloadFilters = { version: 'all', loader: 'all', release: 'all' };
   const versionChoices = [...new Set([...mod.minecraftVersions, ...mod.releases.flatMap(r => r.minecraftVersions)])];
   const loaderChoices = [...new Set([...mod.loaders, ...mod.releases.flatMap(r => r.loaders)])];
+  const releaseChoices = [...new Set(mod.releases.map(r => r.version))];
 
   function downloadSelect(kind) {
-    const versions = kind === 'version';
-    const options = versions ? versionChoices : loaderChoices;
-    const label = t(versions ? 'filterVersion' : 'filterLoader');
-    const allLabel = t(versions ? 'allVersions' : 'allLoaders');
+    const isMinecraft = kind === 'version';
+    const options = isMinecraft ? versionChoices : kind === 'loader' ? loaderChoices : releaseChoices;
+    const label = t(isMinecraft ? 'filterVersion' : kind === 'loader' ? 'filterLoader' : 'filterRelease');
+    const allLabel = t(isMinecraft ? 'allVersions' : kind === 'loader' ? 'allLoaders' : 'allReleases');
     const select = h('select', { class: 'select', 'aria-label': label,
       dataset: { downloadFilter: kind },
       onchange: event => {
@@ -139,10 +143,11 @@ export async function modView({ params, catalog, onCleanup }) {
   function renderPanel(id) {
     if (id === 'downloads') {
       const filters = h('div', { class: 'download-filter-bar card' },
-        downloadSelect('version'), downloadSelect('loader'));
+        downloadSelect('version'), downloadSelect('loader'), downloadSelect('release'));
       const matches = mod.releases.map((release, index) => ({
         release, index,
         files: release.downloads.filter(file =>
+          (downloadFilters.release === 'all' || release.version === downloadFilters.release) &&
           (downloadFilters.version === 'all' || (file.minecraftVersions || release.minecraftVersions).includes(downloadFilters.version)) &&
           (downloadFilters.loader === 'all' || (file.loaders || release.loaders).includes(downloadFilters.loader))),
       })).filter(item => item.files.length > 0);
@@ -253,6 +258,7 @@ export async function modView({ params, catalog, onCleanup }) {
       h('h2', { class: 'block-title' }, t('modDownloads')),
       downloadSelect('version'),
       downloadSelect('loader'),
+      downloadSelect('release'),
       h('button', { type: 'button', class: 'btn btn-primary btn-sm', onclick: () => {
         selectTab('downloads');
         tabList.scrollIntoView({ behavior: 'smooth', block: 'start' });
