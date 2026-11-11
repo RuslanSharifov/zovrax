@@ -6,19 +6,22 @@ import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 
-/** Four armor items rendered as one movable HUD, with independent display layers. */
+/**
+ * Screenshot-inspired equipment display: helmet, chestplate, leggings, boots
+ * centered in one vertical group, remaining durability to the left, equipped
+ * main hand tool and offhand (shield/totem/other item) in a right-hand column.
+ */
 public final class ArmorHud {
-    private static final EquipmentSlot[] SLOTS = {
+    private static final EquipmentSlot[] ARMOR = {
         EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET
     };
-    private static final String[] EMPTY_LABELS = { "H", "C", "L", "B" };
-    private static final int ROW = 31;
-    private static final int V_WIDTH = 116;
-    private static final int V_HEIGHT = 128;
-    private static final int H_WIDTH = 316;
-    private static final int H_HEIGHT = 35;
-
-    private ArmorHud() { }
+    private static final int ARMOR_X = 56;
+    private static final int HAND_X = 112;
+    private static final int V_WIDTH = 151;
+    private static final int V_HEIGHT = 96;
+    private static final int H_WIDTH = 280;
+    private static final int H_HEIGHT = 61;
+    private ArmorHud() {}
 
     public static int width(ArmorConfig c) {
         return Math.round((c.vertical ? V_WIDTH : H_WIDTH) * c.scale / 100f);
@@ -38,34 +41,34 @@ public final class ArmorHud {
 
     public static void hud(DrawContext ctx, RenderTickCounter tickCounter) {
         MinecraftClient client = MinecraftClient.getInstance();
-        ArmorConfig config = ArmorLineClient.config();
-        if (!config.enabled || client.player == null || client.currentScreen != null) return;
-        config.ensurePosition(ctx.getScaledWindowWidth(), ctx.getScaledWindowHeight());
-        draw(ctx, client, config, x(config, ctx.getScaledWindowWidth()),
-            y(config, ctx.getScaledWindowHeight()), false);
+        ArmorConfig c = ArmorLineClient.config();
+        if (!c.enabled || client.player == null || client.currentScreen != null) return;
+        c.ensurePosition(ctx.getScaledWindowWidth(), ctx.getScaledWindowHeight());
+        draw(ctx, client, c, x(c, ctx.getScaledWindowWidth()),
+            y(c, ctx.getScaledWindowHeight()), false);
     }
 
-    public static void drawPreview(DrawContext ctx, ArmorConfig config, int px, int py) {
-        draw(ctx, MinecraftClient.getInstance(), config, px, py, true);
+    public static void drawPreview(DrawContext ctx, ArmorConfig c, int px, int py) {
+        draw(ctx, MinecraftClient.getInstance(), c, px, py, true);
     }
 
-    private static int argb(int rgb, float alpha) {
-        return (Math.clamp(Math.round(alpha * 255), 0, 255) << 24) | (rgb & 0xFFFFFF);
+    private static int color(int rgb, float alpha) {
+        return (Math.clamp(Math.round(alpha * 255f), 0, 255) << 24) | (rgb & 0xffffff);
     }
 
-    private static void rectangle(DrawContext ctx, int x1, int y1, int x2, int y2,
-                                  int rgb, float alpha) {
-        if (alpha > 0.001f) ctx.fill(x1, y1, x2, y2, argb(rgb, alpha));
+    private static void fill(DrawContext ctx, int x1, int y1, int x2, int y2,
+                             int rgb, float alpha) {
+        if (alpha > 0f) ctx.fill(x1, y1, x2, y2, color(rgb, alpha));
     }
 
     private static void draw(DrawContext ctx, MinecraftClient mc, ArmorConfig c,
                              int x, int y, boolean preview) {
         if (!preview && !c.enabled) return;
-        float combined = c.opacity / 100f;
-        if (combined <= 0f) return;
-        float background = combined * c.backgroundOpacity / 100f;
-        float icons = combined * c.iconsOpacity / 100f;
-        float labels = combined * c.textOpacity / 100f;
+        float overall = c.opacity / 100f;
+        if (overall <= 0f) return;
+        float background = overall * c.backgroundOpacity / 100f;
+        float iconAlpha = overall * c.iconsOpacity / 100f;
+        float labelAlpha = overall * c.textOpacity / 100f;
         int w = c.vertical ? V_WIDTH : H_WIDTH;
         int h = c.vertical ? V_HEIGHT : H_HEIGHT;
 
@@ -73,73 +76,83 @@ public final class ArmorHud {
         try {
             ctx.getMatrices().translate(x, y);
             ctx.getMatrices().scale(c.scale / 100f, c.scale / 100f);
+            // At 0% background opacity, only Minecraft items and white
+            // durability numbers remain: no forced slots, borders or spines.
+            fill(ctx, 0, 0, w, h, 0x10231f, background * .75f);
 
-            rectangle(ctx, 0, 0, w, h, 0x132422, background * .88f);
-            rectangle(ctx, 0, 0, w, 1, 0x76E5C0, background);
-            rectangle(ctx, 0, h - 1, w, h, 0x76E5C0, background);
-            // Continuous spine: the armor pieces form a single connected widget.
-            if (c.vertical) rectangle(ctx, w / 2 - 1, 14, w / 2 + 1, h - 14, 0x7DE7C5, background * .7f);
-            else rectangle(ctx, 14, h / 2 - 1, w - 14, h / 2 + 1, 0x7DE7C5, background * .7f);
+            for (int i = 0; i < ARMOR.length; i++) {
+                int armorX = c.vertical ? ARMOR_X : 17 + i * 53;
+                int armorY = c.vertical ? 2 + i * 23 : 7;
+                ItemStack armor = mc.player == null ? ItemStack.EMPTY : mc.player.getEquippedStack(ARMOR[i]);
+                drawEquipment(ctx, mc, c, armor, armorX, armorY, 40, iconAlpha, labelAlpha, background, false);
+            }
 
-            for (int i = 0; i < SLOTS.length; i++) {
-                int left = c.vertical ? 3 : 3 + i * 78;
-                int top = c.vertical ? 3 + i * ROW : 3;
-                int right = c.vertical ? w - 3 : left + 76;
-                int bottom = c.vertical ? top + ROW - 1 : h - 3;
-                rectangle(ctx, left, top, right, bottom, 0x244039, background * .68f);
-
-                int side = c.indicatorSide == 0 ? (c.x > .5d ? 2 : 1) : c.indicatorSide;
-                boolean leftSide = side == 2;
-                boolean indicators = side != 3;
-                // Image stays inside its slot. The side choice changes where the
-                // durability bar/numbers appear relative to the equipped armor.
-                int itemX = leftSide && indicators ? right - 23 : left + 6;
-                int iconY = top + 6;
-                ItemStack stack = mc.player == null ? ItemStack.EMPTY : mc.player.getEquippedStack(SLOTS[i]);
-
-                if (icons > 0f) {
-                    rectangle(ctx, itemX - 1, top + 5, itemX + 17, top + 24,
-                        stack.isEmpty() ? 0x3E5B52 : 0x335149, background * .65f);
-                    if (stack.isEmpty()) {
-                        ctx.drawTextWithShadow(mc.textRenderer, EMPTY_LABELS[i],
-                            itemX + 5, top + 9, argb(0xAAC7BB, icons * .7f));
-                    } else {
-                        // The item renderer is opaque in Minecraft 1.21.10. Apply a
-                        // surface-tinted veil to attenuate it, without changing
-                        // global shader state or other mods' HUD rendering.
-                        ctx.drawItem(stack, itemX, iconY);
-                        if (icons < 1f) rectangle(ctx, itemX, iconY, itemX + 16, iconY + 16,
-                            0x152825, (1f - icons) * .95f);
-                    }
+            if (mc.player != null) {
+                // Main hand shows the actual selected item, including pickaxe,
+                // axe, sword or bow; offhand shows actual shield/totem if present.
+                if (c.showMainHand) {
+                    ItemStack main = mc.player.getMainHandStack();
+                    if (!main.isEmpty()) drawEquipment(ctx, mc, c, main,
+                        c.vertical ? HAND_X : 18, c.vertical ? 27 : 34,
+                        c.vertical ? 34 : 44, iconAlpha, labelAlpha, background, true);
                 }
-
-                if (!indicators || stack.isEmpty() || !stack.isDamageable()) continue;
-                int max = Math.max(1, stack.getMaxDamage());
-                int remaining = Math.clamp(max - stack.getDamage(), 0, max);
-                float ratio = remaining / (float) max;
-                int barX = leftSide ? left + 4 : left + 27;
-                int barW = c.vertical ? 81 : 46;
-                int textX = barX;
-                int barY = bottom - 7;
-                if (c.durabilityMode == 0 || c.durabilityMode == 1) {
-                    rectangle(ctx, barX, barY, barX + barW, barY + 3, 0x192A26, background);
-                    rectangle(ctx, barX, barY, barX + Math.round(barW * ratio), barY + 3,
-                        ratio > .5f ? 0x76E39D : ratio > .25f ? 0xE6C36B : 0xF27C70, labels);
-                }
-                if ((c.durabilityMode == 0 || c.durabilityMode == 2) && labels > 0f) {
-                    ctx.getMatrices().pushMatrix();
-                    try {
-                        ctx.getMatrices().translate(textX, top + 5);
-                        ctx.getMatrices().scale(c.vertical ? .82f : .58f, c.vertical ? .82f : .58f);
-                        ctx.drawTextWithShadow(mc.textRenderer, remaining + "/" + max, 0, 0,
-                            argb(0xEAFBF3, labels));
-                    } finally {
-                        ctx.getMatrices().popMatrix();
-                    }
+                if (c.showOffHand) {
+                    ItemStack offhand = mc.player.getOffHandStack();
+                    if (!offhand.isEmpty()) drawEquipment(ctx, mc, c, offhand,
+                        c.vertical ? HAND_X : 220, c.vertical ? 52 : 34,
+                        c.vertical ? 34 : 46, iconAlpha, labelAlpha, background, true);
                 }
             }
         } finally {
             ctx.getMatrices().popMatrix();
+        }
+    }
+
+    /**
+     * For non-damageable items (e.g. Totem of Undying), show the item without
+     * inventing a durability number. Stack count is shown only when >1.
+     */
+    private static void drawEquipment(DrawContext ctx, MinecraftClient mc, ArmorConfig c,
+                                      ItemStack stack, int iconX, int iconY, int numberWidth,
+                                      float iconAlpha, float labelAlpha, float background,
+                                      boolean hand) {
+        if (stack.isEmpty()) return;
+        if (iconAlpha > 0f) {
+            fill(ctx, iconX - 1, iconY - 1, iconX + 17, iconY + 17, 0x254238, background * .4f);
+            ctx.drawItem(stack, iconX, iconY);
+            // 1.21.10 item drawing doesn't accept an overall alpha parameter.
+            // Tint veil approximates intermediate alpha without affecting other HUDs.
+            if (iconAlpha < 1f) fill(ctx, iconX, iconY, iconX + 16, iconY + 16,
+                0x17312a, (1f - iconAlpha) * .96f);
+        }
+
+        int side = c.indicatorSide == 0 ? (c.x > .5d ? 2 : 1) : c.indicatorSide;
+        if (side == 3 || labelAlpha <= 0f) return;
+
+        boolean numbers = c.durabilityMode == 0 || c.durabilityMode == 2;
+        boolean bars = c.durabilityMode == 0 || c.durabilityMode == 1;
+        if (!numbers && !bars) return;
+        if (!stack.isDamageable()) {
+            if (numbers && stack.getCount() > 1) ctx.drawTextWithShadow(mc.textRenderer,
+                Integer.toString(stack.getCount()), side == 2 ? iconX - 16 : iconX + 19,
+                iconY + 4, color(0xffffff, labelAlpha));
+            return;
+        }
+
+        int max = Math.max(1, stack.getMaxDamage());
+        int remaining = Math.clamp(max - stack.getDamage(), 0, max);
+        float ratio = remaining / (float) max;
+        String label = Integer.toString(remaining); // screenshot-like compact numeric durability
+        int labelX = side == 2 ? iconX - mc.textRenderer.getWidth(label) - 7 : iconX + 22;
+        if (numbers) ctx.drawTextWithShadow(mc.textRenderer, label,
+            labelX, iconY + 4, color(0xffffff, labelAlpha));
+        if (bars) {
+            int bx = side == 2 ? iconX - numberWidth : iconX + 22;
+            int by = iconY + (numbers ? 16 : 10);
+            int bw = Math.max(12, numberWidth - 8);
+            fill(ctx, bx, by, bx + bw, by + 2, 0x081f17, background * .9f);
+            fill(ctx, bx, by, bx + Math.round(bw * ratio), by + 2,
+                ratio > .5f ? 0x6ff19c : ratio > .25f ? 0xeac677 : 0xf37872, labelAlpha);
         }
     }
 }
