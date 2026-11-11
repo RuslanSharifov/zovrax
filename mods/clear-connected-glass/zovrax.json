@@ -3,7 +3,7 @@
   "slug": "clear-connected-glass",
   "name": "Clear Connected Glass",
   "category": "visual",
-  "status": "development",
+  "status": "released",
   "featured": false,
   "accent": "blue",
   "icon": "assets/icon.svg",
@@ -43,7 +43,36 @@
     }
   ],
   "screenshots": [],
-  "releases": [],
+  "releases": [
+    {
+      "version": "0.1.0",
+      "releasedAt": "2026-11-12",
+      "prerelease": true,
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "loaders": [
+        "Fabric"
+      ],
+      "downloads": [
+        {
+          "file": "releases/clear-connected-glass-0.1.0-fabric-1.21.10.jar",
+          "label": "Fabric 1.21.10 · 0.1.0 Preview",
+          "minecraftVersions": [
+            "1.21.10"
+          ],
+          "loaders": [
+            "Fabric"
+          ]
+        }
+      ],
+      "changelog": {
+        "en": "Initial free 0.1.0 preview. Real Fabric resource-only JAR with RGBA glass tiles and compact connected-texture mappings. JAR structure and PNG decoding validated. Minecraft gameplay and Continuity integration have not yet been verified.",
+        "ru": "Первая бесплатная предварительная версия 0.1.0. Проверены структура JAR и PNG; тестирование в игре ещё требуется.",
+        "fr": "Première préversion gratuite 0.1.0. Structure JAR et images PNG validées ; les tests dans le jeu restent à faire."
+      }
+    }
+  ],
   "monetization": {
     "type": "free",
     "premiumUrl": null,
