@@ -23,3 +23,12 @@ Settings persist to `config/zovrax-armorline.json`, and settings from beta 0.1.0
 This free client-side Fabric mod requires Minecraft **1.21.10**, Fabric API, and Java 21. Download **0.2.0** from the Downloads menu and remove any older ArmorLine JAR to avoid duplicate mod IDs. It works independently of Inventory Pickup (P opens ArmorLine, O opens Inventory Pickup).
 
 *This release has passed automated compilation and JAR checks; please test its real in-game behaviour and report bugs.*
+
+
+## New in beta 0.3.0 — Screenshot-inspired equipment layout
+
+ArmorLine now shows **four armor icons in a tight, vertical line**, with **white remaining-durability numbers** to the left, based on your reference screenshot. To the right is the **currently equipped main-hand tool** (such as a pickaxe); below it, if equipped, appears the **offhand shield or Totem of Undying**. The offhand is hidden when empty, and non-damageable items do not get an imaginary durability counter.
+
+You can independently enable or disable **Show main hand** and **Show offhand** using the in-game **P** settings. Background opacity defaults to **0% for new installations**, so the equipment floats over the game view, without a colored card. Other appearance, positions, layouts and durability options remain. Existing saved settings are retained; set your background opacity to 0% manually for the new fully transparent look.
+
+**Beta 0.3.0** is compiled for Fabric 1.21.10 and requires Fabric API. Remove previous ArmorLine JARs before installing the new one.
