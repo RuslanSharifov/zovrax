@@ -16,8 +16,6 @@ public final class PickupPositionScreen extends Screen {
     private boolean popup;
     private boolean dragging;
     private boolean dragged;
-    private double dragStartX;
-    private double dragStartY;
 
     public PickupPositionScreen(Screen parent) {
         super(Text.literal("Move Inventory Pickup notification"));
@@ -54,8 +52,6 @@ public final class PickupPositionScreen extends Screen {
         if (click.buttonInfo().button() == GLFW.GLFW_MOUSE_BUTTON_LEFT && onPreview(click.x(), click.y())) {
             dragging = true;
             dragged = false;
-            dragStartX = click.x();
-            dragStartY = click.y();
             return true;
         }
         return super.mouseClicked(click, doubled);
@@ -94,6 +90,12 @@ public final class PickupPositionScreen extends Screen {
         renderBackground(ctx, mouseX, mouseY, delta);
         // Always preview actual size and overall alpha, even while settings change.
         PickupHudRenderer.drawPreview(ctx, config, previewX(), previewY());
+        // Keep a selectable outline even when the user sets 0% opacity.
+        int px = previewX(), py = previewY(), pw = previewW(), ph = previewH();
+        ctx.fill(px, py, px + pw, py + 1, 0xA0FFFFFF);
+        ctx.fill(px, py + ph - 1, px + pw, py + ph, 0xA0FFFFFF);
+        ctx.fill(px, py, px + 1, py + ph, 0xA0FFFFFF);
+        ctx.fill(px + pw - 1, py, px + pw, py + ph, 0xA0FFFFFF);
 
         if (popup) {
             int w = Math.min(202, Math.max(110, width - 24));
