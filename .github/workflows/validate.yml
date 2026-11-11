@@ -1,0 +1,27 @@
+name: Validate catalog and site
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate catalog and site
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check JavaScript
+        run: |
+          node --check site/app.js
+          node --check site/guide.js
+          node --check .github/scripts/validate-catalog.mjs
+      - name: Validate catalog
+        run: node .github/scripts/validate-catalog.mjs

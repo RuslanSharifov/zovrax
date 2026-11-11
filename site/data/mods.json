@@ -1,0 +1,154 @@
+{
+  "schemaVersion": 1,
+  "categories": [
+    {
+      "id": "hud",
+      "icon": "◫",
+      "title": {
+        "az": "HUD & İnterfeys",
+        "en": "HUD & Interface"
+      },
+      "description": {
+        "az": "Oyun ekranını özünə uyğunlaşdır",
+        "en": "Customize what you see"
+      },
+      "accent": "lime"
+    },
+    {
+      "id": "quality",
+      "icon": "✧",
+      "title": {
+        "az": "Rahatlıq",
+        "en": "Quality of Life"
+      },
+      "description": {
+        "az": "Kiçik, faydalı təkmilləşdirmələr",
+        "en": "Small upgrades, big difference"
+      },
+      "accent": "blue"
+    },
+    {
+      "id": "gameplay",
+      "icon": "⌘",
+      "title": {
+        "az": "Oyun mexanikası",
+        "en": "Gameplay"
+      },
+      "description": {
+        "az": "Yeni mexanikalar və imkanlar",
+        "en": "More ways to play"
+      },
+      "accent": "purple"
+    },
+    {
+      "id": "visual",
+      "icon": "◈",
+      "title": {
+        "az": "Vizual & Audio",
+        "en": "Visual & Audio"
+      },
+      "description": {
+        "az": "Oyun atmosferini dəyiş",
+        "en": "Give your world a new feel"
+      },
+      "accent": "orange"
+    },
+    {
+      "id": "utility",
+      "icon": "⌁",
+      "title": {
+        "az": "Alətlər",
+        "en": "Utilities"
+      },
+      "description": {
+        "az": "Praktik oyun alətləri",
+        "en": "Useful tools for players"
+      },
+      "accent": "teal"
+    },
+    {
+      "id": "performance",
+      "icon": "⚡",
+      "title": {
+        "az": "Performans",
+        "en": "Performance"
+      },
+      "description": {
+        "az": "Daha axıcı oyun təcrübəsi",
+        "en": "Smooth out the rough edges"
+      },
+      "accent": "pink"
+    }
+  ],
+  "mods": [
+    {
+      "id": "inventory-pickup",
+      "slug": "inventory-pickup",
+      "name": "Inventory Pickup",
+      "category": "hud",
+      "status": "planned",
+      "featured": true,
+      "icon": "inventory",
+      "accent": "lime",
+      "summary": {
+        "az": "Yerdən və sandıqdan götürdüyün əşyaları ikon, inventar sayı və +artım ilə göstərən tənzimlənən HUD bildirişi.",
+        "en": "A customizable HUD that shows item icons, inventory totals and +gains when you pick up or transfer items."
+      },
+      "description": {
+        "az": "Inventory Pickup modunun məqsədi əşya yerdən götürüldükdə və ya sandıqdan inventara köçürüldükdə ekranda yığcam bildiriş göstərməkdir. Bildirişdə əşyanın ikonu, adı, yeni ümumi sayı və artım miqdarı əks olunacaq. Ekrandakı mövqe və görünmə müddəti tənzimlənə biləcək. Hazırda konsept mərhələsindədir: işlək mod və .jar faylı yoxdur.",
+        "en": "Inventory Pickup is planned to show a compact notification when you collect a dropped item or transfer it from a chest. Each notification will contain the item icon, name, new total inventory count and the amount gained. Position and display duration will be customizable. This is a concept: no working mod or .jar file exists yet."
+      },
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "loaders": [
+        "Fabric"
+      ],
+      "tags": [
+        "HUD",
+        "Inventory",
+        "QoL"
+      ],
+      "releases": [],
+      "features": [
+        {
+          "az": "Yerdən əşya götürmə bildirişləri",
+          "en": "Ground pickup notifications"
+        },
+        {
+          "az": "Sandıqdan inventara köçürmə bildirişləri",
+          "en": "Chest-to-inventory transfer notifications"
+        },
+        {
+          "az": "İkon, ad, ümumi say və +artım göstəricisi",
+          "en": "Icon, name, inventory total and +gain"
+        },
+        {
+          "az": "Sürüşdürülə bilən HUD yerləşməsi",
+          "en": "Adjustable HUD positioning"
+        },
+        {
+          "az": "Animasiya, müddət və görünüş parametrləri",
+          "en": "Animation, duration and appearance settings"
+        }
+      ],
+      "source": "https://github.com/RuslanSharifov/zovrax/tree/main/mods/inventory-pickup",
+      "screenshots": [],
+      "authorIds": [
+        "ruslan"
+      ]
+    }
+  ],
+  "authors": [
+    {
+      "id": "ruslan",
+      "displayName": "Ruslan Sharifov",
+      "github": "RuslanSharifov",
+      "avatarUrl": "https://avatars.githubusercontent.com/u/315340866?v=4",
+      "socials": [],
+      "support": {
+        "coffee": null
+      }
+    }
+  ]
+}
