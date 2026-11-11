@@ -45,6 +45,7 @@ function creatorProfiles(mod, devById) {
       name: dev?.displayName || github || id,
       avatar: dev?.avatarUrl || (github ? `https://github.com/${encodeURIComponent(github)}.png?size=112` : null),
       bio: dev?.bio ? pick(dev.bio) : null,
+      official: dev?.official === true,
     };
   });
 }
@@ -57,7 +58,8 @@ function creatorCard(creator) {
       ? h('img', { class: 'avatar avatar-md', src: creator.avatar, alt: '', width: 56, height: 56, loading: 'lazy', decoding: 'async' })
       : h('span', { class: 'mod-creator-avatar-placeholder', 'aria-hidden': 'true' }, icon('github', { size: 24 })),
     h('div', { class: 'mod-creator-identity' },
-      h('strong', null, creator.name),
+      h('div', { class: 'creator-name-row' }, h('strong', null, creator.name),
+        creator.official ? h('span', { class: 'official-check', title: t('officialAccount'), 'aria-label': t('officialAccount') }, '✓') : null),
       creator.github ? h('span', { class: 'muted small' }, `@${creator.github}`) : null,
       creator.bio ? h('p', { class: 'muted small' }, creator.bio) : null),
     h('div', { class: 'mod-creator-links' },
@@ -140,10 +142,13 @@ export async function modView({ params, catalog, onCleanup }) {
           target: latestFile.url.startsWith('https://') ? '_blank' : null,
           rel: 'noopener noreferrer' },
           icon('download', { size: 17 }), `${t('actionDownload')} · ${latestFile.label}`)
-        : h('span', { class: 'muted small' }, t(mod.status === 'archived' ? 'noDownloadsArchived' : mod.status === 'development' ? 'noDownloadsDevelopment' : 'noDownloadsPlanned')),
+        : mod.monetization?.type === 'premium-only' ? null : h('span', { class: 'muted small' }, t(mod.status === 'archived' ? 'noDownloadsArchived' : mod.status === 'development' ? 'noDownloadsDevelopment' : 'noDownloadsPlanned')),
       favoriteButton(mod.slug, mod.name, { labeled: true }),
-      h('a', { class: 'btn btn-ghost', href: mod.source, target: '_blank', rel: 'noopener noreferrer' },
-        icon('github', { size: 17 }), t('actionSource'), icon('external', { size: 14 }))));
+      mod.monetization?.premiumUrl ? h('a', { class: 'btn btn-premium', href: mod.monetization.premiumUrl,
+        target: '_blank', rel: 'noopener noreferrer' }, icon('external', { size: 16 }),
+        t('actionPremium')) : null,
+      mod.source ? h('a', { class: 'btn btn-ghost', href: mod.source, target: '_blank', rel: 'noopener noreferrer' },
+        icon('github', { size: 17 }), t('actionSource'), icon('external', { size: 14 })) : null));
 
   const tabs = [
     { id: 'overview', label: t('modOverview') },
@@ -215,6 +220,10 @@ export async function modView({ params, catalog, onCleanup }) {
           (downloadFilters.version === 'all' || (file.minecraftVersions || release.minecraftVersions).includes(downloadFilters.version)) &&
           (downloadFilters.loader === 'all' || (file.loaders || release.loaders).includes(downloadFilters.loader))),
       })).filter(item => item.files.length > 0);
+      if (!matches.length && mod.monetization?.type === 'premium-only') return h('section', { class: 'card stack' },
+        h('h2', { class: 'block-title' }, t('premiumOnlyTitle')),
+        h('p', { class: 'muted' }, t('premiumOnlyText')),
+        h('a', { class: 'btn btn-premium', href: mod.monetization.premiumUrl, target: '_blank', rel: 'noopener noreferrer' }, t('actionPremium')));
       if (!matches.length) {
         const noteKey = mod.releases.length ? 'noDownloadsTitle' : ({
           planned:'noDownloadsPlanned',
