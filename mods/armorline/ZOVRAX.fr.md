@@ -1,11 +1,13 @@
 # ArmorLine
 
-**Minecraft Java 1.21.10 · Fabric · Bêta 0.1.0**
+**Bêta 0.2.0 · Minecraft Java 1.21.10 · Fabric**
 
-ArmorLine affiche le casque, le plastron, le pantalon et les bottes dans un seul HUD relié. Les emplacements sans armure restent vides. L'équipement se met à jour automatiquement.
+ArmorLine affiche le casque, le plastron, le pantalon et les bottes dans un **seul panneau vertical relié**, avec des emplacements vides distincts et une mise à jour immédiate. Une disposition horizontale est également disponible.
 
-Choisissez l'orientation **verticale ou horizontale**. Activez ou désactivez les barres de durabilité et le texte de durabilité **restante / maximale** de chaque pièce.
+Appuyez sur **P** pour les réglages. Choisissez l'affichage de la durabilité : **barre et valeurs restantes/maximales**, barre seule, valeurs seules, ou masqué. Placez les indicateurs **automatiquement, à gauche, à droite ou masqués**.
 
-Appuyez sur **P** pour les réglages : afficher ou masquer le HUD, taille 50–200 %, opacité 0–100 %, orientation et affichage de durabilité. Avec **Customize HUD position**, glissez l'ensemble sur l'écran. Cliquez dessus pour afficher un petit panneau de taille, d'opacité et d'orientation.
+L'opacité **globale**, celle du **fond**, des **icônes** et des **valeurs/barres** sont chacune réglables de 0 à 100 %, indépendamment. Le fond peut être entièrement transparent. La taille va de 50 à 200 %.
 
-Mod côté client pour **Fabric 1.21.10**, avec Fabric API et Java 21. La configuration et le raccourci sont distincts de Inventory Pickup. Le JAR bêta est compilé automatiquement ; des tests en jeu restent nécessaires.
+Dans **Customize HUD position**, déplacez l'ensemble à la souris, puis cliquez dessus pour modifier les options. La bêta 0.2.0 corrige les clics interprétés par erreur comme des déplacements et conserve les changements après **Done**. Les réglages de la version 0.1.0 sont récupérés.
+
+Nécessite Minecraft 1.21.10, Fabric API et Java 21. Retirez l'ancien JAR avant l'installation. Le build est validé, mais les tests en jeu restent nécessaires.
