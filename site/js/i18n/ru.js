@@ -7,6 +7,10 @@ const plural = (n, one, few, many) => {
 };
 
 export default {
+  downloadPickerTitle: "Выберите загрузку",
+  downloadPickerEyebrow: "Выберите версию Minecraft и загрузчик модов для подходящего файла.",
+  downloadPickerFile: "Файл для загрузки",
+  downloadPickerCancel: "Отмена",
   statsTitle: "Статистика сообщества",
   statsFavorites: "В избранном",
   statsViews: "Уникальные просмотры (прибл.)",
