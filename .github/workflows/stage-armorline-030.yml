@@ -1,0 +1,51 @@
+name: Stage ArmorLine 0.3.0 beta JAR
+on:
+  push:
+    branches: [feat/armorline-030-equipment-hud]
+permissions:
+  contents: write
+jobs:
+  stage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.1.0'
+      - name: Build Fabric Minecraft 1.21.10 mod
+        run: gradle --no-daemon --project-dir mods/armorline build
+      - name: Check and publish new JAR to this branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          jarfile="mods/armorline/build/libs/zovrax-armorline-0.3.0.jar"
+          test -s "$jarfile"
+          python3 - <<'PY'
+          import zipfile, json
+          p="mods/armorline/build/libs/zovrax-armorline-0.3.0.jar"
+          with zipfile.ZipFile(p) as z:
+              m=json.loads(z.read("fabric.mod.json"))
+              assert m["version"]=="0.3.0"
+              assert m["id"]=="zovrax_armorline"
+              assert m["depends"]["minecraft"]=="1.21.10"
+              assert m["environment"]=="client"
+              for cls in ["ArmorLineClient","ArmorHud","ArmorConfig","ArmorSettingsScreen","ArmorPositionScreen"]:
+                  assert f"az/zovrax/armorline/{cls}.class" in z.namelist()
+          PY
+          cp "$jarfile" mods/armorline/releases/zovrax-armorline-0.3.0-fabric-1.21.10.jar
+          sha256sum mods/armorline/releases/zovrax-armorline-0.3.0-fabric-1.21.10.jar
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add mods/armorline/releases/zovrax-armorline-0.3.0-fabric-1.21.10.jar
+          if ! git diff --cached --quiet; then
+            git commit -m "build: stage tested ArmorLine 0.3.0 beta jar"
+            git fetch origin feat/armorline-030-equipment-hud
+            git rebase origin/feat/armorline-030-equipment-hud
+            git push origin HEAD:refs/heads/feat/armorline-030-equipment-hud
+          fi
