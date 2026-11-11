@@ -8,10 +8,10 @@
   "accent": "lime",
   "icon": "assets/icon.png",
   "summary": {
-    "en": "Public beta 0.1.0 for Fabric 1.21.10: animated pickup HUD and in-game settings. Gameplay testing is in progress.",
-    "ru": "Публичная бета 0.1.0 для Fabric 1.21.10: анимированный HUD. Тестирование в игре продолжается.",
-    "fr": "Bêta publique 0.1.0 pour Fabric 1.21.10 : HUD animé. Les tests en jeu sont en cours.",
-    "az": "Fabric 1.21.10 üçün 0.1.0 açıq beta: animasiyalı inventar HUD-u. Oyun daxilində testlər davam edir."
+    "en": "Beta 0.2.0 for Fabric 1.21.10: animated inventory gains, precise settings sliders and draggable, resizable HUD preview.",
+    "ru": "Бета 0.2.0 для Fabric 1.21.10: уведомления, ползунки настроек и перемещаемый HUD.",
+    "fr": "Bêta 0.2.0 pour Fabric 1.21.10 : notifications, curseurs et HUD repositionnable.",
+    "az": "Fabric 1.21.10 üçün 0.2.0 beta: inventar artım bildirişləri, sürüşdürülən ayarlar və siçanla yerləşdirilən HUD."
   },
   "tags": [
     "HUD",
@@ -64,6 +64,34 @@
   ],
   "screenshots": [],
   "releases": [
+    {
+      "version": "0.2.0",
+      "releasedAt": "2026-11-11",
+      "prerelease": true,
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "loaders": [
+        "Fabric"
+      ],
+      "downloads": [
+        {
+          "file": "releases/zovrax-inventory-pickup-0.2.0-fabric-1.21.10.jar",
+          "label": "Fabric 1.21.10 · Beta 0.2.0",
+          "minecraftVersions": [
+            "1.21.10"
+          ],
+          "loaders": [
+            "Fabric"
+          ]
+        }
+      ],
+      "changelog": {
+        "en": "**Beta 0.2.0.** Removes the colored settings panel. Native Minecraft sliders control duration, fade speed, background opacity (1% increments), and max cards. Drag the HUD preview anywhere, click it to edit size (50–200%) and full-card opacity (0–100%). Original 0.1.0 remains downloadable. Compile-tested; live Minecraft testing is still required.",
+        "ru": "**Бета 0.2.0.** Упрощенные настройки с ползунками, свободное перемещение HUD мышью, настройка размера и прозрачности. Версия 0.1.0 сохранена.",
+        "fr": "**Bêta 0.2.0.** Options simplifiées avec curseurs, placement du HUD par glisser-déposer, taille et opacité réglables. La version 0.1.0 reste disponible."
+      }
+    },
     {
       "version": "0.1.0",
       "releasedAt": "2026-11-11",
