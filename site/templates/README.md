@@ -1,5 +1,7 @@
-# My Mod — developer notes
+# My Mod — developer README template
 
-Place your mod source code, build instructions, dependencies and license here. The website description is read from **ZOVRAX.md** (plus optional ZOVRAX.ru.md and ZOVRAX.fr.md).
+This file is for Java source, installation, build, testing and licensing instructions, not the public Zovrax page description.
 
-Use zovrax.json for catalog metadata, image paths and release/JAR file paths.
+The public description appears from **ZOVRAX.md**; the catalog metadata, icon path and release/JAR paths come from **zovrax.json**. For the complete copyable folder, image placeholder, translations, releases instructions and JSON reference, use [mods/_template](https://github.com/RuslanSharifov/zovrax/tree/main/mods/_template).
+
+Replace all example values with accurate information before submitting your PR.

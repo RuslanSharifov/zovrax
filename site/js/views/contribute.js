@@ -4,10 +4,15 @@ import { setPageMeta, toast } from '../layout.js';
 import { asset } from '../layout.js';
 
 const TEMPLATE_FILES = [
-  { file: 'templates/zovrax.json', label: 'zovrax.json' },
-  { file: 'templates/ZOVRAX.md', label: 'ZOVRAX.md · website description' },
-  { file: 'templates/README.md', label: 'README.md · source documentation' },
-  { file: 'templates/releases-example.json', label: 'JAR releases example' },
+  { file: 'templates/START-HERE.md', label: 'START-HERE.md · complete instructions' },
+  { file: 'templates/GUIDE.az.md', label: 'GUIDE.az.md · Azərbaycan dilində' },
+  { file: 'templates/zovrax.json', label: 'zovrax.json · metadata' },
+  { file: 'templates/ZOVRAX.md', label: 'ZOVRAX.md · English website description' },
+  { file: 'templates/ZOVRAX.ru.md', label: 'ZOVRAX.ru.md · Russian translation' },
+  { file: 'templates/ZOVRAX.fr.md', label: 'ZOVRAX.fr.md · French translation' },
+  { file: 'templates/README.md', label: 'README.md · developer documentation' },
+  { file: 'templates/releases-example.json', label: 'JAR releases example (not a real release)' },
+  { file: 'templates/CHECKLIST.md', label: 'CHECKLIST.md · review checklist' },
 ];
 
 const TUTORIAL = [
@@ -19,7 +24,7 @@ const TUTORIAL = [
   {
     title: 'tutorialStep2Title',
     text: 'tutorialStep2Text',
-    commands: ['mkdir -p mods/my-mod/assets', 'cp site/templates/zovrax.json mods/my-mod/zovrax.json', 'cp site/templates/ZOVRAX.md mods/my-mod/ZOVRAX.md', 'cp site/templates/README.md mods/my-mod/README.md'],
+    commands: ['cp -R mods/_template mods/my-mod', 'Edit mods/my-mod/zovrax.json (slug, author, versions, paths)', 'Read mods/my-mod/START-HERE.md and GUIDE.az.md'],
   },
   {
     title: 'tutorialStep3Title',
@@ -227,8 +232,11 @@ export function contributeView({ catalog }) {
         h('div', null,
           h('h2', { class: 'block-title' }, t('templatesTitle')),
           h('p', { class: 'muted' }, t('templatesLead'))),
-        h('a', { class: 'btn btn-ghost btn-sm', href: `${repo}/tree/main/site/templates`, target: '_blank', rel: 'noopener noreferrer' },
-          icon('github', { size: 15 }), t('templatesRepoLink'))),
+        h('div', { class: 'chip-row chip-row-tight' },
+          h('a', { class: 'btn btn-primary btn-sm', href: `${repo}/tree/main/mods/_template`, target: '_blank', rel: 'noopener noreferrer' },
+            icon('github', { size: 15 }), t('templatesFullFolder')),
+          h('a', { class: 'btn btn-ghost btn-sm', href: `${repo}/tree/main/site/templates`, target: '_blank', rel: 'noopener noreferrer' },
+            icon('external', { size: 15 }), t('templatesRepoLink')))),
       h('ul', { class: 'template-list' }, TEMPLATE_FILES.map(({ file, label }) => h('li', { class: 'card template-row' },
         h('div', null,
           h('strong', { class: 'mono' }, label),

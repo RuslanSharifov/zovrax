@@ -61,7 +61,7 @@ python -m http.server 8000 --directory site
 
 Open http://localhost:8000/ (the static app fetches local JSON). GitHub Actions runs catalog generation and validation for pull requests, and regenerates the catalog before publishing GitHub Pages.
 
-Read [CONTRIBUTING.md](CONTRIBUTING.md) and [AGENTS.md](AGENTS.md). Templates are under [site/templates/](site/templates/). The website supports English, Russian and French; its language button cycles EN → RU → FR.
+Read [CONTRIBUTING.md](CONTRIBUTING.md) and [AGENTS.md](AGENTS.md). The **complete copyable mod folder and field-by-field guide** are under [mods/_template/](mods/_template/), including [English](mods/_template/START-HERE.md) and [Azerbaijani](mods/_template/GUIDE.az.md) instructions. Individual website download templates are under [site/templates/](site/templates/). The website supports English, Russian and French; its language button cycles EN → RU → FR.
 
 ## License
 

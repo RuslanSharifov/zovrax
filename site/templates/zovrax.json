@@ -8,11 +8,13 @@
   "accent": "lime",
   "icon": "assets/icon.svg",
   "summary": {
-    "en": "A short description of your mod.",
-    "ru": "Краткое описание мода.",
-    "fr": "Une courte description de votre mod."
+    "en": "A short, clear description of what your Minecraft mod does.",
+    "ru": "Краткое описание того, что делает ваш мод для Minecraft.",
+    "fr": "Une description courte et précise de votre mod Minecraft."
   },
-  "tags": [],
+  "tags": [
+    "QoL"
+  ],
   "minecraftVersions": [
     "1.21.10"
   ],
@@ -20,12 +22,18 @@
     "Fabric"
   ],
   "authors": [
-    "your-github-id"
+    "your-developer-id"
   ],
   "updatedAt": null,
-  "license": "MIT",
+  "license": null,
   "source": "https://github.com/RuslanSharifov/zovrax/tree/main/mods/my-mod",
-  "features": [],
+  "features": [
+    {
+      "en": "Describe the first feature",
+      "ru": "Опишите первую функцию",
+      "fr": "Décrivez la première fonctionnalité"
+    }
+  ],
   "screenshots": [],
   "releases": []
 }

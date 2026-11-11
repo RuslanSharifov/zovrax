@@ -163,6 +163,7 @@ export default {
   templatesTitle: 'Шаблоны',
   templatesLead: 'Готовые заготовки. Каждая соответствует текущей версии схемы.',
   templatesRepoLink: 'Шаблоны на GitHub',
+  templatesFullFolder: 'Полная папка шаблона мода',
   rulesTitle: 'Правила участия',
   rule1: 'Только моды с открытым исходным кодом и публичным репозиторием или папкой.',
   rule2: 'Добавь проверенные JAR-файлы в папку releases/ и укажи их относительные пути в zovrax.json.',
