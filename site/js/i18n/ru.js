@@ -7,6 +7,11 @@ const plural = (n, one, few, many) => {
 };
 
 export default {
+  statsTitle: "Статистика сообщества",
+  statsFavorites: "В избранном",
+  statsViews: "Уникальные просмотры (прибл.)",
+  statsLoading: "Загрузка статистики…",
+  statsUnavailable: "Статистика временно недоступна.",
   sponsorTitle: "Поддержать Zovrax",
   sponsorText: "Помогите развитию каталога Zovrax добровольным пожертвованием через Ko-fi. Платёж обрабатывает Ko-fi, а не Zovrax.",
   actionPremium: "Получить Premium",
