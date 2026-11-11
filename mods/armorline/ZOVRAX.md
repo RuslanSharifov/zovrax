@@ -1,24 +1,25 @@
 # ArmorLine
 
-**Minecraft Java 1.21.10 · Fabric · Beta 0.1.0**
+**Beta 0.2.0 · Minecraft Java 1.21.10 · Fabric**
 
-Keep track of your armor without opening your inventory. **ArmorLine** displays the equipped helmet, chestplate, leggings and boots in a single connected, human-figure-inspired HUD panel. Empty armor slots stay visibly empty, and any equipment change is reflected immediately.
+See the durability of your helmet, chestplate, leggings and boots directly on screen in a **single connected vertical armor HUD**. The display updates whenever you change your armor, and empty equipment slots stay empty. Change to a horizontal row whenever you prefer.
 
-## One connected armor display
+## Your layout, your rules
 
-- **Vertical:** Helmet → Chestplate → Leggings → Boots, top to bottom.
-- **Horizontal:** The same four pieces side by side as one bar.
-- **Durability bars:** A color-changing bar for each equipped damageable piece.
-- **Durability numbers (optional):** Read the actual remaining/max durability (for example `60/100`). You can disable numbers and leave only the bars, disable bars and keep numbers, or disable both.
+Press **P** to open the dedicated ArmorLine settings. Choose:
 
-## In-game controls
+- **Durability information:** bar with exact remaining/maximum number, bar only, numbers only, or hidden.
+- **Indicator position:** automatically choose the screen-facing side, force left, force right, or hide indicators.
+- **Layout:** vertical (default) or horizontal.
+- **Size:** 50–200% of normal.
+- **Independent transparency:** overall HUD, background, armor icons, and durability text/bars, each configurable from 0–100%. You can have a completely transparent background while keeping the armor visible.
 
-Press **P** to open the dedicated settings (rebindable via Minecraft Controls). Toggle the HUD and the durability display, choose vertical/horizontal layout, set opacity (0–100%, in 1% increments) and size (50–200%).
+Select **Customize HUD position**, drag the connected panel anywhere, and click it for the compact contextual editor. The editor has live controls for layout, durability, side and all opacity settings. Clicking **Done** preserves the edits. Version 0.2.0 specifically fixes contextual controls that were sometimes mistaken for a drag.
 
-Click **Customize HUD position** to open the placement editor. Drag the **whole connected widget** anywhere on the screen. Click the widget to open a small context panel next to it and adjust size, opacity and orientation while seeing the results.
+Settings persist to `config/zovrax-armorline.json`, and settings from beta 0.1.0 migrate automatically.
 
-The usual Minecraft blurred menu background is used; there is no distracting colored settings panel. All configuration persists between sessions.
+## Installation
 
-## Compatibility
+This free client-side Fabric mod requires Minecraft **1.21.10**, Fabric API, and Java 21. Download **0.2.0** from the Downloads menu and remove any older ArmorLine JAR to avoid duplicate mod IDs. It works independently of Inventory Pickup (P opens ArmorLine, O opens Inventory Pickup).
 
-Client-side **Fabric 1.21.10**. Requires Fabric API and Java 21. ArmorLine uses a separate key (**P**) from Inventory Pickup (**O**), a separate config file, and no Mixins. A compiled beta JAR is available in Downloads. Please report any issues found in gameplay.
+*This release has passed automated compilation and JAR checks; please test its real in-game behaviour and report bugs.*
