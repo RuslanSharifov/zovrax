@@ -1,6 +1,5 @@
 package az.zovrax.armorline;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderTickCounter;
@@ -86,9 +85,13 @@ public final class ArmorHud {
                 ctx.fill(left + 5, top + 5, left + 23, top + 23,
                     color(stack.isEmpty() ? 0x405954 : 0x3B534B, alpha * 0.5f));
                 if (!stack.isEmpty()) {
-                    RenderSystem.setShaderColor(1f, 1f, 1f, alpha);
-                    try { ctx.drawItem(stack, left + 6, top + 6); }
-                    finally { RenderSystem.setShaderColor(1f, 1f, 1f, 1f); }
+                    ctx.drawItem(stack, left + 6, top + 6);
+                    // Do not mutate Minecraft's global shader state. A translucent
+                    // overlay attenuates icons together with the connected widget.
+                    if (alpha < 1f) {
+                        ctx.fill(left + 5, top + 5, left + 23, top + 23,
+                            color(0x243734, (1f - alpha) * 0.92f));
+                    }
                 } else {
                     // Helmet / chest / leggings / boots glyph markers.
                     String marker = new String[]{"H", "C", "L", "B"}[index];
