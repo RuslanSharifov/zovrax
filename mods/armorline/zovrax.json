@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 2,
+  "slug": "armorline",
+  "name": "ArmorLine",
+  "category": "hud",
+  "status": "released",
+  "featured": true,
+  "accent": "teal",
+  "icon": "assets/icon.svg",
+  "summary": {
+    "en": "A connected armor silhouette HUD with durability bars, numeric health and fully adjustable in-game position.",
+    "ru": "Единый HUD для четырёх частей брони: прочность, числа, перетаскивание и настройка расположения.",
+    "fr": "HUD d’armure relié avec barres de durabilité, valeurs exactes et position personnalisable.",
+    "az": "Dörd zireh hissəsini birləşdirilmiş HUD-da göstərir: can barları, rəqəmlər və sərbəst ekran mövqeyi."
+  },
+  "tags": [
+    "HUD",
+    "Armor",
+    "Durability",
+    "QoL"
+  ],
+  "minecraftVersions": [
+    "1.21.10"
+  ],
+  "loaders": [
+    "Fabric"
+  ],
+  "authors": [
+    "ruslan"
+  ],
+  "updatedAt": "2026-11-11",
+  "license": "MIT",
+  "source": "https://github.com/RuslanSharifov/zovrax/tree/main/mods/armorline",
+  "features": [
+    {
+      "en": "One connected four-part armor panel: helmet, chestplate, leggings and boots",
+      "ru": "Единый блок из четырёх элементов: шлем, нагрудник, поножи и ботинки",
+      "fr": "Un seul panneau relié pour casque, plastron, pantalon et bottes"
+    },
+    {
+      "en": "Empty slots appear empty; equipment updates live when changed",
+      "ru": "Пустые слоты остаются пустыми; броня обновляется без задержки",
+      "fr": "Les emplacements vides restent visibles et l'équipement se met à jour en direct"
+    },
+    {
+      "en": "Durability bars and optional exact remaining/maximum values",
+      "ru": "Полоски прочности и необязательные точные значения",
+      "fr": "Barres de durabilité et valeurs exactes facultatives"
+    },
+    {
+      "en": "Switch between vertical and horizontal connected layouts",
+      "ru": "Вертикальное или горизонтальное расположение",
+      "fr": "Disposition reliée verticale ou horizontale"
+    },
+    {
+      "en": "Press P for in-game settings and drag the whole HUD to reposition",
+      "ru": "Нажмите P для настроек и перемещайте HUD мышью",
+      "fr": "Appuyez sur P pour les réglages et déplacez le HUD à la souris"
+    },
+    {
+      "en": "Visual size 50–200% and opacity 0–100%, saved per device",
+      "ru": "Размер 50–200%, прозрачность 0–100%; настройки сохраняются",
+      "fr": "Taille 50–200 %, opacité 0–100 % ; réglages sauvegardés"
+    }
+  ],
+  "screenshots": [],
+  "releases": [
+    {
+      "version": "0.1.0",
+      "releasedAt": "2026-11-11",
+      "prerelease": true,
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "loaders": [
+        "Fabric"
+      ],
+      "downloads": [
+        {
+          "file": "releases/zovrax-armorline-0.1.0-fabric-1.21.10.jar",
+          "label": "Fabric 1.21.10 · Beta 0.1.0",
+          "minecraftVersions": [
+            "1.21.10"
+          ],
+          "loaders": [
+            "Fabric"
+          ]
+        }
+      ],
+      "changelog": {
+        "en": "**Public Beta 0.1.0.** First real compiled release of ArmorLine. One connected armor display, live equipment icons, optional durability bars and remaining/max numbers, layout orientation, draggable HUD, size/opacity sliders, and rebindable P settings key. Built by Gradle CI; gameplay testing required.",
+        "ru": "**Бета 0.1.0.** Первый JAR: единый HUD брони, прочность, горизонтальное/вертикальное положение, размеры, прозрачность и редактирование по клавише P.",
+        "fr": "**Bêta 0.1.0.** Premier JAR : armure reliée, durabilité, orientation, taille, transparence et déplacement à la souris via P."
+      }
+    }
+  ],
+  "monetization": {
+    "type": "free",
+    "premiumUrl": null,
+    "premiumLabel": "Get Premium"
+  }
+}
