@@ -8,10 +8,10 @@
   "accent": "lime",
   "icon": "assets/icon.png",
   "summary": {
-    "en": "Fabric 1.21.10 beta 0.2.1: actual ground item pickups and XP orbs, merged live notifications, and draggable HUD settings.",
-    "ru": "Бета 0.2.1 для Fabric 1.21.10: только предметы с земли и сферы опыта, объединение уведомлений.",
-    "fr": "Bêta 0.2.1 pour Fabric 1.21.10 : objets ramassés au sol et orbes d’XP uniquement, notifications fusionnées.",
-    "az": "Fabric 1.21.10 beta 0.2.1: yalnız yerdən toplanan əşyalar və XP, təkrarlanan bildirişlər birləşdirilir."
+    "en": "Fabric 1.21.10 beta 0.2.2: fixes a startup crash in the pickup Mixin. Ground pickup and XP notification features remain.",
+    "ru": "Бета 0.2.2 для Fabric 1.21.10: исправлено падение при запуске из-за пакета Mixin.",
+    "fr": "Bêta 0.2.2 pour Fabric 1.21.10 : corrige un plantage au démarrage lié au paquet Mixin.",
+    "az": "Fabric 1.21.10 beta 0.2.2: Mixin paketindəki oyun açılışı xətası düzəldilib."
   },
   "tags": [
     "HUD",
@@ -56,10 +56,10 @@
       "az": "O düyməsi ilə oyun daxili tənzimləmələr"
     },
     {
-      "en": "Client-only design with no mixins or inventory mutation",
-      "ru": "Клиентский мод без миксинов и изменений инвентаря",
-      "fr": "Client uniquement, sans mixins ni modification d'inventaire",
-      "az": "Client-side, mixin olmadan, inventara müdaxilə etmir"
+      "en": "Client-only mod with a minimal read-only pickup-event Mixin; never mutates inventory",
+      "ru": "Клиентский мод с минимальным Mixin чтения событий подбора; не изменяет инвентарь",
+      "fr": "Mod client avec un petit Mixin de lecture des événements de ramassage ; ne modifie pas l’inventaire",
+      "az": "Client-side moddur; yalnız pickup hadisəsi üçün Mixin istifadə edir, inventarı dəyişmir"
     },
     {
       "en": "Repeated pickups of the same item update the active counter and restart the timer",
@@ -70,6 +70,34 @@
   ],
   "screenshots": [],
   "releases": [
+    {
+      "version": "0.2.2",
+      "releasedAt": "2026-11-11",
+      "prerelease": true,
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "loaders": [
+        "Fabric"
+      ],
+      "downloads": [
+        {
+          "file": "releases/zovrax-inventory-pickup-0.2.2-fabric-1.21.10.jar",
+          "label": "Fabric 1.21.10 · Beta 0.2.2",
+          "minecraftVersions": [
+            "1.21.10"
+          ],
+          "loaders": [
+            "Fabric"
+          ]
+        }
+      ],
+      "changelog": {
+        "en": "**Beta 0.2.2.** Fixes startup crash `IllegalClassLoadError: InventoryPickupClient is in a defined mixin package` by moving PickupPacketMixin to a dedicated `.mixin` package and updating Mixin configuration. Pickup-only, merged toast, XP and HUD settings from 0.2.1 remain. Built with Minecraft 1.21.10; game testing still needed.",
+        "ru": "**Бета 0.2.2.** Исправлен сбой запуска из-за пакета Mixin. Функции уведомлений о предметах с земли, опыте и настройках HUD сохранены.",
+        "fr": "**Bêta 0.2.2.** Corrige le plantage au démarrage causé par le paquet Mixin. Les fonctionnalités de ramassage au sol, XP et HUD restent inchangées."
+      }
+    },
     {
       "version": "0.2.1",
       "releasedAt": "2026-11-11",
