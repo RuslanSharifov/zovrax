@@ -8,6 +8,7 @@ export const NAV_ITEMS = [
   { href: '#/contribute', label: 'navContribute', match: '/contribute' },
   { href: '#/about', label: 'navAbout', match: '/about' },
   { href: '#/support', label: 'navSupport', match: '/support' },
+  { href: '#/account', label: 'navAccount', match: '/account' },
 ];
 
 export const asset = path => new URL(path, document.baseURI).href;
