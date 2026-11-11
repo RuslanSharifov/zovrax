@@ -1,6 +1,6 @@
 # Inventory Pickup
 
-> **Public beta 0.1.0 — Minecraft Java Edition 1.21.10 + Fabric.** The JAR is downloadable for testing. It compiles successfully but has **not yet been verified in a live Minecraft session** or with other mods.
+> **Public beta 0.2.0 — Minecraft Java Edition 1.21.10 + Fabric.** The JAR is downloadable for testing. It compiles successfully but has **not yet been verified in a live Minecraft session** or with other mods.
 
 A lightweight, client-side HUD mod that turns **inventory item gains** into smooth, animated notifications.
 
@@ -12,7 +12,7 @@ Ground pickups, chest-to-inventory transfers and other net gains can trigger it.
 
 ## Settings in Minecraft
 
-Press **O** during gameplay (rebindable in Controls) to open the custom settings screen. Change the corner, slide/fade duration, background opacity, max simultaneous notifications, whether repeated pickups merge, screen padding and the visible information. Settings are saved locally.
+Press **O** during gameplay (rebindable in Controls) for a clean Minecraft settings screen using the blurred game background. Sliders adjust duration, fade/slide time, background opacity (1% precision), and maximum notifications. Toggle the mod, +N and inventory total. Select **Customize position & appearance**: drag the notification with the mouse to place it anywhere, or click it to reveal a small panel where you can change notification size (50–200%) and total opacity (0–100%) live. Settings are saved locally.
 
 ## Compatibility
 
@@ -24,4 +24,7 @@ Client only; no server setup or invasive mixins. The approach minimizes conflict
 
 ## Downloads
 
-**Version 0.1.0 (beta)** is available under **Downloads**. Select Minecraft **1.21.10**, loader **Fabric**, and release **0.1.0** to download the real `.jar` directly from Zovrax. Install the matching Fabric Loader and Fabric API, then put the JAR in Minecraft's `mods` directory. Java 21 is required. This is a public test build: please try it and report rendering or mod-compatibility issues. [Source and installation notes](https://github.com/RuslanSharifov/zovrax/tree/main/mods/inventory-pickup).
+**Version 0.2.0 (beta)** is available under **Downloads**. Select Minecraft **1.21.10**, loader **Fabric**, and release **0.2.0** to download the real `.jar` directly from Zovrax. Install the matching Fabric Loader and Fabric API, then put the JAR in Minecraft's `mods` directory. Java 21 is required. This is a public test build: please try it and report rendering or mod-compatibility issues. [Source and installation notes](https://github.com/RuslanSharifov/zovrax/tree/main/mods/inventory-pickup).
+
+
+The previous **0.1.0 beta** remains available in Downloads if you want to roll back.
