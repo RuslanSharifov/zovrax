@@ -7,6 +7,7 @@
   let category = 'all';
   let activeMod = null;
   let lastFocus = null;
+  let catalogLoadError = false;
   const dictionary = {
     az: {
       navHome:'Ana səhifə',navExplore:'Modlar',navCollections:'Kateqoriyalar',navAbout:'Haqqında',
@@ -123,6 +124,7 @@
     refreshFilterOptions();
     renderCategories();
     renderMods();
+    renderCommunity();
     if (activeMod) showMod(activeMod, false);
   }
   function refreshFilterOptions() {
@@ -156,6 +158,10 @@
   function renderMods() {
     const grid = $('modGrid');
     if (!grid) return;
+    if (catalogLoadError) {
+      grid.innerHTML = '<div class="empty-state"><strong>' + escapeHtml(t('catalogError')) + '</strong>' + escapeHtml(t('catalogErrorDescription')) + '</div>';
+      return;
+    }
     const query = ($('searchInput')?.value || '').trim().toLocaleLowerCase();
     const version = $('versionFilter')?.value || 'all';
     const loader = $('loaderFilter')?.value || 'all';
@@ -295,18 +301,23 @@
       if (!Array.isArray(data.categories) || !Array.isArray(data.mods)) throw new Error('Invalid catalog');
       catalog = { categories:data.categories, mods:data.mods, authors:Array.isArray(data.authors)?data.authors:[] };
     } catch (error) {
+      catalogLoadError = true;
       console.error('Zovrax catalog failed:',error);
       $('modGrid').innerHTML = '<div class="empty-state"><strong>' + t('catalogError') + '</strong>' + t('catalogErrorDescription') + '</div>';
     }
     try { lang = localStorage.getItem('zovrax-lang') === 'en' ? 'en' : 'az'; } catch (_) {}
     setLanguage(lang);
-    renderCommunity();
     openFromHash();
   }
   function renderCommunity() {
     const creator = catalog.authors.find(a => a.id === 'ruslan') || catalog.authors[0];
     const area = $('creatorProfile');
     if (!area || !creator) return;
+    const contributors = $('contributorProfiles');
+    if (contributors) {
+      const others = catalog.authors.filter(a => a.id !== creator.id);
+      contributors.innerHTML = others.map(authorHtml).join('');
+    }
     const avatar = safeUrl(creator.avatarUrl);
     area.innerHTML =
       '<div class="author-row">' +
