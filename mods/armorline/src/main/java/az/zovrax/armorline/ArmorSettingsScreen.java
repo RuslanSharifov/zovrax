@@ -23,8 +23,9 @@ public final class ArmorSettingsScreen extends Screen {
     protected void init() {
         int w = Math.min(300, Math.max(150, width - 24));
         int x = (width - w) / 2;
-        int y = Math.max(26, (height - 220) / 2);
-        int gap = 24;
+        // Compact enough for small Minecraft GUI scales / mobile launchers.
+        int gap = Math.min(24, Math.max(17, (height - 34) / 9));
+        int y = Math.max(19, (height - (7 * gap + 20)) / 2);
 
         if (!appearancePage) {
             addDrawableChild(ButtonWidget.builder(Text.literal(
