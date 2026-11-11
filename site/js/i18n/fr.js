@@ -155,6 +155,7 @@ export default {
   templatesTitle: 'Modèles',
   templatesLead: 'Points de départ réutilisables. Chacun correspond à la version actuelle du schéma.',
   templatesRepoLink: 'Voir les modèles sur GitHub',
+  templatesFullFolder: 'Dossier complet du modèle de mod',
   rulesTitle: 'Règles de contribution',
   rule1: 'Uniquement des mods open source disposant d\'un dépôt ou d\'un dossier source public.',
   rule2: 'Ajoutez de vrais fichiers JAR dans releases/ et indiquez leurs chemins relatifs dans zovrax.json.',
