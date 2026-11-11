@@ -155,6 +155,7 @@ export default {
   templatesTitle: 'Templates',
   templatesLead: 'Reusable starting points. Each one matches the current schema version.',
   templatesRepoLink: 'Browse templates on GitHub',
+  templatesFullFolder: 'Browse complete mod starter',
   rulesTitle: 'Contribution rules',
   rule1: 'Only open-source mods with a public source repository or folder.',
   rule2: 'Put verified JAR files in your mod releases/ folder and list their exact relative paths in zovrax.json.',
