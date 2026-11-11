@@ -6,7 +6,7 @@
   "status": "development",
   "featured": true,
   "accent": "lime",
-  "icon": "assets/icon.svg",
+  "icon": "assets/icon.png",
   "summary": {
     "en": "Client-only Fabric 1.21.10 HUD in development: animated notifications with item icon, +gains, totals and in-game settings.",
     "ru": "Клиентский мод Fabric 1.21.10 в разработке: анимация уведомлений, иконки и настройки в игре.",
