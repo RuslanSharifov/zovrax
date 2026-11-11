@@ -21,6 +21,8 @@ jobs:
       - name: Check JavaScript
         run: |
           node --check site/js/views/mod.js
+          node --check site/js/components/download-dialog.js
+          node --check site/js/download-options.js
           node --check site/js/views/support.js
           node --check site/js/views/account.js
           node --check site/js/community.js
@@ -32,6 +34,8 @@ jobs:
           node --check site/app.js
           node --check site/guide.js
           node --check .github/scripts/validate-catalog.mjs
+      - name: Test release picker availability rules
+        run: node --test site/js/download-options.test.mjs
       - name: Generate catalog from per-mod metadata and site Markdown
         run: node .github/scripts/build-catalog.mjs
       - name: Validate catalog

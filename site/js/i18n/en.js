@@ -1,4 +1,8 @@
 export default {
+  downloadPickerTitle: "Choose your download",
+  downloadPickerEyebrow: "Select Minecraft version and mod loader to get the correct file.",
+  downloadPickerFile: "Download file",
+  downloadPickerCancel: "Cancel",
   statsTitle: "Community statistics",
   statsFavorites: "Favorites",
   statsViews: "Unique views (approx.)",
