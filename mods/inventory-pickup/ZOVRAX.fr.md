@@ -1,6 +1,6 @@
 # Inventory Pickup
 
-> **Bêta publique 0.2.1 — Minecraft Java 1.21.10, Fabric.** Le JAR est disponible pour les essais. La compilation a réussi, mais les tests en jeu restent nécessaires.
+> **Bêta publique 0.2.2 — Minecraft Java 1.21.10, Fabric.** Le JAR est disponible pour les essais. La compilation a réussi, mais les tests en jeu restent nécessaires.
 
 Les notifications HUD animées apparaissent uniquement pour les **objets réellement ramassés au sol et les orbes d'expérience**. Si vous ramassez à nouveau le même objet pendant que sa notification est visible, le compteur **+N** augmente dans la carte existante et sa durée est **réinitialisée**. Les gains **+N XP** se regroupent de la même manière.
 
@@ -12,4 +12,7 @@ Appuyez sur **O** pour régler la durée, l'animation, l'opacité de fond avec u
 
 ## Compatibilité et téléchargement
 
-Minecraft **1.21.10**, **Fabric Loader**, **Fabric API**, **Java 21**. Téléchargez la **bêta 0.2.1** depuis **Downloads**. Retirez l'ancien JAR du dossier `mods` avant d'installer la nouvelle version. Les versions 0.2.0 et 0.1.0 restent disponibles. Tests en jeu encore nécessaires.
+Minecraft **1.21.10**, **Fabric Loader**, **Fabric API**, **Java 21**. Téléchargez la **bêta 0.2.2** depuis **Downloads**. Retirez l'ancien JAR du dossier `mods` avant d'installer la nouvelle version. Les versions 0.2.0 et 0.1.0 restent disponibles. Tests en jeu encore nécessaires.
+
+
+**Correctif 0.2.2 :** Le paquet Mixin qui bloquait le démarrage de Minecraft a été corrigé. Les fonctions de 0.2.1 restent disponibles.

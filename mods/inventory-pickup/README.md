@@ -1,8 +1,12 @@
 # Zovrax Inventory Pickup
 
-**Current public beta: 0.2.1** for Minecraft Java **1.21.10 / Fabric** (Java 21 and matching Fabric API). Earlier 0.2.0 and 0.1.0 builds remain downloadable.
+**Current public beta: 0.2.2** for Minecraft Java **1.21.10 / Fabric** (Java 21 and matching Fabric API). Earlier 0.2.1, 0.2.0 and 0.1.0 builds remain downloadable.
 
-## What 0.2.1 changes
+## What 0.2.2 fixes
+
+Version 0.2.2 fixes Minecraft startup failure caused by the pickup Mixin being declared in the same Java package as ordinary mod classes. The Mixin now lives under `az.zovrax.inventorypickup.mixin`, keeping the mod entrypoint loadable. Existing pickup-only, XP, merged notification and UI features are unchanged.
+
+## Features carried forward from 0.2.1
 
 - Only genuine **ground-item pickups** and collected **experience orbs** generate notifications. A read-only Fabric client mixin observes Minecraft's vanilla pickup animation packet for the local player.
 - Moving items between inventory slots, damaging tools, crafting or moving items out of a chest **does not** trigger a pickup notification.
@@ -19,8 +23,8 @@ Press **O** in a world (rebindable under Controls). Use native Minecraft sliders
 ## Install
 
 1. Use Minecraft Java **1.21.10**, **Fabric Loader**, **Fabric API** for 1.21.10 and **Java 21**.
-2. Download `zovrax-inventory-pickup-0.2.1-fabric-1.21.10.jar` from Zovrax's **Downloads** section.
-3. Remove the older Inventory Pickup JAR from your instance's `mods` folder and put the **0.2.1** JAR there; do not keep both versions.
+2. Download `zovrax-inventory-pickup-0.2.2-fabric-1.21.10.jar` from Zovrax's **Downloads** section.
+3. Remove the older Inventory Pickup JAR from your instance's `mods` folder and put the **0.2.2** JAR there; do not keep both versions.
 4. Start the game, press **O** to adjust the HUD.
 
 ## Build from source
@@ -45,3 +49,5 @@ The remapped release JAR is in `mods/inventory-pickup/build/libs/`. GitHub Actio
 ## License
 
 MIT. See [LICENSE](LICENSE) and [ZOVRAX.md](ZOVRAX.md).
+
+

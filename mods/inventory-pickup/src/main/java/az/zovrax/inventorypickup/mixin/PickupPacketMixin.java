@@ -1,4 +1,6 @@
-package az.zovrax.inventorypickup;
+package az.zovrax.inventorypickup.mixin;
+
+import az.zovrax.inventorypickup.PickupTracker;
 
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.packet.s2c.play.ItemPickupAnimationS2CPacket;
