@@ -3,15 +3,15 @@
   "slug": "inventory-pickup",
   "name": "Inventory Pickup",
   "category": "hud",
-  "status": "planned",
+  "status": "development",
   "featured": true,
   "accent": "lime",
-  "icon": "assets/icon.svg",
+  "icon": "assets/icon.png",
   "summary": {
-    "en": "A customizable HUD that shows item icons, inventory totals and +gains when you pick up or transfer items.",
-    "ru": "Настраиваемый HUD, который показывает иконки предметов, общее количество в инвентаре и прирост при подборе или переносе предметов.",
-    "fr": "Un HUD personnalisable qui affiche les icônes des objets, les totaux de l'inventaire et les gains lors de la ramassage ou du transfert.",
-    "az": "Yerdən və ya sandıqdan əşya götürdükdə ikon, inventar sayı və +artım göstərən tənzimlənən HUD."
+    "en": "Client-only Fabric 1.21.10 HUD in development: animated notifications with item icon, +gains, totals and in-game settings.",
+    "ru": "Клиентский мод Fabric 1.21.10 в разработке: анимация уведомлений, иконки и настройки в игре.",
+    "fr": "Mod client Fabric 1.21.10 en développement : notifications animées, icônes et réglages en jeu.",
+    "az": "Fabric 1.21.10 üçün hazırlanmaqda olan mod: ikonlu animasiyalar, +artım, inventar sayı və oyun daxili ayarlar."
   },
   "tags": [
     "HUD",
@@ -27,39 +27,39 @@
   "authors": [
     "ruslan"
   ],
-  "updatedAt": null,
-  "license": null,
+  "updatedAt": "2026-11-11",
+  "license": "MIT",
   "source": "https://github.com/RuslanSharifov/zovrax/tree/main/mods/inventory-pickup",
   "features": [
     {
-      "en": "Ground pickup notifications",
-      "ru": "Уведомления о подборе предметов с земли",
-      "fr": "Notifications lors du ramassage au sol",
-      "az": "Yerdən əşya götürmə bildirişləri"
+      "en": "Detect net inventory gains including pickups and chest transfers",
+      "ru": "Показывает добавленные в инвентарь предметы",
+      "fr": "Détecte les gains d'objets dans l'inventaire",
+      "az": "Yerdən və sandıqdan gələn əşyaların say artımını izləyir"
     },
     {
-      "en": "Chest-to-inventory transfer notifications",
-      "ru": "Уведомления о переносе из сундука в инвентарь",
-      "fr": "Notifications lors des transferts coffre vers inventaire",
-      "az": "Sandıqdan inventara köçürmə bildirişləri"
+      "en": "Slide and fade notifications (0 → 1 → 0)",
+      "ru": "Плавное появление и исчезновение (0 → 1 → 0)",
+      "fr": "Apparition et disparition (0 → 1 → 0)",
+      "az": "Sürüşmə və opacity (0 → 1 → 0) animasiyası"
     },
     {
-      "en": "Icon, name, inventory total and +gain",
-      "ru": "Иконка, название, общее количество и прирост",
-      "fr": "Icône, nom, total de l'inventaire et gain",
-      "az": "İkon, ad, ümumi say və +artım göstəricisi"
+      "en": "Item icon, item name, +N and current total",
+      "ru": "Значок, название, прирост +N и общий счёт",
+      "fr": "Icône, nom, gain +N et total",
+      "az": "İkon, əşya adı, +N və ümumi say"
     },
     {
-      "en": "Adjustable HUD positioning",
-      "ru": "Настраиваемое положение HUD",
-      "fr": "Position du HUD ajustable",
-      "az": "Sürüşdürülə bilən HUD yerləşməsi"
+      "en": "In-game settings via rebindable O key",
+      "ru": "Настройки в игре по клавише O",
+      "fr": "Options dans le jeu avec la touche O",
+      "az": "O düyməsi ilə oyun daxili tənzimləmələr"
     },
     {
-      "en": "Animation, duration and appearance settings",
-      "ru": "Настройки анимации, длительности и внешнего вида",
-      "fr": "Réglages d'animation, de durée et d'apparence",
-      "az": "Animasiya, müddət və görünüş parametrləri"
+      "en": "Client-only design with no mixins or inventory mutation",
+      "ru": "Клиентский мод без миксинов и изменений инвентаря",
+      "fr": "Client uniquement, sans mixins ni modification d'inventaire",
+      "az": "Client-side, mixin olmadan, inventara müdaxilə etmir"
     }
   ],
   "screenshots": [],

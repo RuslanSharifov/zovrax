@@ -1,0 +1,42 @@
+name: Build Inventory Pickup (Fabric 1.21.10)
+
+on:
+  pull_request:
+    paths:
+      - 'mods/inventory-pickup/**'
+      - '.github/workflows/build-inventory-pickup.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'mods/inventory-pickup/**'
+      - '.github/workflows/build-inventory-pickup.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fabric-build:
+    name: Compile Fabric mod (Java 21)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.1.0'
+      - name: Compile and remap Minecraft 1.21.10 mod
+        run: gradle --no-daemon --project-dir mods/inventory-pickup build
+      - name: Upload compiled JAR for review (not a release)
+        uses: actions/upload-artifact@v4
+        with:
+          name: inventory-pickup-fabric-1.21.10-build
+          path: |
+            mods/inventory-pickup/build/libs/*.jar
+            !mods/inventory-pickup/build/libs/*-sources.jar
+            !mods/inventory-pickup/build/libs/*-dev.jar
+          if-no-files-found: error
+          retention-days: 7

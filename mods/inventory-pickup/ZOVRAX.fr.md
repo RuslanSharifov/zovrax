@@ -1,22 +1,15 @@
 # Inventory Pickup
 
-> **Concept · téléchargement indisponible.** Aucun fichier `.jar` fonctionnel n'a encore été publié.
+> **En développement — Minecraft Java 1.21.10, Fabric.** Code source disponible, mais aucun JAR testé à télécharger.
 
-Inventory Pickup est un HUD de notifications prévu pour **Minecraft Java Edition 1.21.10 / Fabric**. Il affichera l'icône, le nom, le total dans l'inventaire et le nombre d'objets ajoutés lors du ramassage ou d'un transfert depuis un coffre.
+Le mod affiche les objets nouvellement reçus dans des notifications HUD animées. La carte **glisse et passe de 0 à 100 % d'opacité**, montre l'icône, le nom, le gain **+N** et le total. Elle glisse ensuite hors de l'écran en s'effaçant à 0 %.
 
-## Fonctionnalités prévues
+Les objets ramassés au sol et transférés depuis un coffre sont détectés. Les déplacements entre vos propres emplacements n'entraînent aucune fausse alerte.
 
-- Notifications compactes avec le gain `+N`
-- Suivi des transferts coffre → inventaire
-- Réglage de la position, de la durée et des animations
-- Regroupement des ramassages répétés
+## Options dans le jeu
 
-## Compatibilité
+Appuyez sur **O** (raccourci personnalisable). Ajustez la position, la durée, la vitesse d'animation, la transparence, le nombre de notifications, les marges et le regroupement des gains.
 
-| Minecraft | Chargeur | Statut |
-| --- | --- | --- |
-| 1.21.10 | Fabric | Prévu |
+## Compatibilité et téléchargement
 
-## Téléchargements
-
-Aucune version n'est disponible. Quand un véritable fichier `.jar` sera construit et testé, son chemin dans `zovrax.json` permettra son téléchargement depuis cette page.
+Minecraft Java **1.21.10**, Fabric et Fabric API. Mod uniquement client, sans modifier l'inventaire ni le serveur. Les tests en jeu et avec d'autres mods restent nécessaires. Pas encore de JAR publié. [Code source](https://github.com/RuslanSharifov/zovrax/tree/main/mods/inventory-pickup).
