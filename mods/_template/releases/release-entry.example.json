@@ -1,0 +1,67 @@
+{
+  "explanation": "Example only. Copy release objects into zovrax.json > releases AFTER uploading real JARs. This file is not loaded by the site.",
+  "releases": [
+    {
+      "version": "1.0.0",
+      "releasedAt": "2026-11-11",
+      "prerelease": false,
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "loaders": [
+        "Fabric",
+        "NeoForge"
+      ],
+      "changelog": {
+        "en": "First tested release.",
+        "ru": "Первый проверенный выпуск.",
+        "fr": "Première version testée."
+      },
+      "downloads": [
+        {
+          "file": "releases/my-mod-1.0.0-fabric.jar",
+          "label": "Fabric · Minecraft 1.21.10",
+          "minecraftVersions": [
+            "1.21.10"
+          ],
+          "loaders": [
+            "Fabric"
+          ]
+        },
+        {
+          "file": "releases/my-mod-1.0.0-neoforge.jar",
+          "label": "NeoForge · Minecraft 1.21.10",
+          "minecraftVersions": [
+            "1.21.10"
+          ],
+          "loaders": [
+            "NeoForge"
+          ]
+        }
+      ]
+    },
+    {
+      "version": "1.1.0",
+      "releasedAt": "2026-11-12",
+      "prerelease": false,
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "loaders": [
+        "Fabric"
+      ],
+      "downloads": [
+        {
+          "file": "releases/my-mod-1.1.0-fabric.jar",
+          "label": "Fabric · Minecraft 1.21.10",
+          "minecraftVersions": [
+            "1.21.10"
+          ],
+          "loaders": [
+            "Fabric"
+          ]
+        }
+      ]
+    }
+  ]
+}
