@@ -17,7 +17,7 @@ public final class ArmorHud {
     };
     private static final int ARMOR_X = 56;
     private static final int HAND_X = 112;
-    private static final int V_WIDTH = 151;
+    private static final int V_WIDTH = 172;
     private static final int V_HEIGHT = 96;
     private static final int H_WIDTH = 280;
     private static final int H_HEIGHT = 61;
