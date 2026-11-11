@@ -7,16 +7,20 @@
     "fr": "Des mods Minecraft, repensés."
   },
   "description": {
-    "en": "An independent, open-source library of thoughtfully crafted Minecraft Java Edition mods.",
-    "ru": "Независимая библиотека продуманных модов для Minecraft Java Edition с открытым исходным кодом.",
-    "fr": "Une bibliothèque indépendante et open source de mods Minecraft Java Edition soigneusement conçus."
+    "en": "A community Minecraft mod catalog for free, open-source and premium releases.",
+    "ru": "Сообщество модов Minecraft: бесплатные, открытые и премиальные версии.",
+    "fr": "Un catalogue communautaire de mods Minecraft gratuits, open source et premium."
   },
   "repository": "https://github.com/RuslanSharifov/zovrax",
   "siteUrl": "https://ruslansharifov.github.io/zovrax/",
   "defaultLanguage": "en",
-  "languages": ["en", "ru", "fr"],
+  "languages": [
+    "en",
+    "ru",
+    "fr"
+  ],
   "support": {
-    "kofi": null
+    "kofi": "https://ko-fi.com/ruslansharifov"
   },
   "disclaimer": {
     "en": "Independent community project. Not affiliated with Mojang or Microsoft.",
