@@ -1,4 +1,9 @@
 export default {
+  statsTitle: "Statistiques communautaires",
+  statsFavorites: "Favoris",
+  statsViews: "Vues uniques (approx.)",
+  statsLoading: "Chargement des statistiques…",
+  statsUnavailable: "Statistiques temporairement indisponibles.",
   sponsorTitle: "Soutenir Zovrax",
   sponsorText: "Aidez au développement de Zovrax avec un don volontaire via Ko-fi. Les paiements sont traités par Ko-fi, pas par Zovrax.",
   actionPremium: "Obtenir Premium",
