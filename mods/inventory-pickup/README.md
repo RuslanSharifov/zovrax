@@ -1,6 +1,6 @@
 # Zovrax Inventory Pickup
 
-**Status: development.** Real Fabric Java source is committed, but there is **no tested public JAR release** yet.
+**Status: public beta 0.1.0.** A genuine Fabric JAR is published under `releases/` and on the Zovrax Downloads tab. Java compile and catalog checks passed. **Live gameplay and coexistence with other mods have not yet been verified.**
 
 ## Target
 
@@ -27,7 +27,17 @@ From inside this folder, with **Java 21** and **Gradle 9.1** installed:
 gradle --no-daemon build
 ```
 
-Build output: `build/libs/`. The remapped JAR (not `-dev` or `-sources`) is the one to test in a matching Fabric client alongside Fabric API. The GitHub PR workflow performs a real Gradle compile; publishing a download additionally requires hands-on in-game tests.
+Build output: `build/libs/`. The remapped JAR (not `-dev` or `-sources`) is the one to test in a matching Fabric client alongside Fabric API. The GitHub Actions workflow performs a real Gradle compile; the public **0.1.0 beta** JAR is available in `releases/` for hands-on in-game testing. The public build has not yet passed that testing.
+
+## Install public beta
+
+1. Install Minecraft Java Edition **1.21.10** and compatible **Fabric Loader**.
+2. Install **Fabric API** for 1.21.10. Use Java **21**.
+3. Download `zovrax-inventory-pickup-0.1.0-fabric-1.21.10.jar` from the Zovrax website or `releases/`.
+4. Copy the JAR to the Minecraft instance's `mods/` folder; launch the game.
+5. Press **O** while playing to open the in-game settings panel.
+
+**Beta warning:** This release compiled successfully, but actual game behavior, UI scaling, and compatibility with other client mods still need verification.
 
 ## Verification checklist
 
