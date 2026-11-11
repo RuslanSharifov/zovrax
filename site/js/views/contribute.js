@@ -112,7 +112,7 @@ function tutorial() {
 function generator(catalog) {
   const { site, categories, developers } = catalog;
   const repo = site.repository;
-  const state = { name: '', slug: '', slugTouched: false, version: '', category: categories[0]?.id ?? 'hud', loader: 'Fabric', developer: developers[0]?.id ?? '', status: 'planned' };
+  const state = { name: '', slug: '', slugTouched: false, version: '', category: categories[0]?.id ?? 'hud', loader: 'Fabric', developer: developers[0]?.id ?? '', status: 'planned', monetization: 'free', premiumUrl: '' };
   const output = h('pre', { class: 'code-block', 'aria-live': 'polite' });
   const slugify = value => value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 63);
   const selectOptions = (items, selected) => items.map(([value, label]) => h('option', { value, selected: value === selected }, label));
@@ -133,7 +133,10 @@ function generator(catalog) {
       tags: [],
       features: [],
       license: null,
-      source: `${repo}/tree/main/mods/${state.slug || 'my-mod'}`,
+      source: state.monetization === 'premium-only' ? null : `${repo}/tree/main/mods/${state.slug || 'my-mod'}`,
+      monetization: { type: state.monetization,
+        premiumUrl: state.monetization === 'free' ? null : (state.premiumUrl || 'https://your-store.lemonsqueezy.com/'),
+        premiumLabel: 'Get Premium' },
       authors: state.developer ? [state.developer] : [],
       screenshots: [],
       updatedAt: null,
@@ -153,8 +156,11 @@ function generator(catalog) {
     selectOptions(['Fabric', 'Forge', 'NeoForge', 'Quilt'].map(l => [l, l]), state.loader));
   const developerSelect = h('select', { class: 'select', 'aria-label': t('genDeveloper') },
     selectOptions(developers.map(d => [d.id, `${d.displayName} (${d.id})`]), state.developer));
+  const paymentSelect = h('select', { class: 'select', 'aria-label': 'Distribution' },
+    selectOptions([['free', 'Free'], ['free-premium', 'Free + Premium'], ['premium-only', 'Premium only']], state.monetization));
+  const premiumInput = h('input', { class: 'input', type: 'url', placeholder: 'https://your-store.lemonsqueezy.com/', 'aria-label': 'Premium purchase URL (HTTPS)' });
   const statusSelect = h('select', { class: 'select', 'aria-label': t('genStatus') },
-    selectOptions([['planned', t('statusPlanned')], ['development', t('statusDevelopment')]], state.status));
+    selectOptions([['planned', t('statusPlanned')], ['development', t('statusDevelopment')], ['released', t('statusReleased')]], state.status));
 
   nameInput.addEventListener('input', () => {
     state.name = nameInput.value;
@@ -174,6 +180,13 @@ function generator(catalog) {
   loaderSelect.addEventListener('change', () => { state.loader = loaderSelect.value; refresh(); });
   developerSelect.addEventListener('change', () => { state.developer = developerSelect.value; refresh(); });
   statusSelect.addEventListener('change', () => { state.status = statusSelect.value; refresh(); });
+  paymentSelect.addEventListener('change', () => {
+    state.monetization = paymentSelect.value;
+    premiumInput.disabled = state.monetization === 'free';
+    refresh();
+  });
+  premiumInput.disabled = true;
+  premiumInput.addEventListener('input', () => { state.premiumUrl = premiumInput.value.trim(); refresh(); });
 
   const download = h('button', {
     type: 'button',
@@ -200,7 +213,9 @@ function generator(catalog) {
         field(t('genCategory'), categorySelect),
         field(t('genLoader'), loaderSelect),
         field(t('genDeveloper'), developerSelect),
-        field(t('genStatus'), statusSelect)),
+        field(t('genStatus'), statusSelect),
+        field('Distribution', paymentSelect),
+        field('Premium store URL (HTTPS)', premiumInput)),
       h('div', { class: 'stack' },
         h('div', { class: 'output-head' },
           h('strong', { class: 'mono small' }, t('genOutput')),
@@ -222,7 +237,7 @@ export function contributeView({ catalog }) {
   return h('div', { class: 'page page-contribute container' },
     h('header', { class: 'page-head' },
       h('div', null,
-        h('p', { class: 'eyebrow' }, h('span', { class: 'signal' }), 'OPEN SOURCE'),
+        h('p', { class: 'eyebrow' }, h('span', { class: 'signal' }), 'COMMUNITY MODS'),
         h('h1', null, t('contributeTitle')),
         h('p', { class: 'lead' }, t('contributeLead')))),
     tutorial(),

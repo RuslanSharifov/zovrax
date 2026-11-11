@@ -3,6 +3,7 @@ import { t, pick } from '../i18n/index.js';
 import { isFavorite, toggleFavorite } from '../state.js';
 import { dataUrl } from '../data.js';
 import { toast } from '../layout.js';
+import { signedIn, syncFavorite } from '../community.js';
 
 const STATUS_KEYS = {
   released: 'statusReleased',
@@ -51,6 +52,7 @@ export function favoriteButton(slug, name, { labeled = false } = {}) {
     event.stopPropagation();
     const active = toggleFavorite(slug);
     paint(active);
+    if (signedIn()) syncFavorite(slug, active).catch(error => console.warn('Cloud favorite synchronization failed:', error));
     toast(active ? t('toggleFavoritesOn') : t('toggleFavoritesOff'));
   });
   return button;

@@ -1,0 +1,13 @@
+name = "zovrax-community"
+main = "src/index.js"
+compatibility_date = "2026-10-01"
+
+[vars]
+SITE_ORIGIN = "https://ruslansharifov.github.io"
+SITE_URL = "https://ruslansharifov.github.io/zovrax/"
+
+# After creating a D1 database, uncomment and fill this block:
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "zovrax-community"
+# database_id = "YOUR_D1_DATABASE_ID"

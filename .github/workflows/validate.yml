@@ -21,6 +21,11 @@ jobs:
       - name: Check JavaScript
         run: |
           node --check site/js/views/mod.js
+          node --check site/js/views/support.js
+          node --check site/js/views/account.js
+          node --check site/js/community.js
+          node --check site/js/components/mod-card.js
+          node --check community-worker/src/index.js
           node --check site/js/layout.js
           node --check site/js/views/contribute.js
           node --check .github/scripts/build-catalog.mjs

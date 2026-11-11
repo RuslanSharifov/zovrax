@@ -154,5 +154,10 @@
         "fr": "**Bêta publique.** Le fichier JAR réel pour Fabric 1.21.10 a été compilé automatiquement. **Les tests en jeu et avec d'autres mods restent à faire.**"
       }
     }
-  ]
+  ],
+  "monetization": {
+    "type": "free",
+    "premiumUrl": null,
+    "premiumLabel": "Get Premium"
+  }
 }

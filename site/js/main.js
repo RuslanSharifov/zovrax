@@ -11,6 +11,7 @@ import { modView } from './views/mod.js';
 import { developersView, developerView } from './views/developers.js';
 import { aboutView } from './views/about.js';
 import { supportView } from './views/support.js';
+import { accountView } from './views/account.js';
 import { contributeView } from './views/contribute.js';
 import { notFoundView } from './views/not-found.js';
 
@@ -44,6 +45,7 @@ defineRoute('/developers', (ctx) => developersView(ctx));
 defineRoute('/developers/:id', (ctx) => developerView(ctx));
 defineRoute('/about', (ctx) => aboutView(ctx));
 defineRoute('/support', (ctx) => supportView(ctx));
+defineRoute('/account', (ctx) => accountView(ctx));
 defineRoute('/contribute', (ctx) => contributeView(ctx));
 
 function renderLoadError(error) {

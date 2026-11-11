@@ -93,8 +93,19 @@ for (const folder of fs.readdirSync(modsDir, { withFileTypes: true })) {
   for (const id of authorIds) if (!authors.has(id)) fail(slug, `author not registered: ${id}`);
   const compatibleVersions = strings(m.minecraftVersions, slug, 'minecraftVersions');
   const compatibleLoaders = strings(m.loaders, slug, 'loaders');
-  const source = nonempty(m.source) ? m.source : `${catalog.site.repository}/tree/main/mods/${slug}`;
-  if (!/^https:\/\//.test(source)) fail(slug, 'source must be HTTPS');
+  const money = m.monetization ?? { type: 'free' };
+  if (!['free', 'free-premium', 'premium-only'].includes(money.type))
+    fail(slug, 'monetization.type must be free, free-premium, or premium-only');
+  if (money.type !== 'free' && (!nonempty(money.premiumUrl) || !/^https:\/\/[^\s]+$/.test(money.premiumUrl)))
+    fail(slug, 'premium listings require an HTTPS premiumUrl');
+  if (money.type === 'free' && money.premiumUrl) fail(slug, 'free listings must not contain a premiumUrl');
+  if (money.premiumLabel != null && (typeof money.premiumLabel !== 'string' || money.premiumLabel.length > 55))
+    fail(slug, 'premiumLabel must be at most 55 characters');
+  const monetization = { type: money.type, premiumUrl: money.type === 'free' ? null : money.premiumUrl,
+    premiumLabel: money.premiumLabel || 'Get Premium' };
+  // Closed-source premium mods need not publish a source URL.
+  const source = nonempty(m.source) ? m.source : null;
+  if (source && !/^https:\/\//.test(source)) fail(slug, 'source must be HTTPS');
   const readme = readPage(slug);
   copyAssets(slug);
   const icon = m.icon == null ? null : `mods/${slug}/${safeFile(m.icon, slug, assetPattern)}`;
@@ -106,7 +117,7 @@ for (const folder of fs.readdirSync(modsDir, { withFileTypes: true })) {
   });
   if (!Array.isArray(m.releases)) fail(slug, 'releases must be an array (empty for a concept)');
   if (m.status !== 'released' && m.releases.length) fail(slug, 'only released mods may list downloadable releases');
-  if (m.status === 'released' && !m.releases.length) fail(slug, 'released mod needs an actual .jar');
+  if (m.status === 'released' && !m.releases.length && monetization.type !== 'premium-only') fail(slug, 'released free mod needs a real .jar');
   const releases = m.releases.map(r => {
     if (!nonempty(r.version)) fail(slug, 'release version required');
     const rv = strings(r.minecraftVersions, slug, 'release.minecraftVersions');
@@ -126,7 +137,7 @@ for (const folder of fs.readdirSync(modsDir, { withFileTypes: true })) {
     return { ...r, minecraftVersions:rv, loaders:rl, downloads };
   });
   releases.sort((a,b) => b.version.localeCompare(a.version,undefined,{numeric:true}));
-  const detail = { ...m, source, icon, screenshots, releases, readme, latestVersion:releases[0]?.version ?? null };
+  const detail = { ...m, source, monetization, icon, screenshots, releases, readme, latestVersion:releases[0]?.version ?? null };
   for (const v of compatibleVersions) versions.add(v);
   for (const l of compatibleLoaders) loaders.add(l);
   for (const release of releases) {
@@ -140,7 +151,7 @@ for (const folder of fs.readdirSync(modsDir, { withFileTypes: true })) {
     featured:!!m.featured, accent:m.accent || 'lime', icon, tags:array(m.tags),
     minecraftVersions:[...new Set([...compatibleVersions,...releases.flatMap(r=>r.minecraftVersions)])],
     loaders:[...new Set([...compatibleLoaders,...releases.flatMap(r=>r.loaders)])],
-    authors:authorIds, updatedAt:m.updatedAt || null, latestVersion:detail.latestVersion });
+    authors:authorIds, monetization, updatedAt:m.updatedAt || null, latestVersion:detail.latestVersion });
 }
 function stringsDummy(value, slug) {
   if (!Array.isArray(value) || !value.length || value.some(f => !f || typeof f !== 'object')) fail(slug, 'each release needs downloads with real JAR files');

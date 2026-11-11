@@ -32,7 +32,8 @@ export function developersView({ catalog }) {
     },
       avatar(dev),
       h('div', { class: 'dev-card-body' },
-        h('h2', { class: 'dev-name' }, dev.displayName),
+        h('h2', { class: 'dev-name creator-name-row' }, dev.displayName,
+          dev.official === true ? h('span', { class: 'official-check', title: t('officialAccount'), 'aria-label': t('officialAccount') }, '✓') : null),
         h('p', { class: 'muted small' }, `@${dev.github}`),
         h('p', { class: 'small' }, modCount(dev.modSlugs.length)))))));
 }
@@ -49,7 +50,8 @@ export function developerView({ params, catalog }) {
       h('div', { class: 'profile-top' },
         avatar(dev, 'lg'),
         h('div', { class: 'profile-text' },
-          h('h1', { class: 'display-sm' }, dev.displayName),
+          h('h1', { class: 'display-sm creator-name-row' }, dev.displayName,
+            dev.official === true ? h('span', { class: 'official-check', title: t('officialAccount'), 'aria-label': t('officialAccount') }, '✓') : null),
           h('a', { class: 'handle', href: `https://github.com/${encodeURIComponent(dev.github)}`, target: '_blank', rel: 'noopener noreferrer' },
             icon('github', { size: 16 }), `@${dev.github}`, icon('external', { size: 13 })),
           bio ? h('p', { class: 'lead-sm' }, bio) : null)),

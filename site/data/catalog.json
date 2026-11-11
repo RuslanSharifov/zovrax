@@ -8,9 +8,9 @@
       "fr": "Des mods Minecraft, repensés."
     },
     "description": {
-      "en": "An independent, open-source library of thoughtfully crafted Minecraft Java Edition mods.",
-      "ru": "Независимая библиотека продуманных модов для Minecraft Java Edition с открытым исходным кодом.",
-      "fr": "Une bibliothèque indépendante et open source de mods Minecraft Java Edition soigneusement conçus."
+      "en": "Explore free, open-source and premium Minecraft mods published by their creators.",
+      "ru": "Бесплатные, открытые и премиальные моды Minecraft от разработчиков.",
+      "fr": "Découvrez des mods Minecraft gratuits, open source et premium."
     },
     "disclaimer": {
       "en": "Independent community project. Not affiliated with Mojang or Microsoft.",
@@ -26,7 +26,7 @@
       "fr"
     ],
     "support": {
-      "kofi": null
+      "kofi": "https://ko-fi.com/ruslansharifov"
     }
   },
   "categories": [
@@ -142,11 +142,13 @@
       "bio": null,
       "socials": [],
       "support": {
-        "kofi": null
+        "kofi": "https://ko-fi.com/ruslansharifov"
       },
       "modSlugs": [
         "inventory-pickup"
-      ]
+      ],
+      "official": true,
+      "role": "founder"
     }
   ],
   "mods": [
