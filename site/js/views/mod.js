@@ -6,6 +6,7 @@ import { modCard, modIcon, statusBadge, favoriteButton } from '../components/mod
 import { setPageMeta } from '../layout.js';
 import { notFoundView } from './not-found.js';
 import { apiBase, modStatistics, recordView } from '../community.js';
+import { createDownloadDialog } from '../components/download-dialog.js';
 
 const chip = (text, className = 'chip-outline') => h('span', { class: `chip ${className}` }, text);
 
@@ -114,7 +115,7 @@ export async function modView({ params, catalog, onCleanup }) {
   setPageMeta({ title: mod.name, description: summary });
 
   const latest = mod.releases[0] ?? null;
-  const latestFile = latest?.downloads?.[0] ?? null;
+  const downloadPicker = createDownloadDialog(mod);
   const resolveFile = file => modFileUrl(mod.slug, file);
   const render = source => renderMarkdown(source, { slug: mod.slug, repository: site.repository, resolveFile });
   const readme = mod.readme[lang] ?? mod.readme.en ?? null;
@@ -140,12 +141,9 @@ export async function modView({ params, catalog, onCleanup }) {
           chip(categoryTitle, 'chip-soft'),
           latest ? chip(`v${latest.version}`, 'chip-outline') : null))),
     h('div', { class: 'mod-actions' },
-      latestFile
-        ? h('a', { class: 'btn btn-primary', href: latestFile.url,
-          download: latestFile.url.startsWith('data/') ? latestFile.name : null,
-          target: latestFile.url.startsWith('https://') ? '_blank' : null,
-          rel: 'noopener noreferrer' },
-          icon('download', { size: 17 }), `${t('actionDownload')} · ${latestFile.label}`)
+      downloadPicker
+        ? h('button', { type: 'button', class: 'btn btn-primary', onclick: () => downloadPicker.open() },
+          icon('download', { size: 17 }), t('actionDownload'))
         : mod.monetization?.type === 'premium-only' ? null : h('span', { class: 'muted small' }, t(mod.status === 'archived' ? 'noDownloadsArchived' : mod.status === 'development' ? 'noDownloadsDevelopment' : 'noDownloadsPlanned')),
       favoriteButton(mod.slug, mod.name, { labeled: true }),
       mod.monetization?.premiumUrl ? h('a', { class: 'btn btn-premium', href: mod.monetization.premiumUrl,
@@ -313,7 +311,7 @@ export async function modView({ params, catalog, onCleanup }) {
     img.alt = alt;
     lightbox.showModal();
   }
-  onCleanup(() => { if (lightbox.open) lightbox.close(); });
+  onCleanup(() => { if (lightbox.open) lightbox.close(); downloadPicker?.close(); });
 
   selectTab('overview');
 
@@ -373,5 +371,6 @@ export async function modView({ params, catalog, onCleanup }) {
         tabList,
         panel),
       aside),
-    lightbox);
+    lightbox,
+    downloadPicker?.dialog);
 }
