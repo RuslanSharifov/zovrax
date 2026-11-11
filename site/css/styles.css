@@ -847,7 +847,7 @@ h1:focus { outline: none; }
 /* Locale cycle and version-aware downloads */
 .lang-cycle { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-width: 70px; padding-inline: 10px; font-size: .82rem; font-weight: 700; letter-spacing: .04em; }
 .lang-cycle svg { flex: none; }
-.download-filter-bar { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; padding: 16px 18px; }
+.download-filter-bar { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; padding: 16px 18px; }
 .download-filter-bar .select, .aside-downloads .select { width: 100%; }
 .aside-downloads { display: grid; gap: 14px; }
 .aside-downloads .btn { justify-self: stretch; }
