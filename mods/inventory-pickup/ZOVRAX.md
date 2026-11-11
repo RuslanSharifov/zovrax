@@ -1,26 +1,27 @@
 # Inventory Pickup
 
-> **Concept · not downloadable yet.** No Minecraft mod binary or `.jar` file has been published.
+> **In development — Minecraft Java Edition 1.21.10 + Fabric.** Source code is available, but a tested downloadable `.jar` has not been released.
 
-Inventory Pickup is a proposed configurable HUD notification for **Minecraft Java Edition 1.21.10 / Fabric**. It will show an item icon, item name, updated inventory total and the amount gained when you pick up an item or move it from a chest.
+A lightweight, client-side HUD mod that turns **inventory item gains** into smooth, animated notifications.
 
-## Planned functionality
+## How it works
 
-- Compact item pickup notification with the `+N` increase
-- Chest-to-inventory movement tracking
-- Adjustable on-screen position, visibility and animation duration
-- Optional grouping of repeated pickups
+Whenever you gain items, a compact card **slides into view while fading from opacity 0 to 1**. It shows the item's original Minecraft icon and name, the **+N** increase and **Total** in inventory. The card then **slides away and fades to opacity 0**.
+
+Ground pickups, chest-to-inventory transfers and other net gains can trigger it. Simply moving items between your own inventory slots does not cause false notifications.
+
+## Settings in Minecraft
+
+Press **O** during gameplay (rebindable in Controls) to open the custom settings screen. Change the corner, slide/fade duration, background opacity, max simultaneous notifications, whether repeated pickups merge, screen padding and the visible information. Settings are saved locally.
 
 ## Compatibility
 
-| Minecraft | Loader | Status |
+| Minecraft Java | Loader | Release status |
 | --- | --- | --- |
-| 1.21.10 | Fabric | Planned |
+| 1.21.10 | Fabric + Fabric API | Development |
+
+Client only; no server setup or invasive mixins. The approach minimizes conflicts with other mods, but combinations need actual game testing.
 
 ## Downloads
 
-There is no release yet. Once a real, tested `.jar` has been built and its path recorded in `zovrax.json`, a download will appear automatically on this page.
-
-## Source and contribution
-
-The source folder is [mods/inventory-pickup](https://github.com/RuslanSharifov/zovrax/tree/main/mods/inventory-pickup). Contributions are accepted through reviewed pull requests.
+**No tested binary yet.** The [source project](https://github.com/RuslanSharifov/zovrax/tree/main/mods/inventory-pickup) has Java code and Gradle build files. An actual JAR will be listed here only after build, gameplay verification and publication.
