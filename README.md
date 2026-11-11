@@ -1,47 +1,68 @@
 # ZOVRAX
 
-**Play your way. Build with us.**
+**Minecraft mods, reimagined.** An open-source, community-reviewed Minecraft Java Edition mod catalog.
 
-Independent, open-source Minecraft Java Edition mod library.
+- **Website:** https://ruslansharifov.github.io/zovrax/
+- **Explore:** https://ruslansharifov.github.io/zovrax/#/mods
+- **Contributor guide:** https://ruslansharifov.github.io/zovrax/#/contribute
 
-**Live website:** https://ruslansharifov.github.io/zovrax/  
-**Interactive developer guide:** https://ruslansharifov.github.io/zovrax/guide.html  
-**Contributions:** https://github.com/RuslanSharifov/zovrax/pulls
+## Where content comes from
 
-## Repository layout
+Each published listing is generated **at build time**, not submitted from the website. One mod = one source folder:
 
-Only three top-level folders:
+```text
+mods/
+  inventory-pickup/
+    zovrax.json         # title, icon, author IDs, versions, loaders, local JAR paths
+    ZOVRAX.md           # rendered on the public mod page (English)
+    ZOVRAX.ru.md        # optional Russian translation
+    ZOVRAX.fr.md        # optional French translation
+    README.md           # developer/source instructions (not the public page)
+    assets/icon.svg     # optional icon; images may be referenced in ZOVRAX.md
+    releases/            # real built .jar files, if the mod is released
+```
 
-- **site/** — responsive AZ/EN website, interactive contributor guide and JSON catalog.
-- **mods/** — one independent source project per mod and a starter template.
-- **.github/** — automated checks, deploy workflow, code ownership and PR templates.
+The generator `.github/scripts/build-catalog.mjs` reads each `mods/<slug>/zovrax.json`, reads public Markdown files, copies approved assets and real JAR files into the static Pages output, and rebuilds `site/data/catalog.json` plus individual `site/data/mods/<slug>.json` files. The browser fetches these JSON files and renders the pages. No account, backend or public submission form is required.
 
-Documentation is in [CONTRIBUTING.md](CONTRIBUTING.md) and [AGENTS.md](AGENTS.md).
+**Demo:** Inventory Pickup is currently planned and has **no** working JAR or download button. Never upload fake builds.
 
-## Current status
+## Release metadata example
 
-The website is published via GitHub Pages. The Inventory Pickup mod is a **planned concept** targeting Minecraft Java Edition 1.21.10/Fabric. No mod .jar exists yet. A mod only shows a download link after a real release is published and recorded in site/data/mods.json.
+Add a **real**, tested JAR file at `mods/my-mod/releases/my-mod-1.0.0-fabric.jar`. Then include this entry in that mod's `zovrax.json`:
 
-## Run locally
+```json
+{
+  "releases": [{
+    "version": "1.0.0",
+    "releasedAt": "2026-11-11",
+    "minecraftVersions": ["1.21.10"],
+    "loaders": ["Fabric"],
+    "downloads": [{
+      "file": "releases/my-mod-1.0.0-fabric.jar",
+      "label": "Fabric · Minecraft 1.21.10",
+      "minecraftVersions": ["1.21.10"],
+      "loaders": ["Fabric"]
+    }]
+  }]
+}
+```
 
-Start an HTTP server from the repository root:
+This is **an example**, not an existing download. Each release may contain multiple files for different Minecraft versions or loaders. Only mark `status: "released"` when a valid JAR exists in the folder. The site shows three downloads filters (Minecraft version, loader, release version) and direct JAR links. Site-wide deployment size and repository-file limits still apply; very large binaries may need a separate distribution strategy.
 
-    python -m http.server 8000 --directory site
+## Open-source workflow
 
-Then open http://localhost:8000/ (do not use file://, because the browser needs to fetch JSON over HTTP).
+Fork → add or edit your mod folder → add developer info to `site/data/catalog.json` if needed → run local validation → open pull request → maintainer review → merge to `main` → GitHub Pages deploy.
 
-The website is framework-free. There is no Node package installation for the website. JavaScript syntax checks and catalog validation run under Node.js:
+```bash
+node .github/scripts/build-catalog.mjs
+node .github/scripts/validate-catalog.mjs
+python -m http.server 8000 --directory site
+```
 
-    node --check site/app.js
-    node --check site/guide.js
-    node .github/scripts/validate-catalog.mjs
+Open http://localhost:8000/ (the static app fetches local JSON). GitHub Actions runs catalog generation and validation for pull requests, and regenerates the catalog before publishing GitHub Pages.
 
-## Community contributions
-
-Developers submit mod source code under mods/<id>/, add metadata and author attribution under site/data/mods.json and open a Pull Request. The maintainer reviews source, safety, licensing and compatibility before merging. Each author can optionally add their GitHub and social links and a real coffee support link. If no coffee link is provided, the site does not show a support button.
-
-The GitHub Pages site is published by .github/workflows/deploy.yml after accepted pushes to main. GitHub Pages is configured to use GitHub Actions. The owner must separately enable a main branch ruleset or branch protection; CODEOWNERS and workflow files alone do not protect the branch.
+Read [CONTRIBUTING.md](CONTRIBUTING.md) and [AGENTS.md](AGENTS.md). Templates are under [site/templates/](site/templates/). The website supports English, Russian and French; its language button cycles EN → RU → FR.
 
 ## License
 
-MIT license for the site and repository templates. Individual mods may have compatible licenses declared in their own folders. Zovrax is not endorsed or affiliated with Mojang Studios or Microsoft.
+The site and repository templates are MIT licensed. Individual mods must declare their own licenses. Independent project, not endorsed by Mojang Studios or Microsoft.
