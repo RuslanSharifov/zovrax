@@ -1,0 +1,42 @@
+name: Clear Connected Glass preview build
+
+on:
+  pull_request:
+    paths:
+      - 'mods/clear-connected-glass/**'
+      - '.github/workflows/clear-connected-glass.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Build Fabric resource-only JAR
+        run: node mods/clear-connected-glass/build.mjs
+      - name: Verify mod manifest and CTM resources
+        shell: bash
+        run: |
+          set -euo pipefail
+          JAR=mods/clear-connected-glass/releases/clear-connected-glass-0.1.0-fabric-1.21.10.jar
+          jar tf "$JAR" | grep -Fx 'fabric.mod.json'
+          jar tf "$JAR" | grep -Fx 'pack.mcmeta'
+          jar tf "$JAR" | grep -Fx 'assets/minecraft/optifine/ctm/clear_connected_glass/glass.properties'
+          jar tf "$JAR" | grep -Fx 'assets/minecraft/textures/block/glass.png'
+      - name: Validate catalog generation
+        run: node .github/scripts/build-catalog.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: clear-connected-glass-preview-fabric-1.21.10
+          path: mods/clear-connected-glass/releases/clear-connected-glass-0.1.0-fabric-1.21.10.jar
+          if-no-files-found: error

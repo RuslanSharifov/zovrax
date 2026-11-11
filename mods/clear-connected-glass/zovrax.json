@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 2,
+  "slug": "clear-connected-glass",
+  "name": "Clear Connected Glass",
+  "category": "visual",
+  "status": "development",
+  "featured": false,
+  "accent": "blue",
+  "icon": "assets/icon.svg",
+  "summary": {
+    "en": "Crystal-clear glass with subtle frost and seamless connected borders for Fabric 1.21.10 (Continuity required).",
+    "ru": "Почти прозрачное стекло с тонкой ледяной текстурой и соединёнными рамками для Fabric 1.21.10.",
+    "fr": "Verre presque invisible avec un léger effet givré et des bordures connectées pour Fabric 1.21.10."
+  },
+  "tags": [
+    "Glass",
+    "Connected Textures",
+    "Visual",
+    "Continuity"
+  ],
+  "minecraftVersions": [
+    "1.21.10"
+  ],
+  "loaders": [
+    "Fabric"
+  ],
+  "authors": [
+    "ruslan"
+  ],
+  "updatedAt": "2026-11-12",
+  "license": "MIT",
+  "source": "https://github.com/RuslanSharifov/zovrax/tree/main/mods/clear-connected-glass",
+  "features": [
+    {
+      "en": "Removes the vanilla diagonal glass streaks and adds a gentle frosted tint",
+      "ru": "Убирает стандартные диагональные линии и добавляет лёгкий иней",
+      "fr": "Supprime les rayures diagonales et ajoute un très léger givre"
+    },
+    {
+      "en": "Compact connected textures hide shared borders between adjoining clear-glass blocks",
+      "ru": "Соединённые текстуры скрывают общие рамки соседних блоков",
+      "fr": "Les textures connectées masquent les bordures communes"
+    }
+  ],
+  "screenshots": [],
+  "releases": [],
+  "monetization": {
+    "type": "free",
+    "premiumUrl": null,
+    "premiumLabel": "Get Premium"
+  }
+}
