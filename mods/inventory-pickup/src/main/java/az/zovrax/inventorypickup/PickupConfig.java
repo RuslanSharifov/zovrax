@@ -28,6 +28,7 @@ public final class PickupConfig {
     public double hudX = -1;
     public double hudY = -1;
     public int notificationScale = 100; // 50%..200%, step 5%
+    public int notificationOpacity = 100; // opacity of the entire card
 
     public static PickupConfig load() {
         try {
@@ -73,6 +74,7 @@ public final class PickupConfig {
         backgroundOpacity = clamp(backgroundOpacity, 0, 100);
         position = clamp(position, 0, 3);
         notificationScale = clamp(notificationScale, 50, 200);
+        notificationOpacity = clamp(notificationOpacity, 0, 100);
         if (!Double.isFinite(hudX)) hudX = -1;
         if (!Double.isFinite(hudY)) hudY = -1;
         if (hudX >= 0) hudX = clampDouble(hudX, 0, 1);
