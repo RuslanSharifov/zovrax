@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "az.zovrax.inventorypickup",
+  "package": "az.zovrax.inventorypickup.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
     "PickupPacketMixin"
