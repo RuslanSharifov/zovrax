@@ -5,6 +5,7 @@ import { renderMarkdown } from '../markdown.js';
 import { modCard, modIcon, statusBadge, favoriteButton } from '../components/mod-card.js';
 import { setPageMeta } from '../layout.js';
 import { notFoundView } from './not-found.js';
+import { apiBase, modStatistics, recordView } from '../community.js';
 
 const chip = (text, className = 'chip-outline') => h('span', { class: `chip ${className}` }, text);
 
@@ -320,7 +321,26 @@ export async function modView({ params, catalog, onCleanup }) {
     .filter(other => other.slug !== mod.slug && (other.category === mod.category || other.tags.some(tag => mod.tags.includes(tag))))
     .slice(0, 3);
 
+  const statistics = h('section', { class: 'card', hidden: true, 'aria-live': 'polite' });
+  apiBase().then(async base => {
+    if (!base) return;
+    statistics.hidden = false;
+    statistics.replaceChildren(h('p', { class: 'muted small' }, t('statsLoading')));
+    try {
+      // A view is counted once per IP / mod / UTC day on the server.
+      await recordView(mod.slug);
+      const data = await modStatistics(mod.slug);
+      statistics.replaceChildren(h('h2', { class: 'block-title' }, t('statsTitle')),
+        h('div', { class: 'stats-row' },
+          h('span', { class: 'stat-pill' }, `${data.favorites} ${t('statsFavorites')}`),
+          h('span', { class: 'stat-pill' }, `${data.views} ${t('statsViews')}`)));
+    } catch {
+      statistics.replaceChildren(h('p', { class: 'muted small' }, t('statsUnavailable')));
+    }
+  }).catch(console.warn);
+
   const aside = h('aside', { class: 'mod-aside' },
+    statistics,
     h('section', { class: 'card' },
       h('h2', { class: 'block-title' }, t('modInfo')),
       h('dl', { class: 'kv' },
