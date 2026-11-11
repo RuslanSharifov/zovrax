@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "zovrax_armorline",
+  "version": "${version}",
+  "name": "ArmorLine",
+  "description": "A connected, movable armor HUD with durability bars and numbers.",
+  "authors": [
+    "Ruslan Sharifov"
+  ],
+  "contact": {
+    "homepage": "https://ruslansharifov.github.io/zovrax/",
+    "sources": "https://github.com/RuslanSharifov/zovrax"
+  },
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "az.zovrax.armorline.ArmorLineClient"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.17.3",
+    "minecraft": "1.21.10",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}

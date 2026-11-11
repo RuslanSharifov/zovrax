@@ -1,0 +1,42 @@
+name: Build ArmorLine (Fabric 1.21.10)
+
+on:
+  pull_request:
+    paths:
+      - 'mods/armorline/**'
+      - '.github/workflows/build-armorline.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'mods/armorline/**'
+      - '.github/workflows/build-armorline.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fabric-build:
+    name: Compile ArmorLine (Java 21)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.1.0'
+      - name: Compile Fabric 1.21.10 ArmorLine
+        run: gradle --no-daemon --project-dir mods/armorline build
+      - name: Upload remapped beta JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: armorline-fabric-1.21.10-build
+          path: |
+            mods/armorline/build/libs/*.jar
+            !mods/armorline/build/libs/*-sources.jar
+            !mods/armorline/build/libs/*-dev.jar
+          if-no-files-found: error
+          retention-days: 7
