@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 2,
+  "name": "Zovrax",
+  "tagline": {
+    "en": "Minecraft mods, reimagined.",
+    "ru": "Моды для Minecraft, переосмысленные.",
+    "fr": "Des mods Minecraft, repensés."
+  },
+  "description": {
+    "en": "An independent, open-source library of thoughtfully crafted Minecraft Java Edition mods.",
+    "ru": "Независимая библиотека продуманных модов для Minecraft Java Edition с открытым исходным кодом.",
+    "fr": "Une bibliothèque indépendante et open source de mods Minecraft Java Edition soigneusement conçus."
+  },
+  "repository": "https://github.com/RuslanSharifov/zovrax",
+  "siteUrl": "https://ruslansharifov.github.io/zovrax/",
+  "defaultLanguage": "en",
+  "languages": ["en", "ru", "fr"],
+  "support": {
+    "kofi": null
+  },
+  "disclaimer": {
+    "en": "Independent community project. Not affiliated with Mojang or Microsoft.",
+    "ru": "Независимый проект сообщества. Не связан с Mojang или Microsoft.",
+    "fr": "Projet communautaire indépendant. Non affilié à Mojang ni à Microsoft."
+  }
+}

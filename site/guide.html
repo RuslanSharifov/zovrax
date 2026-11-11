@@ -1,57 +1,13 @@
 <!doctype html>
-<html lang="az"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#0b100e"><meta name="description" content="Zovrax open-source mod contributor guide.">
-<title>Developer Guide — Zovrax</title>
-<link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
-<link rel="stylesheet" href="./styles.css">
-<script src="./guide.js" defer></script>
-</head><body>
-<a class="skip-link" href="#main">Skip to content</a><div class="bg-grid" aria-hidden="true"></div>
-<header class="site-header"><div class="shell header-inner">
-<a class="brand" href="./"><img src="./assets/logo.svg" width="32" height="32" alt=""><span>ZOVRAX<span class="brand-dot">.</span></span></a>
-<nav class="nav" id="primaryNav" aria-label="Primary navigation"><a href="./#home">Ana səhifə</a><a href="./#explore">Modlar</a><a href="./#community">İcma</a><a href="https://github.com/RuslanSharifov/zovrax" target="_blank" rel="noopener noreferrer">GitHub ↗</a></nav>
-<div class="header-actions"><a class="github-button" href="https://github.com/RuslanSharifov/zovrax" target="_blank" rel="noopener noreferrer">Repo ↗</a><button id="menuButton" class="menu-button" aria-label="Open menu" aria-expanded="false" aria-controls="primaryNav"><span></span><span></span><span></span></button></div>
-</div></header>
-<main id="main" class="shell guide-page">
-<div class="guide-hero">
-  <span class="eyebrow"><span class="signal"></span> OPEN SOURCE / CONTRIBUTOR ONBOARDING</span>
-  <h1>İlk modunu <span class="text-glow">paylaş.</span></h1>
-  <p>Bütün sənədləri oxumağa ehtiyac yoxdur. Aşağıdakı interaktiv nümunə ilə öz modunun necə Zovrax-a əlavə edildiyini gör. Kodunu ayrıca branch-də hazırlayıb pull request göndərirsən; maintainer təsdiqləyəndən sonra sayt kataloquna daxil olur.</p>
-  <div class="hero-ctas"><a class="btn btn-primary" href="#demo">Demo ilə başla ↘</a><a class="btn btn-ghost" href="https://github.com/RuslanSharifov/zovrax/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">Tam təlimat ↗</a></div>
-</div>
-<div class="guide-layout" id="demo">
-<section class="guide-card" aria-labelledby="stepsTitle">
-<h2 id="stepsTitle">4 addımda mod əlavə et</h2>
-<div class="steps" role="group" aria-label="Contributor steps">
-<button class="step-button" data-step="0" aria-current="step" aria-label="Step one">01</button>
-<button class="step-button" data-step="1" aria-label="Step two">02</button>
-<button class="step-button" data-step="2" aria-label="Step three">03</button>
-<button class="step-button" data-step="3" aria-label="Step four">04</button>
-</div>
-<h3 id="stepTitle">1. Repository-ni fork et</h3>
-<p class="guide-description" id="stepDescription">GitHub-da Fork düyməsini seç və öz hesabında bir nüsxə yarat.</p>
-<pre class="guide-example" id="stepExample">git clone https://github.com/YOUR_USERNAME/zovrax.git</pre>
-<div class="guide-links"><button class="btn btn-primary" id="nextStep" type="button">Növbəti addım →</button><a href="https://github.com/RuslanSharifov/zovrax/fork" target="_blank" rel="noopener noreferrer">Fork səhifəsi ↗</a></div>
-</section>
-<section class="guide-card" aria-labelledby="generatorTitle">
-<h2 id="generatorTitle">Mod məlumatı generatoru</h2>
-<p class="guide-description">Bu demo JSON məlumatı yaradır, GitHub-a heç nə göndərmir. Formanı doldurub çıxan nümunəni kopyalaya bilərsən.</p>
-<label for="demoName">Mod adı</label><input id="demoName" type="text" value="My First Mod" maxlength="65" style="display:block;width:100%;height:43px;margin:7px 0 17px;border:1px solid #3b553f;border-radius:7px;background:#0b140e;color:#e8f4e5;padding:10px">
-<label for="demoVersion">Minecraft Java versiyası</label><input id="demoVersion" type="text" value="1.21.10" maxlength="24" style="display:block;width:100%;height:43px;margin:7px 0 17px;border:1px solid #3b553f;border-radius:7px;background:#0b140e;color:#e8f4e5;padding:10px">
-<label for="demoCategory">Kateqoriya</label>
-<select id="demoCategory" style="display:block;width:100%;height:43px;margin:7px 0 17px;border:1px solid #3b553f;border-radius:7px;background:#0b140e;color:#e8f4e5;padding:10px"><option value="hud">HUD & Interface</option><option value="quality">Quality of Life</option><option value="gameplay">Gameplay</option><option value="visual">Visual & Audio</option><option value="utility">Utilities</option><option value="performance">Performance</option></select>
-<label for="demoGithub">GitHub username</label><input id="demoGithub" type="text" value="your-username" maxlength="39" style="display:block;width:100%;height:43px;margin:7px 0 17px;border:1px solid #3b553f;border-radius:7px;background:#0b140e;color:#e8f4e5;padding:10px">
-<pre class="guide-example" id="demoOutput" aria-live="polite"></pre>
-<button class="btn btn-primary" id="copyDemo" type="button">JSON nümunəsini kopyala ↗</button>
-<p class="guide-note">Qeyd: Bu nümunə yalnız başlanğıc üçündür. Real modlar üçün <code>authorIds</code>, <code>releases</code>, <code>features</code> və mənbə qovluğu da hazırlanmalıdır.</p>
-</section>
-</div>
-<div class="community-grid" style="margin-top:28px">
-<section class="community-panel"><h3>AI ilə töhfə vermək</h3><p>AI köməkçinə repo linkini və <code>AGENTS.md</code> faylını ver. Orada qovluq strukturu, mod metadata qaydaları, yoxlama komandaları və təhlükəsizlik şərtləri var.</p><div class="guide-links"><a href="https://github.com/RuslanSharifov/zovrax/blob/main/AGENTS.md" target="_blank" rel="noopener noreferrer">AI üçün təlimat ↗</a></div></section>
-<section class="community-panel"><h3>Təsdiq necə işləyir?</h3><p>Hər PR avtomatik yoxlamadan keçir. Modun sayt kataloqunda görünməsi üçün maintainer tərəfindən nəzərdən keçirilib <code>main</code> branch-inə birləşdirilməsi lazımdır. Branch qorunması GitHub Settings-də ayrıca aktiv edilir.</p><div class="guide-links"><a href="https://github.com/RuslanSharifov/zovrax/pulls" target="_blank" rel="noopener noreferrer">Pull requests ↗</a></div></section>
-</div>
-</main>
-<footer class="footer"><div class="shell footer-bottom"><span>© 2026 ZOVRAX</span><span>Independent community project. Not affiliated with Mojang or Microsoft.</span><a href="./">← Home</a></div></footer>
-<div class="toast" id="guideToast" role="status" aria-live="polite" hidden></div>
-</body></html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="refresh" content="0; url=./#/contribute">
+  <link rel="canonical" href="./#/contribute">
+  <title>Contribute — Zovrax</title>
+  <script>location.replace('./#/contribute');</script>
+</head>
+<body>
+  <p>The contributor guide has moved to <a href="./#/contribute">the Contribute page</a>.</p>
+</body>
+</html>

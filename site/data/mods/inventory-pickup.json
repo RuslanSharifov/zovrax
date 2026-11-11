@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 2,
+  "slug": "inventory-pickup",
+  "name": "Inventory Pickup",
+  "category": "hud",
+  "status": "planned",
+  "featured": true,
+  "accent": "lime",
+  "icon": "mods/inventory-pickup/assets/icon.svg",
+  "summary": {
+    "en": "A customizable HUD that shows item icons, inventory totals and +gains when you pick up or transfer items.",
+    "ru": "Настраиваемый HUD, который показывает иконки предметов, общее количество в инвентаре и прирост при подборе или переносе предметов.",
+    "fr": "Un HUD personnalisable qui affiche les icônes des objets, les totaux de l'inventaire et les gains lors de la ramassage ou du transfert.",
+    "az": "Yerdən və ya sandıqdan əşya götürdükdə ikon, inventar sayı və +artım göstərən tənzimlənən HUD."
+  },
+  "tags": [
+    "HUD",
+    "Inventory",
+    "QoL"
+  ],
+  "minecraftVersions": [
+    "1.21.10"
+  ],
+  "loaders": [
+    "Fabric"
+  ],
+  "authors": [
+    "ruslan"
+  ],
+  "updatedAt": null,
+  "license": null,
+  "source": "https://github.com/RuslanSharifov/zovrax/tree/main/mods/inventory-pickup",
+  "features": [
+    {
+      "en": "Ground pickup notifications",
+      "ru": "Уведомления о подборе предметов с земли",
+      "fr": "Notifications lors du ramassage au sol",
+      "az": "Yerdən əşya götürmə bildirişləri"
+    },
+    {
+      "en": "Chest-to-inventory transfer notifications",
+      "ru": "Уведомления о переносе из сундука в инвентарь",
+      "fr": "Notifications lors des transferts coffre vers inventaire",
+      "az": "Sandıqdan inventara köçürmə bildirişləri"
+    },
+    {
+      "en": "Icon, name, inventory total and +gain",
+      "ru": "Иконка, название, общее количество и прирост",
+      "fr": "Icône, nom, total de l'inventaire et gain",
+      "az": "İkon, ad, ümumi say və +artım göstəricisi"
+    },
+    {
+      "en": "Adjustable HUD positioning",
+      "ru": "Настраиваемое положение HUD",
+      "fr": "Position du HUD ajustable",
+      "az": "Sürüşdürülə bilən HUD yerləşməsi"
+    },
+    {
+      "en": "Animation, duration and appearance settings",
+      "ru": "Настройки анимации, длительности и внешнего вида",
+      "fr": "Réglages d'animation, de durée et d'apparence",
+      "az": "Animasiya, müddət və görünüş parametrləri"
+    }
+  ],
+  "screenshots": [],
+  "latestVersion": null,
+  "releases": [],
+  "readme": {
+    "en": "Inventory Pickup is planned to show a compact notification when you collect a dropped item or transfer it from a chest.\n\nEach notification will contain:\n\n- the item icon and name,\n- the new total inventory count,\n- the amount gained (`+N`).\n\nPosition and display duration will be customizable.\n\n> **Status: concept.** There is no working mod or `.jar` file yet, so no downloads are available.\n",
+    "ru": "Inventory Pickup планируется как компактное уведомление, которое появляется, когда ты подбираешь предмет с земли или переносишь его из сундука.\n\nКаждое уведомление будет содержать:\n\n- иконку и название предмета,\n- новое общее количество в инвентаре,\n- величину прироста (`+N`).\n\nПоложение и время показа будут настраиваемыми.\n\n> **Статус: концепт.** Работающего мода и файла `.jar` пока нет, поэтому загрузки недоступны.\n",
+    "fr": "Inventory Pickup doit afficher une notification compacte lorsque vous ramassez un objet au sol ou le transférez depuis un coffre.\n\nChaque notification contiendra :\n\n- l'icône et le nom de l'objet,\n- le nouveau total de l'inventaire,\n- la quantité gagnée (`+N`).\n\nLa position et la durée d'affichage seront personnalisables.\n\n> **Statut : concept.** Il n'existe pas encore de mod fonctionnel ni de fichier `.jar`, donc aucun téléchargement n'est disponible.\n",
+    "az": "Inventory Pickup modunun məqsədi əşya yerdən götürüldükdə və ya sandıqdan inventara köçürüldükdə ekranda yığcam bildiriş göstərməkdir. Bildirişdə əşyanın ikonu, adı, yeni ümumi sayı və artım miqdarı əks olunacaq. Ekrandakı mövqe və görünmə müddəti tənzimlənə biləcək.\n\n> **Status: konsept.** Hazırda işlək mod və `.jar` faylı yoxdur.\n"
+  }
+}

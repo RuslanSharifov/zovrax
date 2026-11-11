@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 2,
+  "id": "your-developer-id",
+  "displayName": "Your Name",
+  "github": "your-github-username",
+  "avatarUrl": null,
+  "bio": {
+    "en": "A short biography (optional)."
+  },
+  "socials": [
+    {
+      "label": "Website",
+      "url": "https://example.com"
+    }
+  ],
+  "support": {
+    "kofi": null
+  }
+}

@@ -1,0 +1,202 @@
+{
+  "schemaVersion": 2,
+  "site": {
+    "name": "Zovrax",
+    "tagline": {
+      "en": "Minecraft mods, reimagined.",
+      "ru": "Моды для Minecraft, переосмысленные.",
+      "fr": "Des mods Minecraft, repensés."
+    },
+    "description": {
+      "en": "An independent, open-source library of thoughtfully crafted Minecraft Java Edition mods.",
+      "ru": "Независимая библиотека продуманных модов для Minecraft Java Edition с открытым исходным кодом.",
+      "fr": "Une bibliothèque indépendante et open source de mods Minecraft Java Edition soigneusement conçus."
+    },
+    "disclaimer": {
+      "en": "Independent community project. Not affiliated with Mojang or Microsoft.",
+      "ru": "Независимый проект сообщества. Не связан с Mojang или Microsoft.",
+      "fr": "Projet communautaire indépendant. Non affilié à Mojang ni à Microsoft."
+    },
+    "repository": "https://github.com/RuslanSharifov/zovrax",
+    "siteUrl": "https://ruslansharifov.github.io/zovrax/",
+    "defaultLanguage": "en",
+    "languages": [
+      "en",
+      "ru",
+      "fr"
+    ],
+    "support": {
+      "kofi": null
+    }
+  },
+  "categories": [
+    {
+      "id": "hud",
+      "icon": "◫",
+      "accent": "lime",
+      "title": {
+        "en": "HUD & Interface",
+        "ru": "HUD и интерфейс",
+        "fr": "HUD & Interface",
+        "az": "HUD & İnterfeys"
+      },
+      "description": {
+        "en": "Customize what you see",
+        "ru": "Настрой то, что видишь на экране",
+        "fr": "Personnalisez ce que vous voyez",
+        "az": "Oyun ekranını özünə uyğunlaşdır"
+      }
+    },
+    {
+      "id": "quality",
+      "icon": "✧",
+      "accent": "blue",
+      "title": {
+        "en": "Quality of Life",
+        "ru": "Удобство игры",
+        "fr": "Qualité de vie",
+        "az": "Rahatlıq"
+      },
+      "description": {
+        "en": "Small upgrades, big difference",
+        "ru": "Маленькие улучшения, большая разница",
+        "fr": "De petites améliorations, une grande différence",
+        "az": "Kiçik, faydalı təkmilləşdirmələr"
+      }
+    },
+    {
+      "id": "gameplay",
+      "icon": "⌘",
+      "accent": "purple",
+      "title": {
+        "en": "Gameplay",
+        "ru": "Игровые механики",
+        "fr": "Gameplay",
+        "az": "Oyun mexanikası"
+      },
+      "description": {
+        "en": "More ways to play",
+        "ru": "Новые способы играть",
+        "fr": "Plus de façons de jouer",
+        "az": "Yeni mexanikalar və imkanlar"
+      }
+    },
+    {
+      "id": "visual",
+      "icon": "◈",
+      "accent": "orange",
+      "title": {
+        "en": "Visual & Audio",
+        "ru": "Графика и звук",
+        "fr": "Visuel & Audio",
+        "az": "Vizual & Audio"
+      },
+      "description": {
+        "en": "Give your world a new feel",
+        "ru": "Новый облик твоего мира",
+        "fr": "Donnez une nouvelle ambiance à votre monde",
+        "az": "Oyun atmosferini dəyiş"
+      }
+    },
+    {
+      "id": "utility",
+      "icon": "⌁",
+      "accent": "teal",
+      "title": {
+        "en": "Utilities",
+        "ru": "Утилиты",
+        "fr": "Utilitaires",
+        "az": "Alətlər"
+      },
+      "description": {
+        "en": "Useful tools for players",
+        "ru": "Полезные инструменты для игроков",
+        "fr": "Outils pratiques pour les joueurs",
+        "az": "Praktik oyun alətləri"
+      }
+    },
+    {
+      "id": "performance",
+      "icon": "⚡",
+      "accent": "pink",
+      "title": {
+        "en": "Performance",
+        "ru": "Производительность",
+        "fr": "Performance",
+        "az": "Performans"
+      },
+      "description": {
+        "en": "Smooth out the rough edges",
+        "ru": "Сделай игру плавнее",
+        "fr": "Lissez les aspérités",
+        "az": "Daha axıcı oyun təcrübəsi"
+      }
+    }
+  ],
+  "developers": [
+    {
+      "id": "ruslan",
+      "displayName": "Ruslan Sharifov",
+      "github": "RuslanSharifov",
+      "avatarUrl": "https://avatars.githubusercontent.com/u/315340866?v=4",
+      "bio": null,
+      "socials": [],
+      "support": {
+        "kofi": null
+      },
+      "modSlugs": [
+        "inventory-pickup"
+      ]
+    }
+  ],
+  "mods": [
+    {
+      "slug": "inventory-pickup",
+      "name": "Inventory Pickup",
+      "summary": {
+        "en": "A customizable HUD that shows item icons, inventory totals and +gains when you pick up or transfer items.",
+        "ru": "Настраиваемый HUD, который показывает иконки предметов, общее количество в инвентаре и прирост при подборе или переносе предметов.",
+        "fr": "Un HUD personnalisable qui affiche les icônes des objets, les totaux de l'inventaire et les gains lors de la ramassage ou du transfert.",
+        "az": "Yerdən və ya sandıqdan əşya götürdükdə ikon, inventar sayı və +artım göstərən tənzimlənən HUD."
+      },
+      "category": "hud",
+      "status": "planned",
+      "featured": true,
+      "accent": "lime",
+      "icon": "mods/inventory-pickup/assets/icon.svg",
+      "tags": [
+        "HUD",
+        "Inventory",
+        "QoL"
+      ],
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "loaders": [
+        "Fabric"
+      ],
+      "authors": [
+        "ruslan"
+      ],
+      "updatedAt": null,
+      "latestVersion": null
+    }
+  ],
+  "filters": {
+    "minecraftVersions": [
+      "1.21.10"
+    ],
+    "loaders": [
+      "Fabric"
+    ],
+    "tags": [
+      "HUD",
+      "Inventory",
+      "QoL"
+    ]
+  },
+  "counts": {
+    "mods": 1,
+    "developers": 1
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 2,
+  "slug": "your-mod-slug",
+  "name": "Your Mod Name",
+  "category": "utility",
+  "status": "planned",
+  "featured": false,
+  "accent": "lime",
+  "icon": null,
+  "summary": {
+    "en": "One sentence that explains what the mod does."
+  },
+  "minecraftVersions": ["1.21.10"],
+  "loaders": ["Fabric"],
+  "tags": ["Example"],
+  "features": [
+    {
+      "en": "First feature"
+    }
+  ],
+  "license": null,
+  "source": "https://github.com/your-username/your-repo",
+  "authors": ["your-developer-id"],
+  "screenshots": [],
+  "updatedAt": null
+}

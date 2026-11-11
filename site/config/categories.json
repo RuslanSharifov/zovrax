@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 2,
+  "categories": [
+    {
+      "id": "hud",
+      "icon": "◫",
+      "accent": "lime",
+      "title": { "en": "HUD & Interface", "ru": "HUD и интерфейс", "fr": "HUD & Interface", "az": "HUD & İnterfeys" },
+      "description": { "en": "Customize what you see", "ru": "Настрой то, что видишь на экране", "fr": "Personnalisez ce que vous voyez", "az": "Oyun ekranını özünə uyğunlaşdır" }
+    },
+    {
+      "id": "quality",
+      "icon": "✧",
+      "accent": "blue",
+      "title": { "en": "Quality of Life", "ru": "Удобство игры", "fr": "Qualité de vie", "az": "Rahatlıq" },
+      "description": { "en": "Small upgrades, big difference", "ru": "Маленькие улучшения, большая разница", "fr": "De petites améliorations, une grande différence", "az": "Kiçik, faydalı təkmilləşdirmələr" }
+    },
+    {
+      "id": "gameplay",
+      "icon": "⌘",
+      "accent": "purple",
+      "title": { "en": "Gameplay", "ru": "Игровые механики", "fr": "Gameplay", "az": "Oyun mexanikası" },
+      "description": { "en": "More ways to play", "ru": "Новые способы играть", "fr": "Plus de façons de jouer", "az": "Yeni mexanikalar və imkanlar" }
+    },
+    {
+      "id": "visual",
+      "icon": "◈",
+      "accent": "orange",
+      "title": { "en": "Visual & Audio", "ru": "Графика и звук", "fr": "Visuel & Audio", "az": "Vizual & Audio" },
+      "description": { "en": "Give your world a new feel", "ru": "Новый облик твоего мира", "fr": "Donnez une nouvelle ambiance à votre monde", "az": "Oyun atmosferini dəyiş" }
+    },
+    {
+      "id": "utility",
+      "icon": "⌁",
+      "accent": "teal",
+      "title": { "en": "Utilities", "ru": "Утилиты", "fr": "Utilitaires", "az": "Alətlər" },
+      "description": { "en": "Useful tools for players", "ru": "Полезные инструменты для игроков", "fr": "Outils pratiques pour les joueurs", "az": "Praktik oyun alətləri" }
+    },
+    {
+      "id": "performance",
+      "icon": "⚡",
+      "accent": "pink",
+      "title": { "en": "Performance", "ru": "Производительность", "fr": "Performance", "az": "Performans" },
+      "description": { "en": "Smooth out the rough edges", "ru": "Сделай игру плавнее", "fr": "Lissez les aspérités", "az": "Daha axıcı oyun təcrübəsi" }
+    }
+  ]
+}

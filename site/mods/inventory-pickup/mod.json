@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 2,
+  "slug": "inventory-pickup",
+  "name": "Inventory Pickup",
+  "category": "hud",
+  "status": "planned",
+  "featured": true,
+  "accent": "lime",
+  "icon": "assets/icon.svg",
+  "summary": {
+    "en": "A customizable HUD that shows item icons, inventory totals and +gains when you pick up or transfer items.",
+    "ru": "Настраиваемый HUD, который показывает иконки предметов, общее количество в инвентаре и прирост при подборе или переносе предметов.",
+    "fr": "Un HUD personnalisable qui affiche les icônes des objets, les totaux de l'inventaire et les gains lors de la ramassage ou du transfert.",
+    "az": "Yerdən və ya sandıqdan əşya götürdükdə ikon, inventar sayı və +artım göstərən tənzimlənən HUD."
+  },
+  "minecraftVersions": ["1.21.10"],
+  "loaders": ["Fabric"],
+  "tags": ["HUD", "Inventory", "QoL"],
+  "features": [
+    {
+      "en": "Ground pickup notifications",
+      "ru": "Уведомления о подборе предметов с земли",
+      "fr": "Notifications lors du ramassage au sol",
+      "az": "Yerdən əşya götürmə bildirişləri"
+    },
+    {
+      "en": "Chest-to-inventory transfer notifications",
+      "ru": "Уведомления о переносе из сундука в инвентарь",
+      "fr": "Notifications lors des transferts coffre vers inventaire",
+      "az": "Sandıqdan inventara köçürmə bildirişləri"
+    },
+    {
+      "en": "Icon, name, inventory total and +gain",
+      "ru": "Иконка, название, общее количество и прирост",
+      "fr": "Icône, nom, total de l'inventaire et gain",
+      "az": "İkon, ad, ümumi say və +artım göstəricisi"
+    },
+    {
+      "en": "Adjustable HUD positioning",
+      "ru": "Настраиваемое положение HUD",
+      "fr": "Position du HUD ajustable",
+      "az": "Sürüşdürülə bilən HUD yerləşməsi"
+    },
+    {
+      "en": "Animation, duration and appearance settings",
+      "ru": "Настройки анимации, длительности и внешнего вида",
+      "fr": "Réglages d'animation, de durée et d'apparence",
+      "az": "Animasiya, müddət və görünüş parametrləri"
+    }
+  ],
+  "license": null,
+  "source": "https://github.com/RuslanSharifov/zovrax/tree/main/mods/inventory-pickup",
+  "authors": ["ruslan"],
+  "screenshots": [],
+  "updatedAt": null
+}
