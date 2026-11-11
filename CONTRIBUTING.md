@@ -1,28 +1,52 @@
-# Contribute to Zovrax
+# Contributing to Zovrax
 
-Use the **interactive tutorial** at https://ruslansharifov.github.io/zovrax/guide.html to see an example of the complete contribution flow.
+Zovrax publishes mods **only after a maintainer reviews and merges a pull request**. The website is read-only.
 
-## Quick workflow
+1. Fork this repository and create a branch in your fork.
+2. Copy `site/templates/zovrax.json` and `site/templates/ZOVRAX.md` to `mods/your-mod-slug/`; add your actual mod source code and source `README.md`. Keep the folder slug and JSON `slug` identical.
+3. Edit `zovrax.json` for name, category, status, loader(s), Minecraft version(s), author IDs, optional icon and screenshots in `assets/`. The icon path is relative to the mod folder, e.g. `assets/icon.svg`; screenshots use `{"src":"assets/screenshot.png","alt":{"en":"..."}}`. An empty screenshot list is valid.
+4. Write the site's public mod description in **`ZOVRAX.md`** (GitHub-flavored Markdown, including images, lists and tables). You may add `ZOVRAX.ru.md` and `ZOVRAX.fr.md`. Keep `README.md` for project setup and Java build details.
+5. Register your author ID in the `developers` array of `site/data/catalog.json` (GitHub username, avatar, bio, optional socials and Ko-fi). Never invent a donation address. It is fine to leave Ko-fi null.
+6. If your mod is only conceptual, use `"status":"planned"` and `"releases":[]`. Do not add fake binaries. For a real release, add tested `.jar` files to your mod's folder and specify each **relative** file path in the `releases[].downloads[].file` field. Set release Minecraft versions and mod loaders, and optionally override compatibility per download. Multiple releases and files are supported. Change status to `"released"` only after real files exist.
+7. Run `node .github/scripts/build-catalog.mjs` and `node .github/scripts/validate-catalog.mjs`, test the static site locally, and open a pull request. Review and validation are prerequisites for merging.
 
-1. Fork RuslanSharifov/zovrax and create a feature branch.
-2. Put your Java mod source and a README under **mods/<unique-kebab-case-id>/**. Explain building, Minecraft version, loader, licenses, dependencies and testing.
-3. Register your project in **site/data/mods.json** with a unique id, localized AZ/EN summary and description, matching category, authorIds, minecraftVersions, loaders and releases array.
-4. Register your public author record in the **authors** array. A record supports id, displayName, github, avatarUrl, socials (array of label and HTTPS url), and support.coffee (HTTPS url or null).
-5. Run **node .github/scripts/validate-catalog.mjs** and test the website locally.
-6. Open a Pull Request. Owner review is required for publication once GitHub branch protection is enabled.
+## Sample version-specific JAR entry
 
-A mod can be listed with status **planned** or **development** and no releases. Mark a mod **released** only after it has a real tested GitHub Release binary and an accurate download URL. Never invent .jar files or download links.
+```json
+{
+  "version": "1.0.0",
+  "minecraftVersions": ["1.21.10"],
+  "loaders": ["Fabric", "NeoForge"],
+  "downloads": [
+    {
+      "file": "releases/my-mod-1.0.0-fabric.jar",
+      "label": "Fabric",
+      "minecraftVersions": ["1.21.10"],
+      "loaders": ["Fabric"]
+    },
+    {
+      "file": "releases/my-mod-1.0.0-neoforge.jar",
+      "label": "NeoForge",
+      "minecraftVersions": ["1.21.10"],
+      "loaders": ["NeoForge"]
+    }
+  ]
+}
+```
 
-The site displays each mod's author profiles, GitHub link and optional socials. A **Coffee** button appears only when the author has configured a real support.coffee URL. Do not add donation links for another person without permission. Authors own their external fundraising destinations.
+These paths are illustrative; the generator **rejects missing or invalid JAR files**. Do not mark a mod released using this example alone. The website resolves direct download URLs from built assets only.
 
-## Security and copyright
+## Project layout
 
-Do not commit tokens, secrets, malware, spyware or unlicensed Minecraft assets. Never imply Mojang or Microsoft endorsed a mod. Include real source and documentation; a binary alone is not enough. CI syntax checks are not a replacement for manual code review.
+- `mods/<slug>/zovrax.json`: source metadata (your edits)
+- `mods/<slug>/ZOVRAX*.md`: public page description (your edits)
+- `mods/<slug>/README.md`: source / build notes
+- `site/data/catalog.json`: static site configuration, developer records and generated summaries
+- `site/data/mods/<slug>.json`: generated frontend detail JSON (do not edit directly)
+- `.github/scripts/build-catalog.mjs`: generator
+- `site/js/`: frontend and Markdown renderer
+- `site/templates/`: reusable starter templates
 
-## Owner setup (manual GitHub settings)
+**Safety:** No malware, spyware, secrets, copyrighted proprietary assets, or unlicensed code. Mods must provide genuine source and correct licensing/compatibility. Owners should configure GitHub branch rulesets to require PR reviews and CI; a workflow or CODEOWNERS file alone cannot enforce that.
 
-- Enable **Settings → Pages → Build and deployment → Source: GitHub Actions**.
-- Enable **Settings → Rules → Rulesets** (or Branch protection) for main: require pull requests, at least one approval (code owner approval recommended), required status check **Validate catalog and site**, block force pushes and deletions, and minimize bypass permissions. CODEOWNERS only requests reviewers; it does not itself enforce approvals.
-- Check Actions workflow permissions if Pages deployment reports missing permissions.
-
-The integration used to build Zovrax may not have repository-administration permission, so these settings must be applied by the repository owner in GitHub.
+Need help? Use the on-site [contribution guide](https://ruslansharifov.github.io/zovrax/#/contribute) or read [AGENTS.md](AGENTS.md).

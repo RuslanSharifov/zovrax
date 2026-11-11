@@ -41,11 +41,17 @@ function themeButton() {
 }
 
 function languageSelect() {
-  const current = currentLanguage();
-  const select = h('select', { class: 'select select-compact', id: 'lang-select', 'aria-label': t('languageLabel') },
-    LANGUAGES.map(lang => h('option', { value: lang.code, selected: lang.code === current }, `${lang.short} · ${lang.label}`)));
-  select.addEventListener('change', () => setLanguage(select.value));
-  return select;
+  const index = LANGUAGES.findIndex(lang => lang.code === currentLanguage());
+  const current = LANGUAGES[index >= 0 ? index : 0];
+  const next = LANGUAGES[(index + 1) % LANGUAGES.length];
+  return h('button', {
+    type: 'button',
+    class: 'icon-btn lang-cycle',
+    id: 'lang-select',
+    title: `${t('languageLabel')}: ${current.label} → ${next.label}`,
+    'aria-label': `${t('languageLabel')}: ${current.label}. ${next.label}`,
+    onclick: () => setLanguage(next.code),
+  }, icon('globe', { size: 17 }), h('span', null, current.short));
 }
 
 export function renderHeader(site, path) {

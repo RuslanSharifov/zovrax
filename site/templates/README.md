@@ -1,27 +1,5 @@
-# Your Mod Name
+# My Mod — developer notes
 
-A short description of what the mod does and why it exists.
+Place your mod source code, build instructions, dependencies and license here. The website description is read from **ZOVRAX.md** (plus optional ZOVRAX.ru.md and ZOVRAX.fr.md).
 
-## Features
-
-- First feature
-- Second feature
-
-## Installation
-
-1. Install Fabric Loader for the Minecraft version listed in the catalog.
-2. Put the mod `.jar` into your `mods` folder.
-
-## Configuration
-
-Describe any settings here. Screenshots can live in `assets/screenshots/` and be referenced with a relative path:
-
-![Main screen](assets/screenshots/01.png)
-
-## Building from source
-
-Explain how to build the project, for example `./gradlew build`.
-
-## License
-
-State the license of the project.
+Use zovrax.json for catalog metadata, image paths and release/JAR file paths.

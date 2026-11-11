@@ -1,0 +1,28 @@
+{
+  "exampleOnly": true,
+  "release": {
+    "version": "1.0.0",
+    "releasedAt": "2026-11-11",
+    "minecraftVersions": [
+      "1.21.10"
+    ],
+    "loaders": [
+      "Fabric"
+    ],
+    "downloads": [
+      {
+        "file": "releases/my-mod-1.0.0-fabric.jar",
+        "label": "Fabric 1.21.10",
+        "minecraftVersions": [
+          "1.21.10"
+        ],
+        "loaders": [
+          "Fabric"
+        ]
+      }
+    ],
+    "changelog": {
+      "en": "Initial version."
+    }
+  }
+}

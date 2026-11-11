@@ -20,8 +20,14 @@ jobs:
           node-version: '22'
       - name: Check JavaScript
         run: |
+          node --check site/js/views/mod.js
+          node --check site/js/layout.js
+          node --check site/js/views/contribute.js
+          node --check .github/scripts/build-catalog.mjs
           node --check site/app.js
           node --check site/guide.js
           node --check .github/scripts/validate-catalog.mjs
+      - name: Generate catalog from per-mod metadata and site Markdown
+        run: node .github/scripts/build-catalog.mjs
       - name: Validate catalog
         run: node .github/scripts/validate-catalog.mjs

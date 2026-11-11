@@ -1,34 +1,40 @@
-# Zovrax — AI coding agent instructions
+# Zovrax — instructions for AI coding agents
 
-This file is intended to be copied into context for AI helpers contributing to the repository.
+## Architecture
 
-## Map
+Zovrax is a static GitHub Pages app. Its frontend runs in `site/js/` (ES modules), with EN/RU/FR locales in `site/js/i18n/`. The public mod pages are rendered from generated JSON by `site/js/views/mod.js`. GitHub-flavored Markdown is rendered with marked + DOMPurify.
 
-- site/index.html, site/styles.css, site/app.js: static Minecraft mod gallery in AZ and EN.
-- site/guide.html and site/guide.js: interactive contributor tutorial.
-- site/data/mods.json: single source of truth for categories, authors, mods and releases.
-- mods/<id>/: independent mod source folder with README.
-- .github/scripts/validate-catalog.mjs: metadata, attribution and folder checks.
-- .github/workflows/: CI and GitHub Pages deployment.
+**Authoritative mod data lives in `mods/<slug>/`:**
+- `zovrax.json`: metadata; schemaVersion: 2, slug identical to folder
+- `ZOVRAX.md`: public description (English); optional `ZOVRAX.ru.md`, `ZOVRAX.fr.md`
+- `README.md`: Java source/build documentation, not the site's public Markdown
+- `assets/*`: local icon/screenshots/Markdown images
+- `releases/*.jar`: real tested JAR files, referenced by `zovrax.json` under `releases[].downloads[].file`
+
+The generator `.github/scripts/build-catalog.mjs` creates `site/data/catalog.json` summaries, `site/data/mods/<slug>.json` details and copies relevant mod assets/JAR files into static output. Do not manually edit generated per-mod JSON.
+
+Developer profiles currently live under `site/data/catalog.json` → `developers`; new IDs must be added there. Missing Ko-fi links are deliberately hidden. No site-side uploads, logins, database or global star counter exist.
 
 ## Rules
 
-- Preserve the compact root (site/, mods/, .github/ plus essential Markdown files).
-- Never invent author accounts, coffee/donation URLs, downloads, releases, compatibility or successful tests.
-- Planned/in-development mods have releases: []; no download button is shown.
-- Each mod needs a README in mods/<id>/, AZ/EN metadata, an author record and precise Minecraft Java / loader compatibility.
-- Social and coffee links are optional and must be valid public HTTPS URLs; hide absent support buttons.
-- Escape displayed catalog values and apply rel=noopener noreferrer to external links.
-- Keep the UI accessible, mobile-friendly and bilingual.
-- Add real Java code only for the selected Minecraft Java release and correct Fabric/NeoForge API; do not copy source from other mod versions without verification.
-- External contributors submit branches via PR. CI and maintainer review gate main branch only after repo owner activates its ruleset.
-- No secret keys, spyware, questionable executable downloads or copyright violations.
+- Preserve the current visual design, accessible navigation, layout and themes unless asked to redesign them.
+- Do not invent URLs, builds, mod compatibility, ratings or performance figures.
+- A planned/development mod **must** have an empty releases array. Only release real, tested JAR files.
+- Match release version, Minecraft version, loader and per-file download compatibility accurately.
+- Source paths to images and JARs are relative to the mod folder, not arbitrary external URLs.
+- Never add secrets or questionable executable downloads. Review all contributed binaries and source.
+- Escape metadata, sanitize Markdown, and keep all local file paths safe.
+- Keep the three-language switcher EN → RU → FR; no locale should be left with broken UI.
+- Do not bypass PR reviews or push unreviewed mods to the protected main branch.
 
 ## Verification
 
-    node --check site/app.js
-    node --check site/guide.js
-    node .github/scripts/validate-catalog.mjs
-    python -m http.server 8000 --directory site
+```bash
+node .github/scripts/build-catalog.mjs
+node .github/scripts/validate-catalog.mjs
+node --check site/js/views/mod.js
+node --check site/js/views/contribute.js
+python -m http.server 8000 --directory site
+```
 
-Inspect desktop/mobile rendering, accessibility, keyboard navigation and download link integrity. Include tests and risk notes in each PR.
+Check the public page's Markdown, version filters, direct JAR downloads (if published), desktop/mobile layout, keyboard accessibility and GitHub Pages base path. Document any untested behavior in the pull request.

@@ -12,7 +12,7 @@ function kv(label, value) {
   return [h('dt', null, label), h('dd', null, value)];
 }
 
-function releaseCard(release, isLatest) {
+function releaseCard(release, isLatest, downloads = release.downloads) {
   return h('article', { class: 'card release-card' },
     h('div', { class: 'release-head' },
       h('div', null,
@@ -24,13 +24,19 @@ function releaseCard(release, isLatest) {
     h('div', { class: 'chip-row chip-row-tight' },
       release.loaders.map(loader => chip(loader, 'chip-soft')),
       release.minecraftVersions.map(version => chip(version))),
-    release.downloads.length
-      ? h('ul', { class: 'file-list' }, release.downloads.map(file => h('li', { class: 'file-row' },
+    downloads.length
+      ? h('ul', { class: 'file-list' }, downloads.map(file => h('li', { class: 'file-row' },
         h('div', { class: 'file-info' },
           h('strong', null, file.label),
           h('span', { class: 'muted small' }, formatBytes(file.size) ?? ''),
+          h('span', { class: 'chip-row chip-row-tight' },
+            (file.minecraftVersions || release.minecraftVersions).map(version => chip(version)),
+            (file.loaders || release.loaders).map(loader => chip(loader, 'chip-soft'))),
           file.sha256 ? h('code', { class: 'hash', title: file.sha256 }, `${t('fileSha256')}: ${file.sha256}`) : null),
-        h('a', { class: 'btn btn-primary btn-sm', href: file.url, target: '_blank', rel: 'noopener noreferrer' },
+        h('a', { class: 'btn btn-primary btn-sm', href: file.url,
+          download: file.url.startsWith('data/') ? file.name : null,
+          target: file.url.startsWith('https://') ? '_blank' : null,
+          rel: 'noopener noreferrer' },
           icon('download', { size: 16 }), t('actionDownload')))))
       : h('p', { class: 'muted small' }, t('noDownloadsTitle')));
 }
@@ -65,7 +71,10 @@ export async function modView({ params, catalog, onCleanup }) {
           latest ? chip(`v${latest.version}`, 'chip-outline') : null))),
     h('div', { class: 'mod-actions' },
       latestFile
-        ? h('a', { class: 'btn btn-primary', href: latestFile.url, target: '_blank', rel: 'noopener noreferrer' },
+        ? h('a', { class: 'btn btn-primary', href: latestFile.url,
+          download: latestFile.url.startsWith('data/') ? latestFile.name : null,
+          target: latestFile.url.startsWith('https://') ? '_blank' : null,
+          rel: 'noopener noreferrer' },
           icon('download', { size: 17 }), `${t('actionDownload')} · ${latestFile.label}`)
         : h('span', { class: 'muted small' }, t(mod.status === 'archived' ? 'noDownloadsArchived' : mod.status === 'development' ? 'noDownloadsDevelopment' : 'noDownloadsPlanned')),
       favoriteButton(mod.slug, mod.name, { labeled: true }),
@@ -82,6 +91,29 @@ export async function modView({ params, catalog, onCleanup }) {
   const panel = h('div', { class: 'tab-panel', role: 'tabpanel', tabindex: '0' });
   const tabList = h('div', { class: 'tabs', role: 'tablist', 'aria-label': t('modInfo') });
   let activeTab = 'overview';
+  const downloadFilters = { version: 'all', loader: 'all', release: 'all' };
+  const versionChoices = [...new Set([...mod.minecraftVersions, ...mod.releases.flatMap(r => r.minecraftVersions)])];
+  const loaderChoices = [...new Set([...mod.loaders, ...mod.releases.flatMap(r => r.loaders)])];
+  const releaseChoices = [...new Set(mod.releases.map(r => r.version))];
+
+  function downloadSelect(kind) {
+    const isMinecraft = kind === 'version';
+    const options = isMinecraft ? versionChoices : kind === 'loader' ? loaderChoices : releaseChoices;
+    const label = t(isMinecraft ? 'filterVersion' : kind === 'loader' ? 'filterLoader' : 'filterRelease');
+    const allLabel = t(isMinecraft ? 'allVersions' : kind === 'loader' ? 'allLoaders' : 'allReleases');
+    const select = h('select', { class: 'select', 'aria-label': label,
+      dataset: { downloadFilter: kind },
+      onchange: event => {
+        downloadFilters[kind] = event.target.value;
+        for (const item of document.querySelectorAll('[data-download-filter]')) {
+          if (item.dataset.downloadFilter === kind) item.value = downloadFilters[kind];
+        }
+        selectTab('downloads');
+      },
+    }, [['all', allLabel], ...options.map(value => [value, value])].map(([value, text]) =>
+      h('option', { value, selected: value === downloadFilters[kind] }, text)));
+    return h('label', { class: 'field' }, h('span', { class: 'field-label' }, label), select);
+  }
 
   const buttons = tabs.map(tab => h('button', {
     type: 'button',
@@ -110,18 +142,28 @@ export async function modView({ params, catalog, onCleanup }) {
 
   function renderPanel(id) {
     if (id === 'downloads') {
-      if (!mod.releases.length) {
-        const noteKey = {
-          planned: 'noDownloadsPlanned',
-          development: 'noDownloadsDevelopment',
-          archived: 'noDownloadsArchived',
-        }[mod.status] ?? 'noDownloadsPlanned';
-        return h('div', { class: 'empty-state card' },
-          icon('layers', { size: 28 }),
-          h('h2', { class: 'block-title' }, t('noDownloadsTitle')),
-          h('p', { class: 'muted' }, t(noteKey)));
+      const filters = h('div', { class: 'download-filter-bar card' },
+        downloadSelect('version'), downloadSelect('loader'), downloadSelect('release'));
+      const matches = mod.releases.map((release, index) => ({
+        release, index,
+        files: release.downloads.filter(file =>
+          (downloadFilters.release === 'all' || release.version === downloadFilters.release) &&
+          (downloadFilters.version === 'all' || (file.minecraftVersions || release.minecraftVersions).includes(downloadFilters.version)) &&
+          (downloadFilters.loader === 'all' || (file.loaders || release.loaders).includes(downloadFilters.loader))),
+      })).filter(item => item.files.length > 0);
+      if (!matches.length) {
+        const noteKey = mod.releases.length ? 'noDownloadsTitle' : ({
+          planned:'noDownloadsPlanned',
+          development:'noDownloadsDevelopment',
+          archived:'noDownloadsArchived',
+        }[mod.status] ?? 'noDownloadsPlanned');
+        return h('div', { class: 'stack' }, filters,
+          h('div', { class: 'empty-state card' }, icon('layers', { size: 28 }),
+            h('h2', { class: 'block-title' }, t('noDownloadsTitle')),
+            h('p', { class: 'muted' }, t(noteKey))));
       }
-      return h('div', { class: 'stack' }, mod.releases.map((release, index) => releaseCard(release, index === 0)));
+      return h('div', { class: 'stack' }, filters,
+        matches.map(({ release, index, files }) => releaseCard(release, index === 0, files)));
     }
     if (id === 'changelog') {
       const entries = mod.releases.filter(release => release.changelog);
@@ -212,6 +254,15 @@ export async function modView({ params, catalog, onCleanup }) {
         mod.tags.length ? kv(t('modTags'), h('span', { class: 'chip-row chip-row-tight' }, mod.tags.map(tag => chip(tag, 'chip-soft')))) : null,
         kv(t('modUpdated'), formatDate(mod.updatedAt) ?? t('modNotRecorded')),
         kv(t('modLicense'), mod.license ?? t('modNoLicense')))),
+    h('section', { class: 'card aside-downloads' },
+      h('h2', { class: 'block-title' }, t('modDownloads')),
+      downloadSelect('version'),
+      downloadSelect('loader'),
+      downloadSelect('release'),
+      h('button', { type: 'button', class: 'btn btn-primary btn-sm', onclick: () => {
+        selectTab('downloads');
+        tabList.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } }, icon('download', { size: 16 }), t('modDownloads'))),
     h('section', { class: 'card' },
       h('h2', { class: 'block-title' }, t('modAuthors')),
       h('ul', { class: 'author-list' }, mod.authors.map(id => {
