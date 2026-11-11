@@ -1,6 +1,6 @@
 # Inventory Pickup
 
-> **In development — Minecraft Java Edition 1.21.10 + Fabric.** Source code is available, but a tested downloadable `.jar` has not been released.
+> **Public beta 0.1.0 — Minecraft Java Edition 1.21.10 + Fabric.** The JAR is downloadable for testing. It compiles successfully but has **not yet been verified in a live Minecraft session** or with other mods.
 
 A lightweight, client-side HUD mod that turns **inventory item gains** into smooth, animated notifications.
 
@@ -24,4 +24,4 @@ Client only; no server setup or invasive mixins. The approach minimizes conflict
 
 ## Downloads
 
-**No tested binary yet.** The [source project](https://github.com/RuslanSharifov/zovrax/tree/main/mods/inventory-pickup) has Java code and Gradle build files. An actual JAR will be listed here only after build, gameplay verification and publication.
+**Version 0.1.0 (beta)** is available under **Downloads**. Select Minecraft **1.21.10**, loader **Fabric**, and release **0.1.0** to download the real `.jar` directly from Zovrax. Install the matching Fabric Loader and Fabric API, then put the JAR in Minecraft's `mods` directory. Java 21 is required. This is a public test build: please try it and report rendering or mod-compatibility issues. [Source and installation notes](https://github.com/RuslanSharifov/zovrax/tree/main/mods/inventory-pickup).
