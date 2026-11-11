@@ -3,7 +3,7 @@
 Zovrax publishes mods **only after a maintainer reviews and merges a pull request**. The website is read-only.
 
 1. Fork this repository and create a branch in your fork.
-2. Copy `site/templates/zovrax.json` and `site/templates/ZOVRAX.md` to `mods/your-mod-slug/`; add your actual mod source code and source `README.md`. Keep the folder slug and JSON `slug` identical.
+2. Copy the **complete starter folder** `mods/_template/` to `mods/your-mod-slug/` (`cp -R mods/_template mods/your-mod-slug`), then read [`START-HERE.md`](mods/_template/START-HERE.md), the [Azerbaijani guide](mods/_template/GUIDE.az.md) and [`CHECKLIST.md`](mods/_template/CHECKLIST.md). Replace all placeholder values and supply actual mod source and build files. Keep the folder slug and JSON `slug` identical.
 3. Edit `zovrax.json` for name, category, status, loader(s), Minecraft version(s), author IDs, optional icon and screenshots in `assets/`. The icon path is relative to the mod folder, e.g. `assets/icon.svg`; screenshots use `{"src":"assets/screenshot.png","alt":{"en":"..."}}`. An empty screenshot list is valid.
 4. Write the site's public mod description in **`ZOVRAX.md`** (GitHub-flavored Markdown, including images, lists and tables). You may add `ZOVRAX.ru.md` and `ZOVRAX.fr.md`. Keep `README.md` for project setup and Java build details.
 5. Register your author ID in the `developers` array of `site/data/catalog.json` (GitHub username, avatar, bio, optional socials and Ko-fi). Never invent a donation address. It is fine to leave Ko-fi null.
