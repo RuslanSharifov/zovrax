@@ -10,6 +10,10 @@ const random = () => {
   const bytes = crypto.getRandomValues(new Uint8Array(32));
   return btoa(String.fromCharCode(...bytes)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 };
+async function challenge(verifier) {
+  const buf = await crypto.subtle.digest('SHA-256', encoder.encode(verifier));
+  return btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
 async function digest(value) {
   const buf = await crypto.subtle.digest('SHA-256', encoder.encode(value));
   return [...new Uint8Array(buf)].map(x => x.toString(16).padStart(2, '0')).join('');
@@ -43,15 +47,18 @@ async function handle(request, env) {
   if (path === '/health' && method === 'GET') return json({ ok: true });
   if (path === '/auth/github' && method === 'GET') {
     const state = random();
+    const verifier = random();
     const callback = new URL('/auth/callback', url.origin).href;
     const oauth = new URL('https://github.com/login/oauth/authorize');
     oauth.searchParams.set('client_id', env.GITHUB_CLIENT_ID);
     oauth.searchParams.set('redirect_uri', callback);
     oauth.searchParams.set('state', state);
     oauth.searchParams.set('scope', 'read:user');
+    oauth.searchParams.set('code_challenge_method', 'S256');
+    oauth.searchParams.set('code_challenge', await challenge(verifier));
     return new Response(null, { status: 302, headers: {
       location: oauth.href,
-      'set-cookie': `zovrax_oauth=${state}; Path=/auth; Max-Age=600; HttpOnly; Secure; SameSite=Lax`,
+      'set-cookie': `zovrax_oauth=${state}.${verifier}; Path=/auth; Max-Age=600; HttpOnly; Secure; SameSite=Lax`,
       'cache-control': 'no-store',
     } });
   }
@@ -59,14 +66,15 @@ async function handle(request, env) {
   if (path === '/auth/callback' && method === 'GET') {
     const code = url.searchParams.get('code');
     const state = url.searchParams.get('state');
-    const expected = cookieValue(request.headers.get('Cookie'), 'zovrax_oauth');
-    if (!code || !state || !expected || state !== expected) return badRequest('Invalid GitHub OAuth state');
+    const cookie = cookieValue(request.headers.get('Cookie'), 'zovrax_oauth') || '';
+    const [expected, verifier] = cookie.split('.');
+    if (!code || !state || !expected || !verifier || state !== expected) return badRequest('Invalid GitHub OAuth state');
     const callback = new URL('/auth/callback', url.origin).href;
     const tokenResponse = await fetch('https://github.com/login/oauth/access_token', {
       method: 'POST',
       headers: { 'accept': 'application/json', 'content-type': 'application/json' },
       body: JSON.stringify({ client_id: env.GITHUB_CLIENT_ID, client_secret: env.GITHUB_CLIENT_SECRET,
-        code, redirect_uri: callback }),
+        code, redirect_uri: callback, code_verifier: verifier }),
     });
     if (!tokenResponse.ok) return json({ error: 'GitHub token exchange failed' }, 502);
     const tokens = await tokenResponse.json();
