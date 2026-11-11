@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 2,
+  "slug": "my-mod",
+  "name": "My Mod",
+  "category": "hud",
+  "status": "planned",
+  "featured": false,
+  "accent": "lime",
+  "icon": "assets/icon.svg",
+  "summary": {
+    "en": "A short description of your mod.",
+    "ru": "Краткое описание мода.",
+    "fr": "Une courte description de votre mod."
+  },
+  "tags": [],
+  "minecraftVersions": [
+    "1.21.10"
+  ],
+  "loaders": [
+    "Fabric"
+  ],
+  "authors": [
+    "your-github-id"
+  ],
+  "updatedAt": null,
+  "license": "MIT",
+  "source": "https://github.com/RuslanSharifov/zovrax/tree/main/mods/my-mod",
+  "features": [],
+  "screenshots": [],
+  "releases": []
+}
