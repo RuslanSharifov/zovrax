@@ -126,7 +126,7 @@ public final class ArmorHud {
                 0x17312a, (1f - iconAlpha) * .96f);
         }
 
-        int side = c.indicatorSide == 0 ? (c.x > .5d ? 2 : 1) : c.indicatorSide;
+        int side = c.indicatorSide == 0 ? (hand ? 1 : 2) : c.indicatorSide;
         if (side == 3 || labelAlpha <= 0f) return;
 
         boolean numbers = c.durabilityMode == 0 || c.durabilityMode == 2;
