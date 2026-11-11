@@ -8,10 +8,10 @@
   "accent": "teal",
   "icon": "assets/icon.svg",
   "summary": {
-    "en": "A connected armor silhouette HUD with durability bars, numeric health and fully adjustable in-game position.",
-    "ru": "Единый HUD для четырёх частей брони: прочность, числа, перетаскивание и настройка расположения.",
-    "fr": "HUD d’armure relié avec barres de durabilité, valeurs exactes et position personnalisable.",
-    "az": "Dörd zireh hissəsini birləşdirilmiş HUD-da göstərir: can barları, rəqəmlər və sərbəst ekran mövqeyi."
+    "en": "ArmorLine 0.2.0: a vertical, connected armor HUD with configurable durability labels, side placement, and separate layer opacity.",
+    "ru": "ArmorLine 0.2.0: единый вертикальный HUD брони с выбором полосок/чисел, стороны отображения и прозрачности слоёв.",
+    "fr": "ArmorLine 0.2.0 : HUD d’armure vertical relié, durabilité personnalisable et transparence séparée des éléments.",
+    "az": "ArmorLine 0.2.0: şaquli zireh HUD-u, sağ/sol davamlılıq göstəriciləri və ayrı-ayrı şəffaflıq ayarları."
   },
   "tags": [
     "HUD",
@@ -33,38 +33,66 @@
   "source": "https://github.com/RuslanSharifov/zovrax/tree/main/mods/armorline",
   "features": [
     {
-      "en": "One connected four-part armor panel: helmet, chestplate, leggings and boots",
-      "ru": "Единый блок из четырёх элементов: шлем, нагрудник, поножи и ботинки",
-      "fr": "Un seul panneau relié pour casque, plastron, pantalon et bottes"
+      "en": "Connected vertical armor column by default; horizontal layout remains optional",
+      "ru": "Единая вертикальная колонка брони по умолчанию, горизонтальное расположение по желанию",
+      "fr": "Colonne d'armure verticale reliée par défaut, disposition horizontale possible"
     },
     {
-      "en": "Empty slots appear empty; equipment updates live when changed",
-      "ru": "Пустые слоты остаются пустыми; броня обновляется без задержки",
-      "fr": "Les emplacements vides restent visibles et l'équipement se met à jour en direct"
+      "en": "Durability: bars and numbers, bar only, numbers only, or hidden",
+      "ru": "Прочность: полоска с числами, только полоска, только числа или скрыть",
+      "fr": "Durabilité : barres et valeurs, barres seules, valeurs seules ou masquées"
     },
     {
-      "en": "Durability bars and optional exact remaining/maximum values",
-      "ru": "Полоски прочности и необязательные точные значения",
-      "fr": "Barres de durabilité et valeurs exactes facultatives"
+      "en": "Durability indicators on auto, left, right, or hidden side",
+      "ru": "Индикаторы автоматически, слева, справа или скрыты",
+      "fr": "Indicateurs automatiques, à gauche, à droite ou masqués"
     },
     {
-      "en": "Switch between vertical and horizontal connected layouts",
-      "ru": "Вертикальное или горизонтальное расположение",
-      "fr": "Disposition reliée verticale ou horizontale"
+      "en": "Separate opacity sliders for whole HUD, background, armor icons, and durability labels",
+      "ru": "Отдельная прозрачность всего HUD, фона, иконок брони и чисел",
+      "fr": "Opacité indépendante : HUD, fond, icônes d'armure et valeurs"
     },
     {
-      "en": "Press P for in-game settings and drag the whole HUD to reposition",
-      "ru": "Нажмите P для настроек и перемещайте HUD мышью",
-      "fr": "Appuyez sur P pour les réglages et déplacez le HUD à la souris"
+      "en": "Fixed layout changes from the draggable HUD editor; settings persist after Done",
+      "ru": "Исправлено сохранение расположения после Done в редакторе HUD",
+      "fr": "Correction des changements de disposition dans l'éditeur après validation"
     },
     {
-      "en": "Visual size 50–200% and opacity 0–100%, saved per device",
-      "ru": "Размер 50–200%, прозрачность 0–100%; настройки сохраняются",
-      "fr": "Taille 50–200 %, opacité 0–100 % ; réglages sauvegardés"
+      "en": "Live armor changes, empty slots, rebindable P settings, free HUD positioning",
+      "ru": "Обновление брони, пустые слоты, настройки по P и перемещение HUD",
+      "fr": "Armure en direct, emplacements vides, réglages par P et HUD déplaçable"
     }
   ],
   "screenshots": [],
   "releases": [
+    {
+      "version": "0.2.0",
+      "releasedAt": "2026-11-11",
+      "prerelease": true,
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "loaders": [
+        "Fabric"
+      ],
+      "downloads": [
+        {
+          "file": "releases/zovrax-armorline-0.2.0-fabric-1.21.10.jar",
+          "label": "Fabric 1.21.10 · Beta 0.2.0",
+          "minecraftVersions": [
+            "1.21.10"
+          ],
+          "loaders": [
+            "Fabric"
+          ]
+        }
+      ],
+      "changelog": {
+        "en": "**Beta 0.2.0.** Fixes contextual editor controls sometimes not responding when they overlap the draggable HUD. Default vertical connected armor display; optional horizontal layout. Configurable durability indicators (bars and numbers / bars only / numbers only / hidden) on the left/right/automatic side. Independent opacity sliders for overall HUD, background (down to 0%), armor icons, and text/bars. Two-page in-game settings and improved live HUD editor. Previous settings migrate; Inventory Pickup is unaffected. Compilation verified; game testing remains necessary.",
+        "ru": "**Бета 0.2.0.** Исправлена обработка нажатий в редакторе HUD. Вертикальное расположение по умолчанию, полоса/числа прочности и их сторона, независимая прозрачность HUD, фона (до 0%), иконок и текста. Настройки предыдущих версий сохраняются.",
+        "fr": "**Bêta 0.2.0.** Correction des clics dans l'éditeur. Colonne verticale par défaut, barres et valeurs de durabilité configurables à gauche ou à droite, transparence indépendante du HUD, du fond (jusqu'à 0 %), des icônes et du texte. Configuration antérieure préservée."
+      }
+    },
     {
       "version": "0.1.0",
       "releasedAt": "2026-11-11",
