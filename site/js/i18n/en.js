@@ -51,6 +51,8 @@ export default {
   searchPlaceholder: 'Search by name, feature or tag',
   filterCategory: 'Category',
   filterVersion: 'Minecraft version',
+  filterRelease: 'Mod release',
+  allReleases: 'All releases',
   filterLoader: 'Mod loader',
   filterStatus: 'Status',
   allCategories: 'All categories',
