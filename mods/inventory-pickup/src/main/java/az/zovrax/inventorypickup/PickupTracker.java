@@ -28,7 +28,7 @@ public final class PickupTracker {
                 InventoryPickupClient.recordGroundItem(stack.copyWithCount(1), amount);
             }
         } else if (entity instanceof ExperienceOrbEntity orb) {
-            int amount = orb.getExperienceAmount();
+            int amount = orb.getValue();
             if (amount > 0) InventoryPickupClient.recordGroundExperience(amount);
         }
     }
