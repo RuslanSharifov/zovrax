@@ -1,30 +1,28 @@
 # Inventory Pickup
 
-> **Public beta 0.2.0 — Minecraft Java Edition 1.21.10 + Fabric.** The JAR is downloadable for testing. It compiles successfully but has **not yet been verified in a live Minecraft session** or with other mods.
+> **Public beta 0.2.1 — Minecraft Java 1.21.10, Fabric.** A real compiled JAR is available. Gameplay compatibility for this new version still needs testing.
 
-A lightweight, client-side HUD mod that turns **inventory item gains** into smooth, animated notifications.
+Inventory Pickup shows animated HUD messages for **items you actually pick up from the ground** and **experience orbs**. The notification slides into place while fading from 0 to 100%, then slides away and fades out.
 
-## How it works
+## Pickup notifications
 
-Whenever you gain items, a compact card **slides into view while fading from opacity 0 to 1**. It shows the item's original Minecraft icon and name, the **+N** increase and **Total** in inventory. The card then **slides away and fades to opacity 0**.
+- Pick up an item from the ground to see its Minecraft icon, name, **+N gained** and inventory total.
+- Pick up more of the **same item** before the message disappears: its counter updates **in the same card**, and the full display timer **restarts**.
+- Pick up an XP orb to see **Experience · +N XP**. Repeated XP pickups merge and restart the timer too.
+- **No false pickups:** item durability changes, moving stacks inside your inventory, crafting and chest transfers do not count as ground pickups.
 
-Ground pickups, chest-to-inventory transfers and other net gains can trigger it. Simply moving items between your own inventory slots does not cause false notifications.
+XP values represent collected orb values. Enchantments such as Mending may consume part of this XP for repairs.
 
-## Settings in Minecraft
+## In-game settings
 
-Press **O** during gameplay (rebindable in Controls) for a clean Minecraft settings screen using the blurred game background. Sliders adjust duration, fade/slide time, background opacity (1% precision), and maximum notifications. Toggle the mod, +N and inventory total. Select **Customize position & appearance**: drag the notification with the mouse to place it anywhere, or click it to reveal a small panel where you can change notification size (50–200%) and total opacity (0–100%) live. Settings are saved locally.
+Press **O** (rebindable). The clean, blurred Minecraft settings screen includes sliders for duration, animation speed, background opacity (1% increments) and max notifications. You can also toggle the HUD, gain counter and inventory total.
 
-## Compatibility
+Select **Customize position & appearance** to drag a notification anywhere on your screen. Click its preview to adjust its size (50–200%) and transparency (0–100%) visually. Your settings remain saved between sessions.
 
-| Minecraft Java | Loader | Release status |
-| --- | --- | --- |
-| 1.21.10 | Fabric + Fabric API | Development |
+## Compatibility and download
 
-Client only; no server setup or invasive mixins. The approach minimizes conflicts with other mods, but combinations need actual game testing.
+**Minecraft Java 1.21.10 • Fabric + Fabric API • Java 21.**
 
-## Downloads
+Choose **Downloads → 1.21.10 → Fabric → 0.2.1**. Remove older versions of this mod from the `mods` folder before installing the new JAR. Versions **0.2.0** and **0.1.0** are retained for rollback.
 
-**Version 0.2.0 (beta)** is available under **Downloads**. Select Minecraft **1.21.10**, loader **Fabric**, and release **0.2.0** to download the real `.jar` directly from Zovrax. Install the matching Fabric Loader and Fabric API, then put the JAR in Minecraft's `mods` directory. Java 21 is required. This is a public test build: please try it and report rendering or mod-compatibility issues. [Source and installation notes](https://github.com/RuslanSharifov/zovrax/tree/main/mods/inventory-pickup).
-
-
-The previous **0.1.0 beta** remains available in Downloads if you want to roll back.
+This is a client-only beta built in CI. It does not alter inventory contents or require a server installation, but it uses a small read-only client mixin to listen for vanilla pickup events. Please test it in Minecraft and report any missed pickups or mod conflicts.
