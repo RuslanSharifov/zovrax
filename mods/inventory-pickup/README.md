@@ -1,56 +1,47 @@
 # Zovrax Inventory Pickup
 
-**Status: public beta 0.2.0 (0.1.0 remains downloadable).** A genuine Fabric JAR is published under `releases/` and on the Zovrax Downloads tab. Java compile and catalog checks passed. **Live gameplay and coexistence with other mods have not yet been verified.**
+**Current public beta: 0.2.1** for Minecraft Java **1.21.10 / Fabric** (Java 21 and matching Fabric API). Earlier 0.2.0 and 0.1.0 builds remain downloadable.
 
-## Target
+## What 0.2.1 changes
 
-- Minecraft Java Edition **1.21.10**, **Fabric** Loader 0.17.3+.
-- Fabric API `0.136.0+1.21.10`, Java **21**.
-- Client-side only; a dedicated multiplayer server installation is unnecessary.
-- Unique mod ID: `zovrax_inventory_pickup`.
+- Only genuine **ground-item pickups** and collected **experience orbs** generate notifications. A read-only Fabric client mixin observes Minecraft's vanilla pickup animation packet for the local player.
+- Moving items between inventory slots, damaging tools, crafting or moving items out of a chest **does not** trigger a pickup notification.
+- Picking up the **same item again while its toast is visible** updates the existing `+N` counter and inventory total and **restarts the whole display lifetime**. The repeated-pickup merge is always enabled.
+- XP orbs show their own notification, e.g. **Experience · +7 XP**. More XP collected while that toast is active updates the number and resets the timer.
+- All 0.2.0 UI options, HUD sizing, free positioning, transparency and animation remain available.
 
-## Behavior
+**XP caveat:** The XP amount displayed is the picked-up orb's value. An enchanted **Mending** tool may consume some or all of it, so the number may not equal XP added to the experience bar.
 
-Each client tick, the mod aggregates the player inventory by item **and item components**, compares totals against the previous tick, and displays a toast on a net increase. Moving stacks between slots does not generate false notifications. Toasts can be merged by item and show the native item icon, item name, **+N gained** and **inventory total**. Cards slide in and out; text and background opacity animate from **0 to 1 to 0**.
+## In-game configuration
 
-No mixins, packets, commands, server interactions, or inventory changes. The first snapshot after joining/rejoining a world is silent.
+Press **O** in a world (rebindable under Controls). Use native Minecraft sliders for duration, fade, background opacity (1% resolution) and max displayed notifications; toggle the HUD and item labels. Choose **Customize position & appearance** to drag the actual HUD preview and click it to adjust scale and overall opacity. Settings are stored at `config/zovrax-inventory-pickup.json` and your previous positioning settings are preserved.
 
-## In-game settings
+## Install
 
-Press **O** during gameplay to open Minecraft-style settings with the normal blurred background, no colored panel. Native sliders set duration (800–10,000 ms), fade speed (100–900 ms), background opacity in 1% steps, and 1–6 visible notifications. Toggle mod enabled, +N, and inventory total. Choose **Customize position & appearance** to drag the live sample HUD anywhere. Click the sample to edit its size (50–200%) and entire-card opacity (0–100%) while watching the result. Settings persist in `config/zovrax-inventory-pickup.json`; old corner preferences migrate automatically.
+1. Use Minecraft Java **1.21.10**, **Fabric Loader**, **Fabric API** for 1.21.10 and **Java 21**.
+2. Download `zovrax-inventory-pickup-0.2.1-fabric-1.21.10.jar` from Zovrax's **Downloads** section.
+3. Remove the older Inventory Pickup JAR from your instance's `mods` folder and put the **0.2.1** JAR there; do not keep both versions.
+4. Start the game, press **O** to adjust the HUD.
 
-## Build
+## Build from source
 
-From inside this folder, with **Java 21** and **Gradle 9.1** installed:
+With Java 21 and Gradle 9.1 installed:
 
 ```bash
-gradle --no-daemon build
+gradle --no-daemon --project-dir mods/inventory-pickup build
 ```
 
-Build output: `build/libs/`. The remapped JAR (not `-dev` or `-sources`) is the one to test in a matching Fabric client alongside Fabric API. The GitHub Actions workflow performs a real Gradle compile; the public **0.2.0 beta** JAR is available in `releases/` for hands-on in-game testing. The public build has not yet passed that testing. The 0.1.0 beta is retained for rollback.
+The remapped release JAR is in `mods/inventory-pickup/build/libs/`. GitHub Actions builds the actual Minecraft 1.21.10 mod and checks its binary. Builds are automated; **this beta still requires hands-on gameplay testing**.
 
-## Install public beta
+## Testing checklist
 
-1. Install Minecraft Java Edition **1.21.10** and compatible **Fabric Loader**.
-2. Install **Fabric API** for 1.21.10. Use Java **21**.
-3. Download `zovrax-inventory-pickup-0.2.0-fabric-1.21.10.jar` from the Zovrax website or `releases/`.
-4. Copy the JAR to the Minecraft instance's `mods/` folder; launch the game.
-5. Press **O** while playing to open the in-game settings panel.
+- Pick up wood, then pick up the same wood again before its card disappears; **one card should gain the new total and restart its timer**.
+- Pick up a different item; confirm a separate card appears.
+- Damage an axe while mining, move stacks inside the inventory, craft an item or transfer from a chest; **none should produce a ground-pickup card**.
+- Collect XP orbs; confirm the XP card updates on repeated pickups.
+- Check multiplayer, Mending, HUD scaling, compatibility with other HUD mods and saved settings.
+- Report any missed pickups. Client-only packet observation depends on vanilla pickup events being visible on the client.
 
-**Beta warning:** This release compiled successfully, but actual game behavior, UI scaling, and compatibility with other client mods still need verification.
+## License
 
-## Verification checklist
-
-1. Join a Minecraft 1.21.10 Fabric world: no initial pickup flood.
-2. Pick up items from ground; inspect the icon, +N and running total.
-3. Transfer chest items into player inventory; inspect the new totals.
-4. Move stacks among inventory/hotbar slots; **no false gains**.
-5. Press O, change all options, save, restart, verify persistence.
-6. Test multiplayer and screen GUI scale, Sodium/Mod Menu and other HUD mods.
-7. Confirm exit animation and fully faded text/background.
-
-**Limitations:** Any net inventory gain may be reported, including crafting and creative item changes. Icon rendering uses vanilla drawing and appears as the card fades in. No guarantee of zero conflicts is possible without real multi-mod game testing.
-
-## Licensing
-
-MIT; see [LICENSE](LICENSE). Public Zovrax page: [ZOVRAX.md](ZOVRAX.md).
+MIT. See [LICENSE](LICENSE) and [ZOVRAX.md](ZOVRAX.md).

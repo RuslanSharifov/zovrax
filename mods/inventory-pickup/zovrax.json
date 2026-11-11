@@ -8,10 +8,10 @@
   "accent": "lime",
   "icon": "assets/icon.png",
   "summary": {
-    "en": "Beta 0.2.0 for Fabric 1.21.10: animated inventory gains, precise settings sliders and draggable, resizable HUD preview.",
-    "ru": "Бета 0.2.0 для Fabric 1.21.10: уведомления, ползунки настроек и перемещаемый HUD.",
-    "fr": "Bêta 0.2.0 pour Fabric 1.21.10 : notifications, curseurs et HUD repositionnable.",
-    "az": "Fabric 1.21.10 üçün 0.2.0 beta: inventar artım bildirişləri, sürüşdürülən ayarlar və siçanla yerləşdirilən HUD."
+    "en": "Fabric 1.21.10 beta 0.2.1: actual ground item pickups and XP orbs, merged live notifications, and draggable HUD settings.",
+    "ru": "Бета 0.2.1 для Fabric 1.21.10: только предметы с земли и сферы опыта, объединение уведомлений.",
+    "fr": "Bêta 0.2.1 pour Fabric 1.21.10 : objets ramassés au sol et orbes d’XP uniquement, notifications fusionnées.",
+    "az": "Fabric 1.21.10 beta 0.2.1: yalnız yerdən toplanan əşyalar və XP, təkrarlanan bildirişlər birləşdirilir."
   },
   "tags": [
     "HUD",
@@ -32,10 +32,10 @@
   "source": "https://github.com/RuslanSharifov/zovrax/tree/main/mods/inventory-pickup",
   "features": [
     {
-      "en": "Detect net inventory gains including pickups and chest transfers",
-      "ru": "Показывает добавленные в инвентарь предметы",
-      "fr": "Détecte les gains d'objets dans l'inventaire",
-      "az": "Yerdən və sandıqdan gələn əşyaların say artımını izləyir"
+      "en": "Only actual ground item pickups and collected XP orbs trigger notifications",
+      "ru": "Уведомления только для предметов с земли и сфер опыта",
+      "fr": "Notifications uniquement pour les objets au sol et l’XP",
+      "az": "Yalnız yerdən götürülən əşyalar və XP bildiriş yaradır"
     },
     {
       "en": "Slide and fade notifications (0 → 1 → 0)",
@@ -60,10 +60,44 @@
       "ru": "Клиентский мод без миксинов и изменений инвентаря",
       "fr": "Client uniquement, sans mixins ni modification d'inventaire",
       "az": "Client-side, mixin olmadan, inventara müdaxilə etmir"
+    },
+    {
+      "en": "Repeated pickups of the same item update the active counter and restart the timer",
+      "ru": "Повторный подбор того же предмета обновляет счётчик и таймер",
+      "fr": "Les ramassages répétés mettent à jour le compteur et réinitialisent le délai",
+      "az": "Eyni əşya yenidən götürüləndə say artır və bildiriş vaxtı sıfırlanır"
     }
   ],
   "screenshots": [],
   "releases": [
+    {
+      "version": "0.2.1",
+      "releasedAt": "2026-11-11",
+      "prerelease": true,
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "loaders": [
+        "Fabric"
+      ],
+      "downloads": [
+        {
+          "file": "releases/zovrax-inventory-pickup-0.2.1-fabric-1.21.10.jar",
+          "label": "Fabric 1.21.10 · Beta 0.2.1",
+          "minecraftVersions": [
+            "1.21.10"
+          ],
+          "loaders": [
+            "Fabric"
+          ]
+        }
+      ],
+      "changelog": {
+        "en": "**Beta 0.2.1.** Ground pickup animation packets replace inventory snapshot comparisons. Tools losing durability, moving slots, crafting and container transfers no longer trigger pickup notifications. Identical items update the existing message and reset its timer. Experience orbs produce their own merged +XP toasts. Existing 0.2.0 UI and settings are preserved. Java build passed; gameplay needs testing. XP numbers represent orb value and may differ from XP added if Mending consumes experience.",
+        "ru": "**Бета 0.2.1.** Уведомления только при подборе предметов с земли и сфер XP. Повторные предметы объединяются, таймер сбрасывается. Больше нет ложных уведомлений от прочности и слотов. Нужна проверка в игре.",
+        "fr": "**Bêta 0.2.1.** Seuls les objets ramassés au sol et les orbes d’XP déclenchent des notifications. Les objets identiques sont regroupés avec réinitialisation du délai. Aucun faux gain lors du déplacement d’inventaire ou de l’usure d’un outil. Test en jeu requis."
+      }
+    },
     {
       "version": "0.2.0",
       "releasedAt": "2026-11-11",

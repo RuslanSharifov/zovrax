@@ -31,9 +31,10 @@ public final class PickupHudRenderer {
     public void enqueue(ItemStack stack, int amount, int total, PickupConfig config) {
         if (amount <= 0 || stack.isEmpty()) return;
         long now = System.currentTimeMillis();
-        if (config.mergeRepeated) {
+        // 0.2.1 always merges identical visible pickups, regardless of legacy config.
+        {
             for (PickupToast toast : active) {
-                if (ItemStack.areItemsAndComponentsEqual(toast.stack, stack)
+                if (!toast.experience && ItemStack.areItemsAndComponentsEqual(toast.stack, stack)
                         && now - toast.createdAtMillis < config.durationMs) {
                     toast.accumulate(amount, total, now);
                     return;
@@ -41,6 +42,20 @@ public final class PickupHudRenderer {
             }
         }
         active.add(0, new PickupToast(stack, amount, total, now));
+        while (active.size() > config.maxVisible) active.remove(active.size() - 1);
+    }
+
+    public void enqueueExperience(int amount, PickupConfig config) {
+        if (amount <= 0) return;
+        long now = System.currentTimeMillis();
+        for (PickupToast toast : active) {
+            if (toast.experience && now - toast.createdAtMillis < config.durationMs) {
+                toast.accumulate(amount, 0, now);
+                return;
+            }
+        }
+        active.add(0, new PickupToast(new ItemStack(net.minecraft.item.Items.EXPERIENCE_BOTTLE),
+                amount, 0, now, true));
         while (active.size() > config.maxVisible) active.remove(active.size() - 1);
     }
 
@@ -74,19 +89,19 @@ public final class PickupHudRenderer {
                     (scaledHeight(config) + Math.round(GAP * config.notificationScale / 100f));
             // Anchor remains on-screen; slide motion is relative to its chosen position.
             drawNotification(context, client, toast.stack, toast.gain, toast.total,
-                    x + dx, dy, opacity * config.notificationOpacity / 100f, config);
+                    x + dx, dy, opacity * config.notificationOpacity / 100f, config, toast.experience);
         }
     }
 
     public static void drawPreview(DrawContext ctx, PickupConfig config, int x, int y) {
         MinecraftClient client = MinecraftClient.getInstance();
         drawNotification(ctx, client, new ItemStack(net.minecraft.item.Items.DIAMOND), 4, 9,
-                x, y, config.notificationOpacity / 100f, config);
+                x, y, config.notificationOpacity / 100f, config, false);
     }
 
     private static void drawNotification(DrawContext ctx, MinecraftClient client,
                                          ItemStack stack, int gain, int total, int x, int y,
-                                         float opacity, PickupConfig config) {
+                                         float opacity, PickupConfig config, boolean experience) {
         float scale = config.notificationScale / 100f;
         ctx.getMatrices().pushMatrix();
         try {
@@ -98,12 +113,13 @@ public final class PickupHudRenderer {
             ctx.fill(0, 0, 2, HEIGHT, border);
             ctx.fill(0, 0, WIDTH, 1, argb(opacity * .35f, 170, 220, 153));
             if (opacity > .18f) ctx.drawItem(stack, 8, 8);
-            String name = stack.getName().getString();
+            String name = experience ? "Experience" : stack.getName().getString();
             if (name.length() > 25) name = name.substring(0, 24) + "…";
             ctx.drawTextWithShadow(client.textRenderer, name, 31, 6, argb(opacity, 247, 255, 242));
             StringBuilder info = new StringBuilder();
-            if (config.showGain) info.append("+").append(gain);
-            if (config.showTotal) {
+            if (experience) info.append("+").append(gain).append(" XP");
+            else if (config.showGain) info.append("+").append(gain);
+            if (!experience && config.showTotal) {
                 if (!info.isEmpty()) info.append("   ");
                 info.append("Total: ").append(total);
             }

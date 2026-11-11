@@ -24,5 +24,8 @@
     "minecraft": "1.21.10",
     "java": ">=21",
     "fabric-api": "*"
-  }
+  },
+  "mixins": [
+    "zovrax_inventory_pickup.mixins.json"
+  ]
 }
