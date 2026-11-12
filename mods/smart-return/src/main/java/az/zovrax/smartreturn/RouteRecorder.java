@@ -99,7 +99,7 @@ public final class RouteRecorder {
         if (worldObject != mc.world) changeWorld(mc);
         if (mc.player == null || mc.world == null || !config.enabled) return;
         ticks++;
-        if (ticks % 10 != 0) return; // ~2 samples/s, minimal client work
+        if (ticks % 3 != 0) return; // ~6-7 observations/s; no corners skipped at sprint speed
         Vec3d pos = new Vec3d(mc.player.getX(),mc.player.getY(),mc.player.getZ());
         BlockPos feet = mc.player.getBlockPos();
         int roofDepth = mc.world.getTopY(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES,
@@ -111,7 +111,7 @@ public final class RouteRecorder {
             lastOutdoorAt = ticks;
         }
         if (cave) {
-            enclosedTicks += 10;
+            enclosedTicks += 3;
             outdoorTicks = 0;
             if (graph == null || paused) {
                 if (prelude.isEmpty() || prelude.getLast().distanceTo(pos) > 1.2) prelude.addLast(pos);
@@ -119,7 +119,7 @@ public final class RouteRecorder {
             }
             if (enclosedTicks >= 120 && (graph == null || paused)) {
                 if (graph == null || newTripReady
-                        || graph.nearest(pos, 5.0) < 0) {
+                        || prelude.isEmpty() || graph.nearest(prelude.getFirst(), 1.4) < 0) {
                     Vec3d entrance = lastOutdoor != null && ticks - lastOutdoorAt < 1200
                             && lastOutdoor.distanceTo(pos) < 64
                             ? lastOutdoor : prelude.getFirst();
@@ -129,7 +129,8 @@ public final class RouteRecorder {
                     newTripReady = false;
                     for (Vec3d waypoint : prelude) graph.sample(waypoint);
                 } else {
-                    // Resuming the recorded path after returning to the same cave.
+                    // Reattach from a physically nearby old node, never join across a wall.
+                    graph.reconnect(prelude.getFirst());
                     for (Vec3d waypoint : prelude) graph.sample(waypoint);
                 }
                 prelude.clear();
@@ -137,7 +138,7 @@ public final class RouteRecorder {
                 flush();
             }
         } else {
-            outdoorTicks += 10;
+            outdoorTicks += 3;
             enclosedTicks = 0;
             prelude.clear();
             if (graph != null && outdoorTicks >= 120) {
