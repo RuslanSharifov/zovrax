@@ -2,7 +2,7 @@ name: Build HarvestPulse (Fabric 1.21.10)
 
 on:
   push:
-    branches: [feat/harvest-pulse-remote-growth-12110]
+    branches: [main, feat/harvest-pulse-v020-selection-alerts]
     paths:
       - 'mods/harvest-pulse/**'
       - '.github/workflows/build-harvest-pulse.yml'
@@ -17,17 +17,18 @@ permissions:
 
 jobs:
   build:
+    name: Compile and verify HarvestPulse beta 0.2.0
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Unpack initial sources on the dedicated feature branch
-        if: github.event_name == 'push' && github.ref == 'refs/heads/feat/harvest-pulse-remote-growth-12110'
+      - name: Restore source files on the initial dedicated feature branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/feat/harvest-pulse-v020-selection-alerts'
         shell: bash
         run: |
           set -euo pipefail
-          if test -f mods/harvest-pulse/source.bundle.b64; then
-            base64 -d mods/harvest-pulse/source.bundle.b64 | tar -xJf - -C .
-            rm mods/harvest-pulse/source.bundle.b64
+          if test -f mods/harvest-pulse/source-v020.bundle.b64; then
+            base64 -d mods/harvest-pulse/source-v020.bundle.b64 | tar -xJf - -C .
+            rm mods/harvest-pulse/source-v020.bundle.b64
           fi
       - uses: actions/setup-java@v4
         with:
@@ -36,49 +37,53 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '9.1.0'
-      - name: Validate crop proportions, limits, and random-tick probabilities
+      - name: Unit-test field limits and readiness calculations
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p /tmp/harvestpulse-test
-          javac -d /tmp/harvestpulse-test mods/harvest-pulse/src/main/java/az/zovrax/harvestpulse/FieldMath.java mods/harvest-pulse/tools/FieldMathCheck.java
-          java -cp /tmp/harvestpulse-test FieldMathCheck
-      - name: Compile Java 21 / Fabric 1.21.10
+          mkdir -p /tmp/harvestpulse-tests
+          javac -d /tmp/harvestpulse-tests mods/harvest-pulse/src/main/java/az/zovrax/harvestpulse/FieldMath.java mods/harvest-pulse/tools/FieldMathCheck.java
+          java -cp /tmp/harvestpulse-tests FieldMathCheck
+      - name: Compile Java/Fabric mod with Yarn 1.21.10
         run: gradle --no-daemon --project-dir mods/harvest-pulse build
-      - name: Package and verify real mod JAR and 0.1.0 release metadata
+      - name: Prepare real 0.2.0 JAR, keep 0.1.0 for rollback
         run: node mods/harvest-pulse/tools/package-release.mjs
-      - name: Inspect compiled client and server entrypoints
+      - name: Verify client/server classes, render feature and PNG icon
         shell: bash
         run: |
           set -euo pipefail
-          JAR=mods/harvest-pulse/releases/zovrax-harvest-pulse-0.1.0-fabric-1.21.10.jar
+          JAR=mods/harvest-pulse/releases/zovrax-harvest-pulse-0.2.0-fabric-1.21.10.jar
+          test -s "$JAR"
           jar tf "$JAR" | grep -Fx 'fabric.mod.json'
           jar tf "$JAR" | grep -Fx 'az/zovrax/harvestpulse/PulseServer.class'
-          jar tf "$JAR" | grep -Fx 'az/zovrax/harvestpulse/PulsePackets.class'
+          jar tf "$JAR" | grep -Fx 'az/zovrax/harvestpulse/PulseRegionRender.class'
+          jar tf "$JAR" | grep -Fx 'az/zovrax/harvestpulse/HarvestPulsePositionScreen.class'
           jar tf "$JAR" | grep -Fx 'az/zovrax/harvestpulse/HarvestPulseClient.class'
-          jar tf "$JAR" | grep -Fx 'az/zovrax/harvestpulse/HarvestPulseHud.class'
+          jar tf "$JAR" | grep -Fx 'assets/zovrax_harvestpulse/icon.png'
+          unzip -t "$JAR" | tail -n 1
+          test -s mods/harvest-pulse/releases/zovrax-harvest-pulse-0.1.0-fabric-1.21.10.jar
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Generate and validate the Zovrax catalog
+      - name: Build and validate website version/loader download selector
         run: |
           node .github/scripts/build-catalog.mjs
           node .github/scripts/validate-catalog.mjs
       - uses: actions/upload-artifact@v4
         with:
-          name: zovrax-harvest-pulse-0.1.0-fabric-1.21.10
-          path: mods/harvest-pulse/releases/zovrax-harvest-pulse-0.1.0-fabric-1.21.10.jar
+          name: zovrax-harvest-pulse-0.2.0-fabric-1.21.10
+          path: mods/harvest-pulse/releases/zovrax-harvest-pulse-0.2.0-fabric-1.21.10.jar
           if-no-files-found: error
           retention-days: 30
-      - name: Commit reviewed sources, built JAR and metadata to feature branch
-        if: github.event_name == 'push' && github.ref == 'refs/heads/feat/harvest-pulse-remote-growth-12110'
+      - name: Commit verified source, real JAR and release metadata to dedicated branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/feat/harvest-pulse-v020-selection-alerts'
         shell: bash
         run: |
           set -euo pipefail
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A mods/harvest-pulse
           if ! git diff --cached --quiet; then
-            git commit -m 'release(harvest-pulse): compile real Fabric 1.21.10 beta 0.1.0'
-            git push origin HEAD:refs/heads/feat/harvest-pulse-remote-growth-12110
+            git commit -m 'release(harvest-pulse): build Fabric 1.21.10 beta 0.2.0'
+            git push origin HEAD:refs/heads/feat/harvest-pulse-v020-selection-alerts
           fi

@@ -16,6 +16,11 @@ public final class HarvestPulseConfig {
     private static final Path FILE = FabricLoader.getInstance().getConfigDir().resolve("zovrax-harvest-pulse.json");
 
     public boolean enabled = true;
+    /** Maximum per-side field extent; 16, 32, 64 or 128 blocks. */
+    public int selectionLimit = 16;
+    public boolean notifyToast = true;
+    public boolean notifySound = true;
+    public boolean showExistingRegions = true;
     public int scale = 100;
     public int opacity = 100;
     public int backgroundOpacity = 45;
@@ -40,6 +45,9 @@ public final class HarvestPulseConfig {
         public transient boolean loaded;
         public transient boolean sampled;
         public transient long lastSampleMillis;
+        public transient boolean previouslyReady;
+        public transient boolean hasReadyState;
+        public transient long animationStartMillis;
     }
 
     public static HarvestPulseConfig load() {
@@ -61,6 +69,7 @@ public final class HarvestPulseConfig {
     }
 
     public void sanitize() {
+        if (selectionLimit != 16 && selectionLimit != 32 && selectionLimit != 64 && selectionLimit != 128) selectionLimit = 16;
         scale = Math.clamp(scale, 50, 200);
         opacity = Math.clamp(opacity, 0, 100);
         backgroundOpacity = Math.clamp(backgroundOpacity, 0, 100);

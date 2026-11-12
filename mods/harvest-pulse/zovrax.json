@@ -1,17 +1,17 @@
 {
   "schemaVersion": 2,
   "slug": "harvest-pulse",
-  "name": "HarvestPulse",
+  "name": "HarvestPulse — Smart Farm Monitor",
   "category": "hud",
   "status": "released",
   "featured": false,
   "accent": "lime",
   "icon": "assets/icon.svg",
   "summary": {
-    "en": "Name and track up to 8 crop fields with live readiness bars and bell alerts; registered crops can continue growing while you are far away.",
+    "en": "HarvestPulse 0.2.0: configurable 16–128 block farm selection, 3D green/red/cyan overlays, remote crop growth and animated 100% harvest alerts.",
     "ru": "Отслеживайте до 8 полей: прогресс урожая, сигналы готовности и рост растений вдали от игрока.",
     "fr": "Suivez jusqu'à 8 champs : progression, alertes de récolte et pousse des cultures loin du joueur.",
-    "az": "8-ə qədər tarlada yetişmə faizini, bildirişləri və oyunçudan uzaqda da məhsul böyüməsini izləyin."
+    "az": "0.2.0: 16–128 blok tarla seçimi, yaşıl/qırmızı/göy sahə önizləməsi, uzaqda böyümə və animasiyalı hazır məhsul bildirişləri."
   },
   "tags": [
     "Farming",
@@ -34,33 +34,71 @@
   "source": "https://github.com/RuslanSharifov/zovrax/tree/main/mods/harvest-pulse",
   "features": [
     {
-      "en": "Select two opposite farm corners by right-clicking blocks; validated server-side.",
-      "ru": "Выберите два угла поля кликами по блокам.",
-      "fr": "Sélectionnez deux coins opposés du champ en cliquant sur les blocs."
+      "en": "Choose 16, 32, 64 or 128 blocks per field side; server validates each boundary and rejects overlaps.",
+      "ru": "Размер участка 16/32/64/128, проверки и запрет пересечений.",
+      "fr": "Taille 16/32/64/128, limites vérifiées et recouvrements refusés."
     },
     {
-      "en": "Track up to 8 bounded fields (16 x 16) with progress bars and harvestable / total counts.",
-      "ru": "До 8 полей 16 × 16 с прогрессом и счётчиками урожая.",
-      "fr": "Jusqu'à 8 champs de 16 × 16 avec barres et compteurs de récolte."
+      "en": "Terrain-aware translucent in-world preview: green valid, red invalid, cyan already saved fields.",
+      "ru": "Прозрачная разметка: зелёный можно выбрать, красный ошибка, голубой уже сохранено.",
+      "fr": "Aperçu transparent du terrain : vert valide, rouge invalide, cyan déjà enregistré."
     },
     {
-      "en": "Rename, reorder and remove fields; choose always visible, ready-only or hidden.",
-      "ru": "Переименуйте, упорядочьте, удалите поля и выберите режим отображения.",
-      "fr": "Renommez, triez, supprimez les champs et choisissez leur visibilité."
+      "en": "Selection can be canceled with an in-game Cancel button accessible from H.",
+      "ru": "Отмените выделение кнопкой dans le gestionnaire (H).",
+      "fr": "Annulation via le bouton accessible avec H."
     },
     {
-      "en": "A bell appears at 100% readiness; optional percent, count or both.",
-      "ru": "Значок колокольчика при 100%; процент, количество или оба.",
-      "fr": "Cloche à 100 % ; pourcentage, nombre ou les deux."
+      "en": "Crop readiness HUD fades and slides in upon 100%; bell and optional notification toast and sound.",
+      "ru": "При 100 % появляется анимированная строка, звонок, звук и всплывающее уведомление.",
+      "fr": "À 100 %, animation, cloche, son et notification facultatifs."
     },
     {
-      "en": "Server-authoritative remote crop ticks when all players are outside the normal crop-ticking range; capped workload.",
-      "ru": "Сервер выполняет удалённые тики посевов в пределах ограниченной нагрузки.",
-      "fr": "Le serveur simule la pousse à distance avec des limites de charge."
+      "en": "Click the HUD in its editor for opacity, size, alert settings; press and hold or double-click and drag to reposition.",
+      "ru": "Нажатие на HUD — быстрые настройки; удержание или двойной щелчок + перетаскивание — перемещение.",
+      "fr": "Cliquez pour réglages, maintenez ou double-cliquez et faites glisser pour déplacer."
+    },
+    {
+      "en": "Budgeted server-side remote random ticks with real crop snapshots and persistent farm data.",
+      "ru": "Ограниченная фоновая обработка урожая сервером и сохранение полей.",
+      "fr": "Traitement distant limité côté serveur et données persistantes."
+    },
+    {
+      "en": "Fabric mod list shows a packaged 128x128 HarvestPulse icon.",
+      "ru": "В списке модов отображается иконка 128x128.",
+      "fr": "Icône de 128x128 visible dans la liste des mods."
     }
   ],
   "screenshots": [],
   "releases": [
+    {
+      "version": "0.2.0",
+      "releasedAt": "2026-11-12",
+      "prerelease": true,
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "loaders": [
+        "Fabric"
+      ],
+      "downloads": [
+        {
+          "file": "releases/zovrax-harvest-pulse-0.2.0-fabric-1.21.10.jar",
+          "label": "Fabric 1.21.10 · Beta 0.2.0",
+          "minecraftVersions": [
+            "1.21.10"
+          ],
+          "loaders": [
+            "Fabric"
+          ]
+        }
+      ],
+      "changelog": {
+        "en": "Beta 0.2.0: valid/invalid/existing terrain overlays, 16/32/64/128 per-side selector, server-side resource budgets, Cancel selection, animated harvest-complete HUD, toast and sound toggles, and packaged Fabric mod icon. Compiled and catalog-validated; gameplay tests still pending.",
+        "ru": "Бета 0.2.0: выделение полей, размер до 128, уведомления, иконка и ограничение нагрузки сервера.",
+        "fr": "Bêta 0.2.0 : sélection visuelle, champs jusqu’à 128, notifications et icône."
+      }
+    },
     {
       "version": "0.1.0",
       "releasedAt": "2026-11-12",
@@ -84,9 +122,9 @@
         }
       ],
       "changelog": {
-        "en": "First compiled server + client beta. Farm selection, 100% bell, name/mode manager, draggable HUD, bounded remote vanilla-style random ticks and authoritative progress synchronization. Compiled and metadata validated; gameplay tests are still required.",
-        "ru": "Первая бета серверного и клиентского мода с удалённым ростом посевов. Тестирование в игре необходимо.",
-        "fr": "Première bêta client/serveur avec croissance à distance. Test en jeu encore nécessaire."
+        "en": "Initial server + client crop tracking beta, with remote random ticks, configurable field HUD, crop counts and bell at 100%.",
+        "ru": "Первая бета с ростом урожая вдали от игрока.",
+        "fr": "Première bêta avec suivi et pousse à distance."
       }
     }
   ],
