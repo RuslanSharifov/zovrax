@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 2,
+  "slug": "harvest-pulse",
+  "name": "HarvestPulse",
+  "category": "hud",
+  "status": "released",
+  "featured": false,
+  "accent": "lime",
+  "icon": "assets/icon.svg",
+  "summary": {
+    "en": "Name and track up to 8 crop fields with live readiness bars and bell alerts; registered crops can continue growing while you are far away.",
+    "ru": "Отслеживайте до 8 полей: прогресс урожая, сигналы готовности и рост растений вдали от игрока.",
+    "fr": "Suivez jusqu'à 8 champs : progression, alertes de récolte et pousse des cultures loin du joueur.",
+    "az": "8-ə qədər tarlada yetişmə faizini, bildirişləri və oyunçudan uzaqda da məhsul böyüməsini izləyin."
+  },
+  "tags": [
+    "Farming",
+    "Crops",
+    "HUD",
+    "Growth",
+    "Quality of Life"
+  ],
+  "minecraftVersions": [
+    "1.21.10"
+  ],
+  "loaders": [
+    "Fabric"
+  ],
+  "authors": [
+    "ruslan"
+  ],
+  "updatedAt": "2026-11-12",
+  "license": "MIT",
+  "source": "https://github.com/RuslanSharifov/zovrax/tree/main/mods/harvest-pulse",
+  "features": [
+    {
+      "en": "Select two opposite farm corners by right-clicking blocks; validated server-side.",
+      "ru": "Выберите два угла поля кликами по блокам.",
+      "fr": "Sélectionnez deux coins opposés du champ en cliquant sur les blocs."
+    },
+    {
+      "en": "Track up to 8 bounded fields (16 x 16) with progress bars and harvestable / total counts.",
+      "ru": "До 8 полей 16 × 16 с прогрессом и счётчиками урожая.",
+      "fr": "Jusqu'à 8 champs de 16 × 16 avec barres et compteurs de récolte."
+    },
+    {
+      "en": "Rename, reorder and remove fields; choose always visible, ready-only or hidden.",
+      "ru": "Переименуйте, упорядочьте, удалите поля и выберите режим отображения.",
+      "fr": "Renommez, triez, supprimez les champs et choisissez leur visibilité."
+    },
+    {
+      "en": "A bell appears at 100% readiness; optional percent, count or both.",
+      "ru": "Значок колокольчика при 100%; процент, количество или оба.",
+      "fr": "Cloche à 100 % ; pourcentage, nombre ou les deux."
+    },
+    {
+      "en": "Server-authoritative remote crop ticks when all players are outside the normal crop-ticking range; capped workload.",
+      "ru": "Сервер выполняет удалённые тики посевов в пределах ограниченной нагрузки.",
+      "fr": "Le serveur simule la pousse à distance avec des limites de charge."
+    }
+  ],
+  "screenshots": [],
+  "releases": [
+    {
+      "version": "0.1.0",
+      "releasedAt": "2026-11-12",
+      "prerelease": true,
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "loaders": [
+        "Fabric"
+      ],
+      "downloads": [
+        {
+          "file": "releases/zovrax-harvest-pulse-0.1.0-fabric-1.21.10.jar",
+          "label": "Fabric 1.21.10 · Beta 0.1.0",
+          "minecraftVersions": [
+            "1.21.10"
+          ],
+          "loaders": [
+            "Fabric"
+          ]
+        }
+      ],
+      "changelog": {
+        "en": "First compiled server + client beta. Farm selection, 100% bell, name/mode manager, draggable HUD, bounded remote vanilla-style random ticks and authoritative progress synchronization. Compiled and metadata validated; gameplay tests are still required.",
+        "ru": "Первая бета серверного и клиентского мода с удалённым ростом посевов. Тестирование в игре необходимо.",
+        "fr": "Première bêta client/serveur avec croissance à distance. Test en jeu encore nécessaire."
+      }
+    }
+  ],
+  "monetization": {
+    "type": "free",
+    "premiumUrl": null,
+    "premiumLabel": "Get Premium"
+  }
+}

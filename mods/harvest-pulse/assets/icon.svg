@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#14291e"/><stop offset="1" stop-color="#32785b"/></linearGradient><linearGradient id="bar"><stop stop-color="#74ec9f"/><stop offset="1" stop-color="#bff884"/></linearGradient></defs>
+<rect width="256" height="256" rx="42" fill="url(#bg)"/>
+<path d="M32 106L128 53l96 53-96 54z" fill="#4b2e1e" stroke="#c79459" stroke-width="7"/>
+<path d="M32 106v38l96 55v-39z" fill="#65452c"/><path d="M224 106v38l-96 55v-39z" fill="#50341f"/>
+<g fill="#79d474" stroke="#307c40" stroke-width="3">
+<path d="M80 116l0-40m0 16-16-16m16 11 16-18"/><path d="M112 133v-45m0 19-16-18m16 18 16-17"/>
+<path d="M143 119V79m0 17-16-15m16 10 14-16"/><path d="M170 134V94m0 19-14-17m14 11 16-16"/>
+</g>
+<rect x="33" y="189" width="190" height="29" rx="14" fill="#092318" stroke="#cce6ae" stroke-width="3"/>
+<rect x="37" y="193" width="124" height="21" rx="10" fill="url(#bar)"/>
+<g fill="#fef5bf"><path d="M185 175c-6 0-12 6-12 14v14l-5 8h34l-5-8v-14c0-8-6-14-12-14z"/><circle cx="185" cy="215" r="5"/></g>
+</svg>
