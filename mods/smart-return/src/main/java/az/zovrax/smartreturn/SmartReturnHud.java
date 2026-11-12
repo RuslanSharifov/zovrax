@@ -22,10 +22,11 @@ public final class SmartReturnHud {
         MinecraftClient mc=MinecraftClient.getInstance();
         SmartReturnConfig cfg=SmartReturnClient.config();
         RouteRecorder routes=SmartReturnClient.routes();
-        if(!cfg.enabled||!cfg.compass()||!routes.guiding()||
+        if(!cfg.enabled||!routes.guiding()||
             mc.player==null||mc.options.hudHidden||mc.currentScreen!=null)return;
         List<Vec3d> path=routes.guidance();
         if(path.isEmpty())return;
+        if(cfg.compass()) {
         Vec3d player=new Vec3d(mc.player.getX(),mc.player.getY(),mc.player.getZ());
         Vec3d waypoint=path.get(path.size()-1);
         for(Vec3d p:path) {
@@ -49,6 +50,7 @@ public final class SmartReturnHud {
         String label=Text.translatable("smartreturn.hud.return").getString()+
             (direction.isEmpty()?"":" · "+direction)+metres;
         drawCompass(ctx,mc,cfg,visibleAngle,label);
+        }
         if(cfg.throughWalls && cfg.arrows())
             SmartReturnWorldArrows.drawOverlay(ctx,mc,cfg,path);
     }
