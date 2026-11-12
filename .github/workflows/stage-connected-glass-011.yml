@@ -1,0 +1,81 @@
+name: Stage Clear Connected Glass 0.1.1 JAR
+on:
+  push:
+    branches: [fix/clear-connected-glass-release-integration]
+permissions:
+  contents: write
+jobs:
+  stage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Build from repository root (regression test)
+        run: node mods/clear-connected-glass/build.mjs
+      - name: Inspect actual JAR contents
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,struct,zlib,zipfile,pathlib
+          p=pathlib.Path('mods/clear-connected-glass/releases/clear-connected-glass-0.1.1-fabric-1.21.10.jar')
+          assert p.stat().st_size >= 2500
+          with zipfile.ZipFile(p) as z:
+              assert z.testzip() is None
+              manifest=json.loads(z.read('fabric.mod.json'))
+              pack=json.loads(z.read('pack.mcmeta'))
+              assert manifest['id']=='clear_connected_glass'
+              assert manifest['version']=='0.1.1'
+              assert manifest['depends']['minecraft']=='1.21.10'
+              assert 'continuity' in manifest['depends']
+              assert manifest['environment']=='client'
+              assert pack['pack']['min_format']==[69,0]
+              assert pack['pack']['max_format']==[69,0]
+              base='assets/minecraft/optifine/ctm/clear_connected_glass/'
+              ct=z.read(base+'glass.properties').decode()
+              assert 'method=ctm_compact' in ct
+              assert 'tiles=0-4' in ct
+              assert 'matchBlocks=minecraft:glass' in ct
+              names=['assets/minecraft/textures/block/glass.png'] + [base+str(i)+'.png' for i in range(5)]
+              for name in names:
+                  b=z.read(name)
+                  assert b[:8]==b'\x89PNG\r\n\x1a\n'
+                  assert b[12:16]==b'IHDR'
+                  assert struct.unpack('>II',b[16:24])==(16,16)
+                  assert b[25]==6
+                  # Ensure compressed scanlines are actually decodable, not just PNG headers.
+                  p0=8
+                  raw=b''
+                  while p0 < len(b):
+                      n=struct.unpack_from('>I',b,p0)[0]
+                      kind=b[p0+4:p0+8]
+                      data=b[p0+8:p0+8+n]
+                      crc=struct.unpack_from('>I',b,p0+8+n)[0]
+                      assert (zlib.crc32(kind+data)&0xffffffff)==crc
+                      if kind==b'IDAT':raw+=data
+                      p0+=12+n
+                      if kind==b'IEND':break
+                  assert len(zlib.decompress(raw))==16*(1+16*4)
+          print('Valid Fabric resource JAR, 6 RGBA textures, CTM and pack metadata')
+          PY
+      - name: Commit verified JAR to feature branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add mods/clear-connected-glass/releases/clear-connected-glass-0.1.1-fabric-1.21.10.jar
+          if ! git diff --cached --quiet; then
+            git commit -m 'build: add validated Clear Connected Glass 0.1.1 JAR'
+            git fetch origin fix/clear-connected-glass-release-integration
+            git rebase origin/fix/clear-connected-glass-release-integration
+            git push origin HEAD:refs/heads/fix/clear-connected-glass-release-integration
+          fi
