@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 2,
+  "slug": "dayclock",
+  "name": "DayClock HUD",
+  "category": "hud",
+  "status": "released",
+  "featured": false,
+  "accent": "blue",
+  "icon": "assets/icon.svg",
+  "summary": {
+    "en": "Compact in-game clock and day counter with sun/moon sleep indicator, movable HUD and optional XYZ, biome and more.",
+    "ru": "Компактные игровые часы и счётчик дней со значком сна, настройками XYZ, биома и положения HUD.",
+    "fr": "Horloge Minecraft et compteur de jours avec indicateur de sommeil, coordonnées XYZ, biome et HUD déplaçable.",
+    "az": "Minecraft saatı, gün sayğacı və yatmaq vaxtını göstərən günəş/ay işarəsi; koordinat, biom və digər HUD seçimləri."
+  },
+  "tags": [
+    "HUD",
+    "Clock",
+    "Day Counter",
+    "Coordinates",
+    "Biome",
+    "QoL"
+  ],
+  "minecraftVersions": [
+    "1.21.10"
+  ],
+  "loaders": [
+    "Fabric"
+  ],
+  "authors": [
+    "ruslan"
+  ],
+  "updatedAt": "2026-11-12",
+  "license": "MIT",
+  "source": "https://github.com/RuslanSharifov/zovrax/tree/main/mods/dayclock",
+  "features": [
+    {
+      "en": "Default: world day number and in-game 24h clock",
+      "ru": "По умолчанию: номер дня и внутриигровые часы",
+      "fr": "Par défaut : jour du monde et horloge 24 h",
+      "az": "Standart: dünyadakı gün sayı və oyun saatı"
+    },
+    {
+      "en": "Sun becomes a crescent moon when the current dimension and time permit using a bed",
+      "ru": "Солнце сменяется луной в подходящее для сна время и измерение",
+      "fr": "Le soleil devient une lune quand le sommeil est permis",
+      "az": "Yatmaq vaxtı gələndə günəş ayla əvəzlənir"
+    },
+    {
+      "en": "Toggle XYZ, biome, dimension, facing, weather and light independently",
+      "ru": "Включение XYZ, биома, измерения, направления, погоды и освещения",
+      "fr": "Affichez au choix XYZ, biome, dimension, orientation, météo et lumière",
+      "az": "XYZ, biom, ölçü, istiqamət, hava və işıq məlumatlarını ayrıca aç/bağla"
+    },
+    {
+      "en": "K key opens native settings; drag to reposition, change scale and opacity",
+      "ru": "Настройки по K; перемещение HUD, размер и прозрачность",
+      "fr": "Touche K pour les options, déplacement, taille et transparence",
+      "az": "K ilə ayarları aç, paneli sürüşdür, ölçü və şəffaflığı dəyiş"
+    }
+  ],
+  "screenshots": [],
+  "releases": [
+    {
+      "version": "0.1.0",
+      "releasedAt": "2026-11-12",
+      "prerelease": true,
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "loaders": [
+        "Fabric"
+      ],
+      "downloads": [
+        {
+          "file": "releases/zovrax-dayclock-0.1.0-fabric-1.21.10.jar",
+          "label": "Fabric 1.21.10 · Beta 0.1.0",
+          "minecraftVersions": [
+            "1.21.10"
+          ],
+          "loaders": [
+            "Fabric"
+          ]
+        }
+      ],
+      "changelog": {
+        "en": "First free beta. Real Java Fabric client mod with live game clock, world-day counter and bedtime-aware sun/moon icon. Optional XYZ, biome, dimension, direction, weather and light; moveable position, size and opacity. Java compilation and packaging validated; in-game testing pending.",
+        "ru": "Первая бесплатная бета. Скомпилированный Java/Fabric мод: часы, дни, индикатор сна, координаты, биом и настройки HUD. Компиляция проверена; тестирование в игре ещё требуется.",
+        "fr": "Première bêta gratuite. Mod Java/Fabric compilé : heure, jour, indicateur de sommeil, coordonnées, biome et options HUD. Compilation validée ; tests en jeu à effectuer."
+      }
+    }
+  ],
+  "monetization": {
+    "type": "free",
+    "premiumUrl": null,
+    "premiumLabel": "Get Premium"
+  }
+}
