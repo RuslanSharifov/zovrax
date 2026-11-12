@@ -1,0 +1,9 @@
+{
+  "key.category.zovrax_extended_reach.main": "Extended Reach",
+  "key.zovrax_extended_reach.settings": "Open Extended Reach Settings",
+  "screen.zovrax_extended_reach.title": "Extended Reach Settings",
+  "screen.zovrax_extended_reach.distance": "Block reach: %s blocks",
+  "screen.zovrax_extended_reach.help": "Breaking and placing reach · 5–16 blocks",
+  "screen.zovrax_extended_reach.server": "Multiplayer requires the mod on the server too.",
+  "screen.zovrax_extended_reach.done": "Done"
+}

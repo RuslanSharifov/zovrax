@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "zovrax_extended_reach",
+  "version": "${version}",
+  "name": "Extended Reach",
+  "description": "Adjustable 5–16 block breaking and placing distance with server-verified range.",
+  "authors": [
+    "Ruslan Sharifov"
+  ],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "az.zovrax.extendedreach.ExtendedReachMod"
+    ],
+    "client": [
+      "az.zovrax.extendedreach.ExtendedReachClient"
+    ],
+    "modmenu": [
+      "az.zovrax.extendedreach.compat.ExtendedReachModMenu"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.17.3",
+    "minecraft": "1.21.10",
+    "java": ">=21",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "modmenu": "*"
+  }
+}
