@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 2,
+  "slug": "zovrax-aurora",
+  "name": "Zovrax Aurora",
+  "category": "realistic",
+  "status": "released",
+  "summary": {
+    "en": "FPS-conscious adjustable shaderpack with sun/moon shadows, light through leaves, moving plants, stars, animated clouds and reflective water.",
+    "ru": "Настраиваемые шейдеры: тени солнца и луны, свет сквозь листву, ветер, звёзды, облака и водные отражения.",
+    "fr": "Shader configurable avec ombres du soleil et de la lune, lumière à travers les feuilles, vent, étoiles, nuages et reflets.",
+    "az": "Tənzimlənən shader: günəş və ay kölgələri, yarpaqlardan keçən işıq, küləkli bitkilər, ulduzlar, buludlar və su əksləri."
+  },
+  "authors": [
+    "ruslan"
+  ],
+  "minecraftVersions": [
+    "1.21.10"
+  ],
+  "shaderLoaders": [
+    "Iris"
+  ],
+  "tags": [
+    "Shaders",
+    "Iris",
+    "Lighting",
+    "Moonlight",
+    "Clouds",
+    "Water",
+    "Leaves",
+    "FPS"
+  ],
+  "featured": true,
+  "accent": "blue",
+  "updatedAt": "2026-11-12",
+  "icon": "assets/icon.svg",
+  "screenshots": [],
+  "source": "https://github.com/RuslanSharifov/zovrax/tree/main/shaders/zovrax-aurora",
+  "features": [
+    {
+      "en": "Sun/moon shadow maps and configurable light through leaves"
+    },
+    {
+      "en": "Animated leaves, flowers, crops and water"
+    },
+    {
+      "en": "Moving layered clouds and procedural stars"
+    },
+    {
+      "en": "Approximate Fresnel sky and sun reflections"
+    },
+    {
+      "en": "Four profiles and dozens of shader options"
+    }
+  ],
+  "releases": [
+    {
+      "version": "0.1.0-beta",
+      "releasedAt": "2026-11-12",
+      "prerelease": true,
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "shaderLoaders": [
+        "Iris"
+      ],
+      "downloads": [
+        {
+          "label": "Zovrax Aurora beta — Iris ZIP",
+          "file": "releases/zovrax-aurora-0.1.0-beta.zip"
+        }
+      ],
+      "changelog": {
+        "en": "Initial original shaderpack beta: adjustable light, shadow, night sky, plants, clouds, water and post. Runtime GPU testing still required."
+      }
+    }
+  ],
+  "monetization": {
+    "type": "free",
+    "premiumUrl": null
+  },
+  "license": "MIT"
+}

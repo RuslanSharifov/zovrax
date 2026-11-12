@@ -1,0 +1,10 @@
+profile.FAST=FPS maximum
+profile.BALANCED=Équilibré
+profile.HIGH=Élevé
+profile.ULTRA=Ultra
+screen.SHADOW=Lumière et ombres
+screen.SKY=Ciel, soleil et lune
+screen.CLOUD=Nuages
+screen.FOLIAGE=Feuillage et vent
+screen.WATER=Eau et reflets
+screen.POST=Post-traitement

@@ -47,6 +47,16 @@ jobs:
         run: node --test site/js/download-options.test.mjs
       - name: Test shader ZIP and metadata rules
         run: node --test .github/scripts/shaders.test.mjs
+      - name: Verify Aurora shader source and reproducible ZIP
+        run: |
+          node shaders/zovrax-aurora/scripts/build.mjs --check
+          node --test shaders/zovrax-aurora/scripts/test.mjs
+          unzip -t shaders/zovrax-aurora/releases/zovrax-aurora-0.1.0-beta.zip
+      - name: Install GLSL compiler and check Aurora stages
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq glslang-tools
+          node shaders/zovrax-aurora/scripts/check-glsl.mjs
       - name: Test frontend translations and icons
         run: node --test site/tests/i18n.test.mjs
       - name: Generate catalog from per-mod metadata and site Markdown
