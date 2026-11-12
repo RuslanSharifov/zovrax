@@ -843,7 +843,14 @@ h1:focus { outline: none; }
   .float-top, .float-bottom { display: none; }
   .hero-art { padding: 14px 0 20px; }
   .mod-grid, .showcase-static { grid-template-columns: 1fr; }
-  .showcase-item { width: 280px; }
+  /* On touch-sized screens the marquee hid most mods until they scrolled
+     into view, with no way to reveal them by swiping. Show every card. */
+  .showcase { overflow: visible; }
+  .showcase::before, .showcase::after { display: none; }
+  .showcase-track { display: block; width: 100%; animation: none; }
+  .showcase-group { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; padding-right: 0; }
+  .showcase-group[aria-hidden='true'] { display: none; }
+  .showcase-item { width: 100%; min-width: 0; }
   .category-grid { grid-template-columns: 1fr; }
   .mod-hero { padding: 20px; }
   .mod-hero-top { flex-direction: column; }
