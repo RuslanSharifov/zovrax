@@ -18,7 +18,8 @@ json('fabric.mod.json', {
   description:'Nearly invisible, lightly frosted connected glass for Minecraft 1.21.10',
   environment:'client', license:'MIT', authors:['Ruslan Sharifov'],
   contact: { homepage:'https://ruslansharifov.github.io/zovrax/#/mods/clear-connected-glass', sources:'https://github.com/RuslanSharifov/zovrax/tree/main/mods/clear-connected-glass' },
-  depends:{fabricloader:'>=0.17.3', minecraft:'1.21.10', continuity:'*'}
+  depends:{fabricloader:'>=0.17.3', minecraft:'1.21.10'},
+  suggests:{continuity:'*'}
 });
 json('pack.mcmeta', {pack:{description:'Clear Connected Glass 0.1.1 | subtle frost + connected borders', min_format:[69,0], max_format:[69,0]}});
 const crcTable = Array.from({length:256}, (_,n) => {
