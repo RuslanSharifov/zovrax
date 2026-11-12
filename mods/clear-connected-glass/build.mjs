@@ -2,21 +2,26 @@ import fs from 'node:fs';
 import path from 'node:path';
 import zlib from 'node:zlib';
 import { execFileSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 
-const root = process.cwd();
+// Resolve paths relative to this mod, not the shell's working directory.
+// GitHub Actions invokes `node mods/clear-connected-glass/build.mjs` from repo root.
+const root = path.dirname(fileURLToPath(import.meta.url));
 const stage = path.join(root, 'build', 'stage');
-const release = path.join(root, 'releases', 'clear-connected-glass-0.1.0-fabric-1.21.10.jar');
+const release = path.join(root, 'releases', 'clear-connected-glass-0.1.1-fabric-1.21.10.jar');
 fs.rmSync(stage, {recursive: true, force: true});
 fs.mkdirSync(stage, {recursive: true});
 const put = (p, bytes) => { const f = path.join(stage, p); fs.mkdirSync(path.dirname(f), {recursive:true}); fs.writeFileSync(f, bytes); };
 const json = (p, obj) => put(p, JSON.stringify(obj, null, 2) + '\n');
 json('fabric.mod.json', {
-  schemaVersion:1, id:'clear_connected_glass', version:'0.1.0', name:'Clear Connected Glass',
+  schemaVersion:1, id:'clear_connected_glass', version:'0.1.1', name:'Clear Connected Glass',
   description:'Nearly invisible, lightly frosted connected glass for Minecraft 1.21.10',
-  environment:'client', license:'MIT', authors:['Zovrax'],
-  depends:{fabricloader:'>=0.17.3', minecraft:'1.21.10', continuity:'*'}
+  environment:'client', license:'MIT', authors:['Ruslan Sharifov'],
+  contact: { homepage:'https://ruslansharifov.github.io/zovrax/#/mods/clear-connected-glass', sources:'https://github.com/RuslanSharifov/zovrax/tree/main/mods/clear-connected-glass' },
+  depends:{fabricloader:'>=0.17.3', minecraft:'1.21.10'},
+  suggests:{continuity:'*'}
 });
-json('pack.mcmeta', {pack:{description:'Clear Connected Glass 0.1.0 | subtle frost + connected borders', min_format:[69,0], max_format:[69,0]}});
+json('pack.mcmeta', {pack:{description:'Clear Connected Glass 0.1.1 | subtle frost + connected borders', min_format:[69,0], max_format:[69,0]}});
 const crcTable = Array.from({length:256}, (_,n) => {
   for(let i=0;i<8;i++) n=(n&1) ? (0xedb88320^(n>>>1)) : (n>>>1);
   return n>>>0;
@@ -62,7 +67,8 @@ put(folder+'glass.properties',[
   'connect=block', 'innerSeams=false', 'faces=all', ''
 ].join('\n'));
 fs.mkdirSync(path.dirname(release), {recursive:true});
-execFileSync('jar',['--create','--file',release,'-C',stage,'.'],{stdio:'inherit'});
+// Stable archive timestamps keep release JARs reproducible across CI runs.
+execFileSync('jar',['--create','--date=2026-11-12T00:00:00Z','--file',release,'-C',stage,'.'],{stdio:'inherit'});
 const listing=execFileSync('jar',['tf',release],{encoding:'utf8'});
 for(const p of ['fabric.mod.json','pack.mcmeta','assets/minecraft/textures/block/glass.png',folder+'glass.properties',
   ...Array.from({length:5},(_,i)=>folder+i+'.png')])

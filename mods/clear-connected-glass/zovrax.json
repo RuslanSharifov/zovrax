@@ -8,9 +8,9 @@
   "accent": "blue",
   "icon": "assets/icon.svg",
   "summary": {
-    "en": "Crystal-clear glass with subtle frost and seamless connected borders for Fabric 1.21.10 (Continuity required).",
-    "ru": "Почти прозрачное стекло с тонкой ледяной текстурой и соединёнными рамками для Fabric 1.21.10.",
-    "fr": "Verre presque invisible avec un léger effet givré et des bordures connectées pour Fabric 1.21.10."
+    "en": "Near-clear glass for Fabric 1.21.10. Minecraft starts without Continuity; install compatible Continuity for connected glass borders.",
+    "ru": "Почти прозрачное стекло для Fabric 1.21.10. Без Continuity игра запускается; для соединённых границ потребуется Continuity.",
+    "fr": "Verre presque invisible pour Fabric 1.21.10. Le jeu démarre sans Continuity ; installez Continuity pour les bordures connectées."
   },
   "tags": [
     "Glass",
@@ -32,18 +32,51 @@
   "source": "https://github.com/RuslanSharifov/zovrax/tree/main/mods/clear-connected-glass",
   "features": [
     {
-      "en": "Removes the vanilla diagonal glass streaks and adds a gentle frosted tint",
-      "ru": "Убирает стандартные диагональные линии и добавляет лёгкий иней",
-      "fr": "Supprime les rayures diagonales et ajoute un très léger givre"
+      "en": "Nearly invisible frosted clear-glass texture works without Continuity",
+      "ru": "Почти прозрачная текстура обычного стекла работает без Continuity",
+      "fr": "La texture quasi transparente fonctionne sans Continuity"
     },
     {
-      "en": "Compact connected textures hide shared borders between adjoining clear-glass blocks",
-      "ru": "Соединённые текстуры скрывают общие рамки соседних блоков",
-      "fr": "Les textures connectées masquent les bordures communes"
+      "en": "Optional Continuity enables connected textures and suppresses shared borders when supported",
+      "ru": "Дополнительный Continuity позволяет соединять текстуры и скрывать внутренние границы",
+      "fr": "Continuity, facultatif, permet d’unir les textures de verre quand il est compatible"
+    },
+    {
+      "en": "Resource-only client mod; does not block launch when Continuity is not installed",
+      "ru": "Клиентский ресурсный мод; отсутствие Continuity не препятствует запуску",
+      "fr": "Mod de ressources client ; l’absence de Continuity ne bloque pas le jeu"
     }
   ],
   "screenshots": [],
   "releases": [
+    {
+      "version": "0.1.1",
+      "releasedAt": "2026-11-12",
+      "prerelease": true,
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "loaders": [
+        "Fabric"
+      ],
+      "downloads": [
+        {
+          "file": "releases/clear-connected-glass-0.1.1-fabric-1.21.10.jar",
+          "label": "Fabric 1.21.10 · Beta 0.1.1",
+          "minecraftVersions": [
+            "1.21.10"
+          ],
+          "loaders": [
+            "Fabric"
+          ]
+        }
+      ],
+      "changelog": {
+        "en": "**Beta 0.1.1 — startup fix.** Fixes Fabric Loader's `HARD_DEP_NO_CANDIDATE continuity` launch failure by making Continuity a *suggestion* instead of a hard dependency. The standard clear-glass texture works with no Continuity; connected textures still need an installed compatible Continuity version. Fixes repository-root CI build working directory, validates JAR manifest/PNG assets, and preserves 0.1.0 for rollback. Real in-game connected-texture verification is still pending.",
+        "ru": "**Бета 0.1.1.** Исправлена ошибка запуска из-за отсутствия Continuity: теперь он необязателен. Обычная текстура работает без него; соединённые текстуры по-прежнему требуют совместимый Continuity. Исправлена сборка и проверка JAR.",
+        "fr": "**Bêta 0.1.1.** Corrige le refus de démarrer sans Continuity, qui devient facultatif. La texture simple fonctionne sans lui ; les bordures connectées nécessitent toujours Continuity compatible. Compilation et contrôle du JAR améliorés."
+      }
+    },
     {
       "version": "0.1.0",
       "releasedAt": "2026-11-12",

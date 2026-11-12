@@ -1,7 +1,12 @@
-name: Clear Connected Glass preview build
+name: Build Clear Connected Glass (Fabric 1.21.10)
 
 on:
   pull_request:
+    paths:
+      - 'mods/clear-connected-glass/**'
+      - '.github/workflows/clear-connected-glass.yml'
+  push:
+    branches: [main]
     paths:
       - 'mods/clear-connected-glass/**'
       - '.github/workflows/clear-connected-glass.yml'
@@ -28,15 +33,17 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          JAR=mods/clear-connected-glass/releases/clear-connected-glass-0.1.0-fabric-1.21.10.jar
+          JAR=mods/clear-connected-glass/releases/clear-connected-glass-0.1.1-fabric-1.21.10.jar
           jar tf "$JAR" | grep -Fx 'fabric.mod.json'
           jar tf "$JAR" | grep -Fx 'pack.mcmeta'
           jar tf "$JAR" | grep -Fx 'assets/minecraft/optifine/ctm/clear_connected_glass/glass.properties'
           jar tf "$JAR" | grep -Fx 'assets/minecraft/textures/block/glass.png'
+          unzip -p "$JAR" fabric.mod.json | python3 -c 'import json,sys; x=json.load(sys.stdin); assert x["id"]=="clear_connected_glass" and x["version"]=="0.1.1"; assert "continuity" not in x["depends"] and "continuity" in x["suggests"]'
+          git diff --exit-code -- "$JAR" # shipped download matches the deterministic builder
       - name: Validate catalog generation
         run: node .github/scripts/build-catalog.mjs
       - uses: actions/upload-artifact@v4
         with:
           name: clear-connected-glass-preview-fabric-1.21.10
-          path: mods/clear-connected-glass/releases/clear-connected-glass-0.1.0-fabric-1.21.10.jar
+          path: mods/clear-connected-glass/releases/clear-connected-glass-0.1.1-fabric-1.21.10.jar
           if-no-files-found: error
