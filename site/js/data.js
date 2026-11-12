@@ -5,9 +5,14 @@
 const DATA_ROOT = new URL('data/', document.baseURI);
 const SLUG = /^[a-z0-9][a-z0-9-]{1,62}$/;
 const cache = new Map();
+// Use one request version per page load so a mobile browser reload can bypass
+// stale CDN entries from an earlier GitHub Pages deployment.
+const requestVersion = Date.now().toString(36);
 
 async function getJson(relative) {
-  const response = await fetch(new URL(relative, DATA_ROOT));
+  const url = new URL(relative, DATA_ROOT);
+  url.searchParams.set('v', requestVersion);
+  const response = await fetch(url, { cache: 'no-store' });
   if (response.status === 404) return null;
   if (!response.ok) throw new Error(`Failed to load ${relative} (${response.status})`);
   return response.json();
