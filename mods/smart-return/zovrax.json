@@ -95,6 +95,34 @@
         "ru": "Первая бета: запись пещерных маршрутов, стрелки и компас. Компиляция проверена; тестирование в игре требуется.",
         "fr": "Première bêta : chemins mémorisés, flèches et boussole. Compilation vérifiée ; tests en jeu requis."
       }
+    },
+    {
+      "version": "1.0.0",
+      "releasedAt": "2026-11-12",
+      "prerelease": true,
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "loaders": [
+        "Fabric"
+      ],
+      "downloads": [
+        {
+          "file": "releases/zovrax-smart-return-1.0.0-fabric-1.21.10.jar",
+          "label": "Fabric 1.21.10 · 1.0.0 Beta",
+          "minecraftVersions": [
+            "1.21.10"
+          ],
+          "loaders": [
+            "Fabric"
+          ]
+        }
+      ],
+      "changelog": {
+        "en": "1.0.0 beta: multiple saved caves and shortest walking route to nearest recorded entrance, five automatic game languages, smooth moveable/scalable/fading vector compass, ten animated 3D trail styles, optional through-wall overlay, and native settings. Java compilation and tests verified; Minecraft gameplay still requires live testing.",
+        "ru": "1.0.0 бета: несколько пещер, пять языков, десять эффектов, компас с настройками. Сборка проверена; тест в игре нужен.",
+        "fr": "1.0.0 bêta : plusieurs grottes, cinq langues, dix effets et boussole personnalisable. Tests en jeu à faire."
+      }
     }
   ],
   "monetization": {
