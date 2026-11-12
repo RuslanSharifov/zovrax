@@ -33,6 +33,8 @@ export function buildShaderSeo(catalog,site,base,pages) {
   for(const shader of shaders) {
     const url=abs(base,'shader/'+shader.slug+'/'),description=localized(shader.summary),latest=shader.releases[0];
     const downloads=latest?.downloads||[];
+    const allDownloads=shader.releases.flatMap(release=>(release.downloads||[]).map(file=>({...file,release:release.version})));
+
     const app={'@context':'https://schema.org','@type':'SoftwareApplication',name:shader.name,url,description,
       applicationCategory:'GameApplication',applicationSubCategory:'Minecraft shader pack',
       author:shader.authors.map(id=>({'@type':'Person',name:catalog.developers.find(d=>d.id===id)?.displayName||id})),
@@ -47,7 +49,7 @@ export function buildShaderSeo(catalog,site,base,pages) {
       '">Open full shader page</a><a class="button alt" href="'+escape(directory)+'">All shaders</a></div>'+
       '<section><h2>Compatibility</h2><p>Minecraft '+escape(shader.minecraftVersions.join(', '))+
       ' · '+escape(shader.shaderLoaders.join(', '))+'</p></section><section><h2>Downloads</h2>'+
-      (downloads.length?'<ul>'+downloads.map(f=>'<li><a href="'+escape(abs(base,f.url))+'">'+escape(f.label)+
+      (allDownloads.length?'<ul>'+allDownloads.map(f=>'<li>'+escape(f.release)+' · <a href="'+escape(abs(base,f.url))+'">'+escape(f.label)+
       ' (.zip)</a></li>').join('')+'</ul>':'<p>No ZIP is available for download yet.</p>')+'</section>'+
       '<section><h2>About</h2><p>'+escape(shader.readme?.en||'')+'</p></section>';
     const target=path.join(dir,shader.slug);
