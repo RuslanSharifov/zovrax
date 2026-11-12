@@ -9,7 +9,7 @@ Client-side Fabric mod for **Minecraft Java 1.21.10**, built using **Java 21**.
 4. Launch Minecraft 1.21.10. Press **O** in a world to configure the targeted-block border.
 
 ## Features
-- Rainbow mode with adjustable cycle speed, saturation and brightness.
+- Rainbow mode with adjustable cycle speed, saturation and brightness. Each frame uses one cycling hue for the whole block border; this is not a simultaneous per-edge gradient.
 - Solid RGB colors (red, green, blue sliders).
 - Opacity and optional pulsing with speed/depth controls.
 - Approximate outline weight 1–5, block-shape or full-cube outline, and expansion.
