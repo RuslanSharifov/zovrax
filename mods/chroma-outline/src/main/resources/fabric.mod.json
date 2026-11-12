@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "zovrax_chroma_outline",
+  "version": "${version}",
+  "name": "Chroma Outline",
+  "description": "Customizable animated block selection outlines with rainbow and solid colors.",
+  "authors": ["Ruslan Sharifov"],
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": ["az.zovrax.chromaoutline.ChromaOutlineClient"]
+  },
+  "mixins": ["zovrax_chroma_outline.mixins.json"],
+  "depends": {
+    "fabricloader": ">=0.17.3",
+    "minecraft": "1.21.10",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}

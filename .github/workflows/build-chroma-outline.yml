@@ -1,0 +1,59 @@
+name: Build Chroma Outline (Fabric 1.21.10)
+
+on:
+  push:
+    branches: [feat/chroma-outline-fabric-12110, main]
+    paths:
+      - 'mods/chroma-outline/**'
+      - '.github/workflows/build-chroma-outline.yml'
+  pull_request:
+    paths:
+      - 'mods/chroma-outline/**'
+      - '.github/workflows/build-chroma-outline.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Java 21 compile, tests, real JAR and Zovrax catalog
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.1.0'
+      - name: Unit-test pure Java color math
+        run: |
+          mkdir -p /tmp/chroma-outline-tests
+          javac -d /tmp/chroma-outline-tests mods/chroma-outline/src/main/java/az/zovrax/chromaoutline/ColorMath.java mods/chroma-outline/tools/ColorMathCheck.java
+          java -cp /tmp/chroma-outline-tests ColorMathCheck
+      - name: Compile and remap client mod
+        run: gradle --no-daemon --project-dir mods/chroma-outline build
+      - name: Inspect JAR and package actual beta
+        run: node mods/chroma-outline/tools/package-release.mjs
+      - name: Build and validate website catalog
+        run: |
+          node .github/scripts/build-catalog.mjs
+          node .github/scripts/validate-catalog.mjs
+      - name: Upload validated JAR artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: chroma-outline-0.1.0-fabric-1.21.10
+          path: mods/chroma-outline/releases/zovrax-chroma-outline-0.1.0-fabric-1.21.10.jar
+          if-no-files-found: error
+      - name: Commit real JAR and release metadata to feature branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/feat/chroma-outline-fabric-12110'
+        run: |
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git config user.name 'github-actions[bot]'
+          git add mods/chroma-outline/zovrax.json mods/chroma-outline/releases/
+          if ! git diff --cached --quiet; then
+            git commit -m "release(chroma-outline): attach verified Fabric 1.21.10 beta JAR"
+            git push origin HEAD:refs/heads/feat/chroma-outline-fabric-12110
+          fi

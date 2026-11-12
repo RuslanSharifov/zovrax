@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 2,
+  "slug": "chroma-outline",
+  "name": "Chroma Outline",
+  "category": "visual",
+  "status": "development",
+  "featured": false,
+  "accent": "purple",
+  "icon": "assets/icon.svg",
+  "summary": {
+    "en": "Animated rainbow or custom RGB selection outlines with opacity, pulse effects, shape controls and a built-in settings menu.",
+    "ru": "Радужная или однотонная RGB-обводка блоков с прозрачностью, пульсацией и настройками.",
+    "fr": "Contours de blocs RGB ou arc-en-ciel, avec opacité, pulsation et menu de personnalisation.",
+    "az": "Baxdığın blokun rəngli konturu: göyqurşağı, sabit RGB, şəffaflıq, pulsasiya və ayarlar."
+  },
+  "tags": [
+    "Visual",
+    "Block Outline",
+    "Rainbow",
+    "RGB",
+    "Client-side",
+    "Customization"
+  ],
+  "minecraftVersions": [
+    "1.21.10"
+  ],
+  "loaders": [
+    "Fabric"
+  ],
+  "authors": [
+    "ruslan"
+  ],
+  "updatedAt": "2026-11-12",
+  "license": "MIT",
+  "source": "https://github.com/RuslanSharifov/zovrax/tree/main/mods/chroma-outline",
+  "features": [
+    {
+      "en": "Animated rainbow border with adjustable speed, brightness and saturation",
+      "ru": "Радужная анимация с настройкой скорости, яркости и насыщенности",
+      "fr": "Arc-en-ciel animé avec vitesse, luminosité et saturation",
+      "az": "Sürəti, parlaqlığı və doyğunluğu dəyişən göyqurşağı konturu"
+    },
+    {
+      "en": "Custom fixed RGB color and opacity",
+      "ru": "Фиксированный RGB и прозрачность",
+      "fr": "Couleur RGB fixe et opacité",
+      "az": "Sabit RGB rəngi və şəffaflıq"
+    },
+    {
+      "en": "Optional pulse, approximate line thickness, expansion, full cube and presets",
+      "ru": "Пульсация, толщина, расширение и шаблоны",
+      "fr": "Pulsation, épaisseur simulée, agrandissement et profils",
+      "az": "Pulsasiya, təxmini xətt qalınlığı, genişlətmə və hazır seçimlər"
+    },
+    {
+      "en": "Press O for multi-page settings; config saved automatically",
+      "ru": "Настройки клавишей O с сохранением",
+      "fr": "Réglages avec O et sauvegarde automatique",
+      "az": "O düyməsi ilə ayarlar və avtomatik yaddaş"
+    }
+  ],
+  "screenshots": [],
+  "releases": [],
+  "monetization": {
+    "type": "free",
+    "premiumUrl": null,
+    "premiumLabel": "Get Premium"
+  },
+  "seo": {
+    "title": "Chroma Outline — Rainbow & RGB Block Borders for Minecraft | Zovrax",
+    "description": "Custom animated rainbow or solid RGB block outlines for Minecraft Fabric 1.21.10, with opacity, pulse and native settings.",
+    "keywords": [
+      "Minecraft rainbow outline mod",
+      "Fabric block border",
+      "block selection outline RGB",
+      "Chroma Outline",
+      "Zovrax"
+    ]
+  }
+}
