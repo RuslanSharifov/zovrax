@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 2,
+  "slug": "smart-return",
+  "name": "SmartReturn",
+  "category": "quality",
+  "status": "released",
+  "featured": false,
+  "accent": "teal",
+  "icon": "assets/icon.svg",
+  "summary": {
+    "en": "Quietly remembers cave routes, finds shorter returns along paths you actually walked, and displays configurable 3D arrows or a mini compass.",
+    "ru": "Незаметно записывает маршрут в пещере, сокращает петли и показывает путь назад стрелками или мини-компасом.",
+    "fr": "Enregistre discrètement vos trajets souterrains, élimine les détours et guide le retour avec des flèches 3D ou une boussole."
+  },
+  "tags": [
+    "Caves",
+    "Navigation",
+    "Exploration",
+    "QoL",
+    "Singleplayer"
+  ],
+  "minecraftVersions": [
+    "1.21.10"
+  ],
+  "loaders": [
+    "Fabric"
+  ],
+  "authors": [
+    "ruslan"
+  ],
+  "updatedAt": "2026-11-12",
+  "license": "MIT",
+  "source": "https://github.com/RuslanSharifov/zovrax/tree/main/mods/smart-return",
+  "features": [
+    {
+      "en": "Automatic and quiet detection of underground cave trips",
+      "ru": "Автоматическое фоновое определение пещер",
+      "fr": "Détection et suivi automatiques des grottes"
+    },
+    {
+      "en": "One optional reminder after three minutes; never starts navigation by itself",
+      "ru": "Одно необязательное напоминание через три минуты",
+      "fr": "Un rappel facultatif après trois minutes"
+    },
+    {
+      "en": "Loop-aware return routing using previously travelled connected paths",
+      "ru": "Возврат по ранее пройденным путям без лишних петель",
+      "fr": "Retour par des chemins réellement parcourus sans boucles inutiles"
+    },
+    {
+      "en": "Choose 3D arrows, mini compass or both in in-game settings",
+      "ru": "Выберите стрелки 3D, мини-компас или оба варианта",
+      "fr": "Choisissez les flèches 3D, la mini-boussole ou les deux"
+    }
+  ],
+  "screenshots": [],
+  "releases": [
+    {
+      "version": "0.1.0",
+      "releasedAt": "2026-11-12",
+      "prerelease": true,
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "loaders": [
+        "Fabric"
+      ],
+      "downloads": [
+        {
+          "file": "releases/zovrax-smart-return-0.1.0-fabric-1.21.10.jar",
+          "label": "Fabric 1.21.10 · Beta 0.1.0",
+          "minecraftVersions": [
+            "1.21.10"
+          ],
+          "loaders": [
+            "Fabric"
+          ]
+        }
+      ],
+      "changelog": {
+        "en": "Initial beta: quiet automatic cave detection, persistent route graph with loop-shortened walked returns, optional reminder, manual guidance, 3D arrow markers and/or mini compass, native settings. Build and archive checks passed; live Minecraft testing is still required.",
+        "ru": "Первая бета: запись пещерных маршрутов, стрелки и компас. Компиляция проверена; тестирование в игре требуется.",
+        "fr": "Première bêta : chemins mémorisés, flèches et boussole. Compilation vérifiée ; tests en jeu requis."
+      }
+    }
+  ],
+  "monetization": {
+    "type": "free",
+    "premiumUrl": null,
+    "premiumLabel": "Get Premium"
+  }
+}

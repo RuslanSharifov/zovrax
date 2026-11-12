@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="SmartReturn">
+<defs><linearGradient id="a" x2="1" y2="1"><stop stop-color="#122c35"/><stop offset="1" stop-color="#0b181e"/></linearGradient></defs>
+<rect width="256" height="256" rx="48" fill="url(#a)"/>
+<path d="M208 73H113c-33 0-54 21-54 53s21 53 54 53h25" stroke="#53e5c2" stroke-width="19" fill="none" stroke-linecap="round"/>
+<path d="m115 144 35 35-35 35" fill="none" stroke="#edfdf7" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="208" cy="73" r="14" fill="#f1d279"/></svg>

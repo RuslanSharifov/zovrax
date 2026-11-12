@@ -1,0 +1,125 @@
+name: Build SmartReturn (Fabric 1.21.10)
+
+on:
+  push:
+    branches: [main, feature/smart-return]
+    paths:
+      - 'mods/smart-return/**'
+      - '.github/workflows/build-smart-return.yml'
+  pull_request:
+    paths:
+      - 'mods/smart-return/**'
+      - '.github/workflows/build-smart-return.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: smart-return-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.1.0'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Compile real Fabric mod
+        run: gradle --no-daemon --project-dir mods/smart-return build
+      - name: Inspect compiled Java classes and Fabric manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          JAR=mods/smart-return/build/libs/zovrax-smart-return-0.1.0.jar
+          test -s "$JAR"
+          python3 - <<'PY'
+          import zipfile,json
+          jar='mods/smart-return/build/libs/zovrax-smart-return-0.1.0.jar'
+          with zipfile.ZipFile(jar) as z:
+              assert z.testzip() is None
+              meta=json.loads(z.read('fabric.mod.json'))
+              assert meta['id']=='zovrax_smart_return'
+              assert meta['version']=='0.1.0'
+              assert meta['depends']['minecraft']=='1.21.10'
+              assert meta['environment']=='client'
+              for cls in ('SmartReturnClient','RouteRecorder','RouteGraph','SmartReturnConfig','SmartReturnHud','SmartReturnWorldArrows','SmartReturnSettings'):
+                  assert 'az/zovrax/smartreturn/'+cls+'.class' in z.namelist(),cls
+          print('SmartReturn: valid Fabric archive and required compiled classes')
+          PY
+      - name: Publish verified JAR to feature branch and write release metadata
+        if: github.event_name == 'push' && github.ref == 'refs/heads/feature/smart-return' && !contains(github.event.head_commit.message, '[generated jar]')
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,shutil,zipfile
+          from pathlib import Path
+          root=Path('mods/smart-return')
+          name='zovrax-smart-return-0.1.0-fabric-1.21.10.jar'
+          (root/'releases').mkdir(exist_ok=True)
+          built=root/'build/libs/zovrax-smart-return-0.1.0.jar'
+          released=root/'releases'/name
+          def equivalent(a,b):
+              if not b.is_file(): return False
+              with zipfile.ZipFile(a) as new, zipfile.ZipFile(b) as old:
+                  paths=[p for p in new.namelist() if p.endswith('.class') or p.endswith('.json')]
+                  return all(p in old.namelist() and new.read(p)==old.read(p) for p in paths)
+          if not equivalent(built,released):
+              shutil.copyfile(built,released)
+          file=root/'zovrax.json'
+          m=json.loads(file.read_text())
+          m['status']='released'
+          m['releases']=[{
+              'version':'0.1.0','releasedAt':'2026-11-12','prerelease':True,
+              'minecraftVersions':['1.21.10'],'loaders':['Fabric'],
+              'downloads':[{'file':'releases/'+name,'label':'Fabric 1.21.10 · Beta 0.1.0','minecraftVersions':['1.21.10'],'loaders':['Fabric']}],
+              'changelog':{'en':'Initial beta: quiet automatic cave detection, persistent route graph with loop-shortened walked returns, optional reminder, manual guidance, 3D arrow markers and/or mini compass, native settings. Build and archive checks passed; live Minecraft testing is still required.','ru':'Первая бета: запись пещерных маршрутов, стрелки и компас. Компиляция проверена; тестирование в игре требуется.','fr':'Première bêta : chemins mémorisés, flèches et boussole. Compilation vérifiée ; tests en jeu requis.'}
+          }]
+          file.write_text(json.dumps(m,ensure_ascii=False,indent=2)+'\n')
+          print('Release JAR and metadata generated')
+          PY
+          node .github/scripts/build-catalog.mjs
+          node .github/scripts/validate-catalog.mjs
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add mods/smart-return/releases/zovrax-smart-return-0.1.0-fabric-1.21.10.jar mods/smart-return/zovrax.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'release(smart-return): add compiled Fabric beta [generated jar]'
+            git push origin HEAD:refs/heads/feature/smart-return
+          fi
+      - name: Verify the offered release contains this source's compiled classes
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import zipfile
+          from pathlib import Path
+          built=Path('mods/smart-return/build/libs/zovrax-smart-return-0.1.0.jar')
+          release=Path('mods/smart-return/releases/zovrax-smart-return-0.1.0-fabric-1.21.10.jar')
+          assert release.is_file(), 'Released JAR is missing'
+          with zipfile.ZipFile(built) as expected, zipfile.ZipFile(release) as actual:
+              assert actual.testzip() is None
+              entries=[p for p in expected.namelist() if p.endswith('.class') or p.endswith('.json')]
+              assert all(p in actual.namelist() and expected.read(p)==actual.read(p) for p in entries), 'Stale or inconsistent release JAR'
+          print('Release Java bytecode and Fabric JSON match the source build')
+          PY
+      - name: Validate site catalog
+        run: |
+          node .github/scripts/build-catalog.mjs
+          node .github/scripts/validate-catalog.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: zovrax-smart-return-0.1.0-fabric-1.21.10
+          path: mods/smart-return/build/libs/zovrax-smart-return-0.1.0.jar
+          if-no-files-found: error

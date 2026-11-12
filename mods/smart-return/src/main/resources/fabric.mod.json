@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "zovrax_smart_return",
+  "version": "0.1.0",
+  "name": "Zovrax SmartReturn",
+  "description": "Quiet cave-route recording with player-controlled return arrows and compass.",
+  "authors": [
+    "Ruslan Sharifov"
+  ],
+  "contact": {
+    "homepage": "https://ruslansharifov.github.io/zovrax/",
+    "sources": "https://github.com/RuslanSharifov/zovrax"
+  },
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "az.zovrax.smartreturn.SmartReturnClient"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.17.3",
+    "minecraft": "1.21.10",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
