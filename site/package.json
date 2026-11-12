@@ -2,14 +2,14 @@
   "name": "zovrax",
   "version": "2.0.0",
   "private": true,
-  "description": "Zovrax: an open-source Minecraft Java Edition mod catalog, served as a static site on GitHub Pages.",
+  "description": "Zovrax: independent Minecraft Java Edition mod and shaderpack catalog, deployed to GitHub Pages.",
   "type": "module",
   "engines": {
     "node": ">=20"
   },
   "scripts": {
-    "build": "node scripts/build-catalog.mjs",
-    "validate": "node scripts/build-catalog.mjs --check",
+    "build": "cd .. && node .github/scripts/build-catalog.mjs",
+    "validate": "cd .. && node .github/scripts/build-catalog.mjs && node .github/scripts/validate-catalog.mjs",
     "test": "node --test",
     "check": "npm run validate && npm test",
     "start": "node scripts/serve.mjs",

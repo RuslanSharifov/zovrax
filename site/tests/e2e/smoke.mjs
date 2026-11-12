@@ -10,6 +10,7 @@ const BASE = process.env.ZOVRAX_URL ?? 'http://localhost:8080/';
 const ROUTES = [
   ['#/', 'h1'],
   ['#/mods', 'h1'],
+  ['#/shaders', 'h1'],
   ['#/mods/inventory-pickup', 'h1'],
   ['#/developers', 'h1'],
   ['#/developers/ruslan', 'h1'],
@@ -36,6 +37,10 @@ try {
     check(true, `route renders: ${route}`);
   }
 
+  await page.goto(`${BASE}#/shaders`);
+  await page.waitForSelector('#shader-results');
+  check(await page.locator('#app h1').innerText() !== '', 'shader catalog renders without a released ZIP');
+
   await page.goto(`${BASE}#/nope`);
   await page.waitForSelector('#app h1');
   check((await page.locator('#app h1').innerText()).length > 0, 'unknown route shows a not-found page');
@@ -51,9 +56,15 @@ try {
   await page.locator('.mod-card .fav-btn').first().click();
   check(await page.evaluate(() => JSON.parse(localStorage.getItem('zovrax.favorites.v1') ?? '[]').length) === 1, 'favorites persist to localStorage');
 
-  await page.selectOption('#lang-select', 'ru');
-  await page.waitForTimeout(200);
-  check(await page.evaluate(() => document.documentElement.lang) === 'ru', 'switching to Russian updates <html lang>');
+  // The language control is a button that cycles EN -> RU -> FR, not a select.
+  // Old selectOption('#lang-select', ...) failed even when the live site worked.
+  for (let attempt = 0; attempt < 3; attempt++) {
+    if (await page.locator('html').getAttribute('lang') === 'ru') break;
+    await page.locator('#lang-select').click();
+  }
+  check(await page.locator('html').getAttribute('lang') === 'ru', 'language button switches to Russian');
+  check(await page.locator('a.site-nav-link[href="#/mods"]').innerText() === 'Моды', 'Russian navigation labels the mod catalog Моды');
+  check(await page.locator('#explore-title').innerText() === 'Моды', 'Russian mod page heading matches navigation');
 
   const themeBefore = await page.evaluate(() => document.documentElement.dataset.theme);
   await page.click('#theme-toggle');

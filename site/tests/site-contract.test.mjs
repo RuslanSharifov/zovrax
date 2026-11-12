@@ -35,3 +35,11 @@ test('GitHub Pages deployment workflow exists and validates before deploying', a
   assert.match(workflow, /npm run check/);
   assert.match(workflow, /upload-pages-artifact/);
 });
+
+test('site npm build and validation use the authoritative root catalog generator', async () => {
+  const pkg = JSON.parse(await fs.readFile(path.join(root, 'package.json'), 'utf8'));
+  assert.match(pkg.scripts.build, /\.github\/scripts\/build-catalog\.mjs/);
+  assert.match(pkg.scripts.validate, /\.github\/scripts\/build-catalog\.mjs/);
+  assert.match(pkg.scripts.validate, /\.github\/scripts\/validate-catalog\.mjs/);
+  assert.doesNotMatch(pkg.scripts.build, /node scripts\/build-catalog\.mjs/);
+});

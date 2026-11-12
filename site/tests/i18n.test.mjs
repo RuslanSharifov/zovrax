@@ -64,3 +64,12 @@ test('every icon name used in the UI is defined', async () => {
   const unknown = [...used].filter(name => !defined.has(name));
   assert.deepEqual(unknown, []);
 });
+
+test('the mod directory is named in all supported languages', async () => {
+  const names = { en: 'Mods', ru: 'Моды', fr: 'Mods' };
+  for (const [lang, expected] of Object.entries(names)) {
+    const messages = await load(lang);
+    assert.equal(messages.navExplore, expected, lang + ' navigation label');
+    assert.equal(messages.exploreTitle, expected, lang + ' page heading');
+  }
+});

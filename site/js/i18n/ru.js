@@ -75,7 +75,7 @@ export default {
   viewAll: 'Все моды',
   artCaption: 'Z / ЭКСПЕРИМЕНТАЛЬНЫЕ ИНТЕРФЕЙСЫ',
   artStatus: 'В разработке',
-  exploreTitle: 'Каталог модов',
+  exploreTitle: 'Моды',
   exploreLead: 'Ищи по каталогу, фильтруй по версии Minecraft и загрузчику и сохраняй моды, которые хочешь попробовать.',
   searchLabel: 'Поиск модов',
   searchPlaceholder: 'Поиск по названию, функции или тегу',
