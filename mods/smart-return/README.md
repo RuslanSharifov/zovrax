@@ -1,47 +1,46 @@
-# ZOVRAX SmartReturn
+# SmartReturn 1.0.0 Beta
 
-Independent client-side cave return aid for **Minecraft Java 1.21.10 / Fabric / Java 21**. Requires Fabric API. No server installation, Mixin or optional mod is required.
+Independent, client-side Minecraft Java **1.21.10 Fabric** mod. Requires **Java 21**, Fabric Loader and Fabric API. No server installation or other ZOVRAX mod is needed.
 
-## What it does
+## Quick start
 
-- Quietly begins a cave route after a sustained (about 6 seconds) underground signal: no open sky and at least 8 blocks below the column's top terrain.
-- Remembers a recent outdoor point as the possible entrance, replaying the early underground steps so the route starts before the optional reminder.
-- Once in a recorded cave for three minutes, can display **one** subtle action-bar reminder. It never switches on guidance by itself. Recording continues if ignored.
-- **R** toggles homeward directions. **K** opens in-game settings; both controls are rebindable in vanilla Minecraft Controls.
-- Configurable **3D chevron markers**, **mini compass**, or **both**, and optional distance estimation.
-- Path graph merges nearby *walked* locations and finds the shortest route through actually recorded steps. **It does not tunnel through unvisited blocks, teleport, walk for you, or promise that old tunnels are still open.**
-- Routes persist to a separate per-world/per-dimension JSON file across game restarts. Only the latest recorded cave route for each world/dimension is retained; when another cave is detected the older route is replaced. Settings include **Forget saved cave route**.
+1. Copy the real released JAR into your Minecraft mods directory.
+2. Walk into a cave. SmartReturn begins saving visited coordinates after detecting sustained underground conditions.
+3. Press **R** to toggle route guidance manually; press **K** to open native Minecraft settings. Both keys can be rebound through Controls.
+4. Configure the 3D trail, a mini compass, or both. No reminder can activate navigation on its own.
 
-## Installation
+## New in 1.0.0
 
-1. Install Minecraft Java **1.21.10** with **Fabric Loader 0.17.3+** and **Java 21**.
-2. Install a compatible **Fabric API** for Minecraft 1.21.10.
-3. Put the real release JAR from the ZOVRAX download selector in your `mods/` folder.
-4. Join a world. The mod records quietly when it detects underground cave conditions. You do not need to press anything to start recording.
+**Languages:** English, French, Russian, Turkish and Simplified Chinese, chosen automatically from Minecraft's language settings. Default fallback is English.
 
-## Controls & configuration
+**Graph and exits:** Up to eight independent cave networks are saved per world/dimension; networks merge only when the player reaches a physically walked junction. Different known exits in a network are preserved. A shortest-path algorithm selects the exit with the shortest **recorded walking distance**. Old 0.1.0 JSON routes are read automatically.
 
-- `R` — Toggle return guidance. A message appears if no connected cave route is available.
-- `K` — Settings: enable/disable quiet recording, choose 3D arrows / mini compass / both, toggle reminder, change reminder delay, show/hide distance, or clear the route.
-- `config/zovrax-smart-return.json` — independent settings.
-- `config/zovrax-smart-return/routes/*.json` — per-world/dimension saved route files, named with SHA-256 of the world identifier to avoid unsafe names.
+**Custom compass:** Smooth vector arrow rather than a font glyph, with adjustable X/Y position (sliders and live preview), size (60–180%), opacity (15–100%) and approximate distance and height-direction information.
 
-## Known limitations
+**Ten 3D trail styles:** 0 footprints, 1 dashes, 2 solid line, 3 light dots, 4 chevrons, 5 pulse beacons, 6 diamond runes, 7 sparkles, 8 twin ribbons, 9 floating cubes. Select using an in-game **slider**. Marker density can be reduced for performance.
 
-Cave detection is heuristic. Large buildings, covered valleys and some unusual world-generation features may cause false positives or missed cave entrances. If Minecraft is first opened deep underground without a previously seen outdoor point, the first sheltered location is used as the return target. The path is based on where the player actually went, not on a newly calculated passable-world map. Teleports, disconnected portions of a cave or changed terrain can invalidate directions. Rendered markers are local and are hidden with Minecraft's HUD; if the graphics driver fails, 3D markers disable themselves rather than deliberately crashing the session.
+**Camera and walls:** World markers use the active first-/third-person render camera and real recorded X/Y/Z route points. The optional through-walls mode uses **HUD screen projection** of world waypoints rather than depth-tested 3D footprints, so path points remain visible behind walls. The recording and navigation never modify Minecraft blocks, summon persistent particles, or teleport the player.
 
-This is intentionally a lightweight, one-route-per-world-and-dimension beta, not a waypoint archive or universal GPS system.
+**Controls and reminders:** R toggles return guidance; K opens settings. Optional reminder after 3 minutes by default, at most once per trip. Automatic recording remains quiet.
 
-## Build
+## Configuration and routes
 
-From repo root (Gradle 9.1, Java 21 and network access for Fabric/Minecraft dependencies):
+- Independent settings: config/zovrax-smart-return.json
+- Saves: config/zovrax-smart-return/routes/<hashed-world-dimension>.json
+- Supports 8 saved networks per world/dimension, 12,000 sample nodes per network. The oldest is discarded if that cap is reached.
 
-```bash
-gradle --no-daemon --project-dir mods/smart-return clean build
-```
+## Build and verification
 
-Main JAR: `mods/smart-return/build/libs/zovrax-smart-return-0.1.0.jar`. The GitHub Actions workflow compiles, checks required classes and Fabric metadata, copies the authentic build into `releases/`, and validates the ZOVRAX catalog before proposing a release.
+From repository root using Java 21 and Gradle 9.1:
 
-**Verification distinction:** Successful compilation/JAR/catalog checks do **not** mean that cave detection, rendering or compatibility with other mods was tested in a live Minecraft world. Those gameplay tests remain necessary.
+    gradle --no-daemon --project-dir mods/smart-return clean build
 
-License: MIT. Project by Ruslan Sharifov. Not affiliated with Mojang/Microsoft.
+Release JAR: mods/smart-return/releases/zovrax-smart-return-1.0.0-fabric-1.21.10.jar
+
+The build executes JUnit graph tests and validates compiled Java classes, five language JSON resources, Fabric dependencies, release/archive consistency and the website catalog.
+
+**Known limits:** Cave detection uses sky visibility and roof depth, so unusual caves and underground building interiors may be misclassified. A past route may be blocked by later world changes. Adjacent-but-impassable sections are guarded with world raycasting but cannot be guaranteed perfect. Starting underground may record the first observed sheltered position as an entrance. The mod only knows passages the player physically walked, not a complete terrain map.
+
+**Verification honesty:** Compilation and JUnit passing do NOT prove that all render paths work in a running Minecraft client or with third-party shaders/modpacks. This first 1.0.0 release remains a beta until gameplay is tested.
+
+MIT licensed, by Ruslan Sharifov. Independent of Mojang and Microsoft.

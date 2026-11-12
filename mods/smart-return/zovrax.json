@@ -8,14 +8,17 @@
   "accent": "teal",
   "icon": "assets/icon.svg",
   "summary": {
-    "en": "Quietly remembers cave routes, finds shorter returns along paths you actually walked, and displays configurable 3D arrows or a mini compass.",
-    "ru": "Незаметно записывает маршрут в пещере, сокращает петли и показывает путь назад стрелками или мини-компасом.",
-    "fr": "Enregistre discrètement vos trajets souterrains, élimine les détours et guide le retour avec des flèches 3D ou une boussole."
+    "en": "SmartReturn 1.0.0 beta: remembers multiple Minecraft caves and entrances, calculates shortest walked exits and provides a smooth customizable compass and 10 animated trail styles in 5 languages.",
+    "ru": "SmartReturn 1.0.0 бета: несколько пещер и выходов, выбор кратчайшего пройденного маршрута, плавный компас и десять 3D-эффектов с пятью языками.",
+    "fr": "SmartReturn 1.0.0 bêta : plusieurs grottes et sorties, parcours de retour connu le plus court, boussole fluide et dix effets 3D en cinq langues."
   },
   "tags": [
     "Caves",
     "Navigation",
     "Exploration",
+    "Waypoints",
+    "Compass",
+    "Fabric",
     "QoL",
     "Singleplayer"
   ],
@@ -33,24 +36,34 @@
   "source": "https://github.com/RuslanSharifov/zovrax/tree/main/mods/smart-return",
   "features": [
     {
-      "en": "Automatic and quiet detection of underground cave trips",
-      "ru": "Автоматическое фоновое определение пещер",
-      "fr": "Détection et suivi automatiques des grottes"
+      "en": "Automatic cave detection and up to eight independent saved cave networks per world/dimension",
+      "ru": "Автоопределение пещер и до восьми отдельных маршрутов на мир/измерение",
+      "fr": "Détection automatique et huit réseaux de grottes indépendants par monde/dimension"
     },
     {
-      "en": "One optional reminder after three minutes; never starts navigation by itself",
-      "ru": "Одно необязательное напоминание через три минуты",
-      "fr": "Un rappel facultatif après trois minutes"
+      "en": "Multiple recorded entrances and shortest actually walked return path; legacy 0.1.0 route migration",
+      "ru": "Несколько выходов и кратчайший ранее пройденный маршрут; импорт старых сохранений",
+      "fr": "Plusieurs entrées, plus court chemin réellement parcouru et import des anciennes routes"
     },
     {
-      "en": "Loop-aware return routing using previously travelled connected paths",
-      "ru": "Возврат по ранее пройденным путям без лишних петель",
-      "fr": "Retour par des chemins réellement parcourus sans boucles inutiles"
+      "en": "Smooth vector mini compass with adjustable X/Y location, scale and opacity",
+      "ru": "Плавный векторный мини-компас с настройкой X/Y, масштаба и прозрачности",
+      "fr": "Mini-boussole vectorielle fluide, position X/Y, taille et opacité réglables"
     },
     {
-      "en": "Choose 3D arrows, mini compass or both in in-game settings",
-      "ru": "Выберите стрелки 3D, мини-компас или оба варианта",
-      "fr": "Choisissez les flèches 3D, la mini-boussole ou les deux"
+      "en": "Ten animated 3D trail styles with density slider, active-camera alignment and optional through-walls projected markers",
+      "ru": "Десять анимированных стилей, ползунок плотности и режим сквозь стены",
+      "fr": "Dix styles animés, densité réglable et repères projetés à travers les murs"
+    },
+    {
+      "en": "Native automatic game-language translations: English, French, Russian, Turkish and Simplified Chinese",
+      "ru": "Автоматический перевод интерфейса на английский, французский, русский, турецкий и китайский",
+      "fr": "Traduction automatique de l'interface : anglais, français, russe, turc et chinois simplifié"
+    },
+    {
+      "en": "Manual on/off return key and separate settings key, optional single quiet reminder",
+      "ru": "Ручное управление возвратом, отдельная клавиша настроек и одно необязательное напоминание",
+      "fr": "Touche de guidage manuelle, réglages séparés et rappel discret facultatif"
     }
   ],
   "screenshots": [],
@@ -82,6 +95,34 @@
         "ru": "Первая бета: запись пещерных маршрутов, стрелки и компас. Компиляция проверена; тестирование в игре требуется.",
         "fr": "Première bêta : chemins mémorisés, flèches et boussole. Compilation vérifiée ; tests en jeu requis."
       }
+    },
+    {
+      "version": "1.0.0",
+      "releasedAt": "2026-11-12",
+      "prerelease": true,
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "loaders": [
+        "Fabric"
+      ],
+      "downloads": [
+        {
+          "file": "releases/zovrax-smart-return-1.0.0-fabric-1.21.10.jar",
+          "label": "Fabric 1.21.10 · 1.0.0 Beta",
+          "minecraftVersions": [
+            "1.21.10"
+          ],
+          "loaders": [
+            "Fabric"
+          ]
+        }
+      ],
+      "changelog": {
+        "en": "1.0.0 beta: multiple saved caves and shortest walking route to nearest recorded entrance, five automatic game languages, smooth moveable/scalable/fading vector compass, ten animated 3D trail styles, optional through-wall overlay, and native settings. Java compilation and tests verified; Minecraft gameplay still requires live testing.",
+        "ru": "1.0.0 бета: несколько пещер, пять языков, десять эффектов, компас с настройками. Сборка проверена; тест в игре нужен.",
+        "fr": "1.0.0 bêta : plusieurs grottes, cinq langues, dix effets et boussole personnalisable. Tests en jeu à faire."
+      }
     }
   ],
   "monetization": {
@@ -90,17 +131,20 @@
     "premiumLabel": "Get Premium"
   },
   "seo": {
-    "title": "SmartReturn — Find Your Cave Exit in Minecraft Fabric | Zovrax",
-    "description": "SmartReturn silently records Minecraft cave paths and guides you back using optional 3D arrows or a mini compass on Fabric 1.21.10.",
+    "title": "SmartReturn 1.0.0 — Minecraft Cave Exit Navigation & Compass | Zovrax",
+    "description": "SmartReturn for Minecraft 1.21.10 Fabric remembers multiple caves and exits, guides you with a smooth movable compass and ten animated 3D trail styles in five languages.",
     "keywords": [
       "SmartReturn Minecraft mod",
+      "SmartReturn 1.0.0 Fabric",
       "Minecraft cave exit finder",
       "Minecraft cave navigation",
-      "find way back Minecraft cave",
-      "Fabric return path mod",
-      "3D cave navigation arrows",
-      "Minecraft cave compass",
-      "save cave route"
+      "find way back from Minecraft cave",
+      "Minecraft cave compass mod",
+      "multiple cave entrances",
+      "Minecraft 3D path indicators",
+      "Minecraft Fabric 1.21.10",
+      "Minecraft breadcrumb trail",
+      "Minecraft route finder"
     ]
   }
 }

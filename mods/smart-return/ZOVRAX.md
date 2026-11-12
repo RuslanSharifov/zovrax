@@ -1,28 +1,25 @@
-# SmartReturn
+# SmartReturn 1.0.0 — Never lose your cave path again
 
-**Find the cave exit without remembering every turn.**
+Quiet cave recording starts automatically. **You** decide when directions appear: press **R** to see the shortest known walking route to a recorded exit.
 
-SmartReturn is a small, free, client-side Minecraft Fabric mod that quietly remembers your underground path. When you decide to go back, press **R** to show the return directions you actually walked.
+### Multiple caves and entrances
 
-### How it works
+SmartReturn stores separate cave maps per world and dimension, joining routes only if your path really intersects another recorded corridor. Every discovered exit is remembered, and your return path is chosen by **walking distance** along explored corridors, not by drawing shortcuts through solid rock. Old 0.1.0 routes are imported.
 
-1. **Quiet detection** — After detecting sustained underground cave conditions, SmartReturn records your route without cluttering the screen. It also tries to remember the last outdoor entrance point.
-2. **A single optional reminder** — After about 3 minutes in a cave, a small reminder can tell you that the return route is being kept. Ignoring it never stops recording.
-3. **Smarter return** — If you walked around in circles, the mod can use connected, previously traversed passages to reduce needless loops. It never generates an imaginary shortcut through solid rock.
-4. **You stay in control** — The mod never activates guidance automatically. Press **R** to start or stop directions and **K** to change settings.
+### A customizable smooth compass
 
-### Pick how you want directions
+A modern vector arrow rotates smoothly with your direction. Change its size, opacity and X/Y position using in-game settings. Choose the compass, 3D paths, or both.
 
-- **3D arrows** — Small turquoise, translucent-looking world-space chevron outlines follow the known corridor.
-- **Mini compass** — An unobtrusive direction strip shows the next turn and elevation change.
-- **Both** — Turn on both views at once.
+### Ten beautiful 3D navigation effects
 
-Display choice, one-time reminder, reminder delay and distance indication can all be changed in game. Paths are saved independently by world and dimension, and the latest one survives restart.
+Use a slider to switch between footprints, dashed routes, solid lines, light dots, chevrons, pulse beacons, diamond runes, sparkles, dual ribbons and floating cubes. Animated markers follow the actual recorded path and the active game camera, whether in first or third person. An optional see-through-walls mode overlays projected waypoints on screen.
 
-### Requirements
+### Your Minecraft language
 
-**Minecraft Java 1.21.10 · Fabric · Java 21 · Fabric API.** Client installation only.
+Automatic native localisation for **English, French, Russian, Turkish and Simplified Chinese**, with English fallback. No manual language picker needed.
 
-**Important:** Cave detection is approximate; no navigation system can guarantee a saved tunnel is still open. If the game starts underground, the first known sheltered position may become the target. This beta stores one latest route per world and dimension, not a full cave archive.
+### Installation
 
-The release is source-build validated when its real JAR is published. **Live gameplay and other-mod compatibility testing must still be performed.** This is a free, independent project.
+Minecraft Java **1.21.10 · Fabric · Java 21 · Fabric API**. Client-only. **R** toggles guidance; **K** opens settings. Up to eight caves per world/dimension are kept.
+
+**1.0.0 Beta:** Automatic detection and historical paths can be imperfect in unusual world terrain. Successful compilation and graph unit tests are not a claim of tested gameplay in Minecraft.

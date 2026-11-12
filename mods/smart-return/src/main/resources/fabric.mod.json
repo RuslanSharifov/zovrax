@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "id": "zovrax_smart_return",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "name": "Zovrax SmartReturn",
-  "description": "Quiet cave-route recording with player-controlled return arrows and compass.",
+  "description": "Automatic multi-cave navigation, five game-language translations, adjustable animated compass and 10 world trail effects.",
   "authors": [
     "Ruslan Sharifov"
   ],
