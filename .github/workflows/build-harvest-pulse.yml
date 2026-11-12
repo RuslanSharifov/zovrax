@@ -2,7 +2,7 @@ name: Build HarvestPulse (Fabric 1.21.10)
 
 on:
   push:
-    branches: [main, feat/harvest-pulse-v020-selection-alerts]
+    branches: [main, fix/harvest-pulse-020-render-not-building]
     paths:
       - 'mods/harvest-pulse/**'
       - '.github/workflows/build-harvest-pulse.yml'
@@ -21,15 +21,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Restore source files on the initial dedicated feature branch
-        if: github.event_name == 'push' && github.ref == 'refs/heads/feat/harvest-pulse-v020-selection-alerts'
-        shell: bash
-        run: |
-          set -euo pipefail
-          if test -f mods/harvest-pulse/source-v020.bundle.b64; then
-            base64 -d mods/harvest-pulse/source-v020.bundle.b64 | tar -xJf - -C .
-            rm mods/harvest-pulse/source-v020.bundle.b64
-          fi
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -46,6 +37,21 @@ jobs:
           java -cp /tmp/harvestpulse-tests FieldMathCheck
       - name: Compile Java/Fabric mod with Yarn 1.21.10
         run: gradle --no-daemon --project-dir mods/harvest-pulse build
+      - name: Prevent regression of Not building! region renderer crash
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          root = Path("mods/harvest-pulse/src/main/java/az/zovrax/harvestpulse")
+          renderer = (root / "PulseRegionRender.java").read_text()
+          client = (root / "HarvestPulseClient.java").read_text()
+          assert "VertexConsumerProvider.immediate" in renderer, "Dedicated active buffers required"
+          assert "FILLS.draw();" in renderer and "OUTLINES.draw();" in renderer, "Buffer flush in finally required"
+          assert "context.consumers()" not in renderer.split("public static void render")[1], "Do not use vanilla borrowed buffers"
+          assert "WorldRenderEvents.BEFORE_DEBUG_RENDER.register(PulseRegionRender::render)" in client
+          print("HarvestPulse 0.2.0 render-buffer lifecycle regression checks passed")
+          PY
       - name: Prepare real 0.2.0 JAR, keep 0.1.0 for rollback
         run: node mods/harvest-pulse/tools/package-release.mjs
       - name: Verify client/server classes, render feature and PNG icon
@@ -76,7 +82,7 @@ jobs:
           if-no-files-found: error
           retention-days: 30
       - name: Commit verified source, real JAR and release metadata to dedicated branch
-        if: github.event_name == 'push' && github.ref == 'refs/heads/feat/harvest-pulse-v020-selection-alerts'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/fix/harvest-pulse-020-render-not-building'
         shell: bash
         run: |
           set -euo pipefail
@@ -84,6 +90,6 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A mods/harvest-pulse
           if ! git diff --cached --quiet; then
-            git commit -m 'release(harvest-pulse): build Fabric 1.21.10 beta 0.2.0'
-            git push origin HEAD:refs/heads/feat/harvest-pulse-v020-selection-alerts
+            git commit -m 'fix(harvest-pulse): replace crashing 0.2.0 JAR with corrected renderer'
+            git push origin HEAD:refs/heads/fix/harvest-pulse-020-render-not-building
           fi
