@@ -1,0 +1,7 @@
+{
+  "required": true,
+  "package": "az.zovrax.chromaoutline.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": ["WorldRendererMixin"],
+  "injectors": { "defaultRequire": 1 }
+}
