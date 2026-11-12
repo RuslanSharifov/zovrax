@@ -42,7 +42,7 @@ public final class SmartReturnWorldArrows {
             int drawn = 0;
             for (int i=0;i<path.size()-1 && drawn < 36;i++) {
                 Vec3d from=path.get(i), to=path.get(i+1);
-                if (from.squaredDistanceTo(mc.player.getPos()) > 50*50) break;
+                if (from.squaredDistanceTo(new Vec3d(mc.player.getX(),mc.player.getY(),mc.player.getZ())) > 50*50) break;
                 if (from.distanceTo(to) > 10.0) continue;
                 if (!mc.world.isChunkLoaded((int)Math.floor(from.x)>>4,(int)Math.floor(from.z)>>4)) continue;
                 double dx = to.x-from.x, dz=to.z-from.z;
