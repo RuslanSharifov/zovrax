@@ -37,7 +37,7 @@ public final class SmartReturnWorldArrows {
         if(way.size()<2)return;
         MatrixStack matrix=ctx.matrices();
         if(matrix==null)return;
-        Vec3d camera=ctx.camera().getPos();
+        Vec3d camera=mc.gameRenderer.getCamera().getPos();
         matrix.push();
         matrix.translate(-camera.x,-camera.y,-camera.z);
         int stamps=0;
