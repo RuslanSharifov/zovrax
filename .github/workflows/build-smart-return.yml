@@ -56,7 +56,7 @@ jobs:
               assert meta['environment']=='client'
               for cls in ('SmartReturnClient','RouteRecorder','RouteGraph','SmartReturnConfig','SmartReturnHud','SmartReturnWorldArrows','SmartReturnSettings','SmartReturnVisualSettings','SmartReturnPositionScreen','SmartReturnSlider'):
                   assert 'az/zovrax/smartreturn/'+cls+'.class' in z.namelist(),cls
-          root='assets/zovrax_smart_return/lang/'
+              root='assets/zovrax_smart_return/lang/'
               en=json.loads(z.read(root+'en_us.json'))
               for lang in ('fr_fr','ru_ru','tr_tr','zh_cn'):
                   assert set(json.loads(z.read(root+lang+'.json')))==set(en),lang
