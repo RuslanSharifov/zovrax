@@ -6,7 +6,7 @@ import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
 const dir=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const source=path.join(dir,'src/shaders');
-const output=path.join(dir,'releases/zovrax-aurora-0.1.0-beta.zip');
+const output=path.join(dir,'releases/zovrax-aurora-0.2.0-beta.zip');
 function walk(folder){
   const found=[];
   for(const entry of fs.readdirSync(folder,{withFileTypes:true}).sort((a,b)=>a.name.localeCompare(b.name,'en'))){

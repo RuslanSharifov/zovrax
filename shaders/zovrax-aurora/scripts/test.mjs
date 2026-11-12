@@ -10,11 +10,11 @@ const packRoot=path.join(root,'src/shaders');
 const read=p=>fs.readFileSync(path.join(packRoot,p),'utf8');
 const meta=JSON.parse(fs.readFileSync(path.join(root,'zovrax.json'),'utf8'));
 test('ZIP is a real, reproducible shader archive with many GLSL stages',()=>{
-  const built=buildArchive(),published=fs.readFileSync(path.join(root,'releases/zovrax-aurora-0.1.0-beta.zip'));
+  const built=buildArchive(),published=fs.readFileSync(path.join(root,'releases/zovrax-aurora-0.2.0-beta.zip'));
   assert.deepEqual(published,built);
   assert(validateShaderZip(built)>=15);
   assert.equal(meta.status,'released');
-  assert.equal(meta.releases[0].downloads[0].file,'releases/zovrax-aurora-0.1.0-beta.zip');
+  assert.equal(meta.releases[0].downloads[0].file,'releases/zovrax-aurora-0.2.0-beta.zip');
   assert.deepEqual(meta.shaderLoaders,['Iris']);
   assert.deepEqual(meta.minecraftVersions,['1.21.10']);
 });
@@ -25,7 +25,7 @@ test('shader GUI has no fake effects and declares four quality profiles',()=>{
     assert(props.includes('profile.'+profile+'='));
   const toggles=['SHADOWS','NIGHT_SHADOWS','LEAF_TRANSMISSION','LEAF_SHADOW_DITHER',
     'WAVING_LEAVES','WAVING_PLANTS','WATER_WAVES','WATER_REFLECTIONS',
-    'SUN_REFLECTIONS','PROCEDURAL_CLOUDS','NIGHT_STARS','SUN_SHAFTS',
+    'SUN_REFLECTIONS','SCREEN_REFLECTIONS','PROCEDURAL_CLOUDS','NIGHT_STARS','SUN_SHAFTS','DISTANCE_FOG',
     'CLOUD_SHADOWS','SSAO','BLOOM'];
   for(const name of toggles){
     assert(props.includes(name),'missing menu option '+name);
@@ -53,4 +53,24 @@ test('source files contain legitimate shader code and all Iris includes exist',(
     }
   }
   visit(packRoot);
+});
+
+test('visual upgrades use actual water reflection buffer, atmospheric fog and vibrant lighting',()=>{
+  const fin=read('final.fsh');
+  const wat=read('gbuffers_water.fsh');
+  const sky=read('lib/sky.glsl');
+  const land=read('gbuffers_terrain.fsh');
+  assert.match(fin,/colortex1ClearColor\s*=\s*vec4\(0\.0,0\.0,0\.0,0\.0\)/);
+  assert.match(fin,/texture2D\(depthtex1,screen\)/);
+  assert.match(fin,/SCREEN_REFLECTIONS/);
+  assert.match(fin,/DISTANCE_FOG/);
+  assert.match(wat,/DRAWBUFFERS:01/);
+  assert.match(wat,/gl_FragData\[1\]\s*=\s*vec4\(nWorld/);
+  assert.match(sky,/zxStars\(d,time\)/);
+  assert.match(land,/TORCH_WARMTH/);
+  assert.match(land,/SHADOW_CONTRAST/);
+  assert.match(read('lib/wind.glsl'),/worldPosition/);
+  const releases=meta.releases.map(r=>r.version);
+  assert.equal(releases[0],'0.2.0-beta');
+  assert.ok(releases.includes('0.1.0-beta'));
 });
