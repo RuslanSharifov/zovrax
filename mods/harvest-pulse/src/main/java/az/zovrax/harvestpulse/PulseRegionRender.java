@@ -2,6 +2,7 @@ package az.zovrax.harvestpulse;
 
 import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderContext;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.text.Text;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexRendering;
 import net.minecraft.client.render.VertexConsumer;
@@ -33,9 +34,29 @@ public final class PulseRegionRender {
     private static final VertexConsumerProvider.Immediate FILLS = VertexConsumerProvider.immediate(FILL_ALLOCATOR);
     private static final VertexConsumerProvider.Immediate OUTLINES = VertexConsumerProvider.immediate(OUTLINE_ALLOCATOR);
 
+    private static boolean previewDisabledForSession;
+
     private PulseRegionRender() { }
 
     public static void render(WorldRenderContext context) {
+        if (previewDisabledForSession) return;
+        try {
+            renderFrame(context);
+        } catch (IllegalStateException error) {
+            // Driver/mod combinations (including Android OpenGL translation)
+            // can still reject certain debug render layers. Never allow the
+            // visual helper to take down the whole game; keep field selection,
+            // server growth, and HUD active with a one-time warning instead.
+            previewDisabledForSession = true;
+            System.err.println("[HarvestPulse] 3D selection preview disabled after a render error:");
+            error.printStackTrace();
+            MinecraftClient mc = MinecraftClient.getInstance();
+            if (mc.player != null) mc.player.sendMessage(
+                Text.literal("HarvestPulse: 3D highlight unavailable on this renderer; field selection still works."), false);
+        }
+    }
+
+    private static void renderFrame(WorldRenderContext context) {
         MinecraftClient mc=MinecraftClient.getInstance();
         if (!HarvestPulseClient.selecting() || mc.player==null || mc.world==null) return;
         if (mc.currentScreen!=null || mc.options.hudHidden) return;
