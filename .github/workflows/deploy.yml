@@ -6,6 +6,10 @@ on:
     paths:
       - 'site/**'
       - 'mods/**'
+      - 'shaders/**'
+      - '.github/scripts/build-shaders.mjs'
+      - '.github/scripts/build-shader-seo.mjs'
+      - '.github/scripts/build-seo.mjs'
       - '.github/scripts/build-catalog.mjs'
       - '.github/workflows/deploy.yml'
   workflow_dispatch:

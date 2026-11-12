@@ -90,3 +90,7 @@ compatibility, dependencies and any included third-party assets.
   an operator configures OAuth, deploys the Worker and sets
   `site/config/community.json`.** Without it, favorites remain local
   in the browser and no fabricated global statistics appear.
+
+## Shaderpack support
+
+Independent shaderpacks belong under `shaders/<slug>/` and use `schemaVersion: 2`, `shaderLoaders` (`Iris` or verified `OptiFine`) and free `.zip` releases. See `shaders/_template/README.md`. The generator writes `site/data/shaders/` details and downloads and `site/shader/` crawlable pages. Never fake a release ZIP or report ZIP structural validation as an in-game test. Keep shader compatibility/version filters separate from Fabric JAR mods.
