@@ -35,6 +35,12 @@ public final class RouteGraph {
     }
     private RouteGraph() { }
 
+    /** Reattach after a saved-world reload only when actually near a known node. */
+    public void reconnect(Vec3d position) {
+        lastNode = nearest(position, 1.4);
+        lastSample = position;
+    }
+
     public int count() { return nodes.size(); }
     public Vec3d entrance() { return nodes.get(0); }
     public Vec3d node(int index) { return nodes.get(index); }
