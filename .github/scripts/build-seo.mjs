@@ -151,7 +151,7 @@ function directory(catalog,mods,base) {
       '@type':'ListItem',position:i+1,name:m.name,url:absolute(base,'mod/'+m.slug+'/')}))}
   ]};
   const h=head({title:'Minecraft Java Edition Mods Directory | Zovrax',description,
-    canonical:url,keywords:['Minecraft mods','Minecraft Java','Fabric mods'],
+    canonical:url,keywords:onlyStrings(catalog.site.seo?.keywords).concat(['Minecraft mods','Minecraft Java','Fabric mods']),
     alternate:{en:url},jsonLd:graph});
   const items=mods.map(m=>'<article class="card"><h2><a href="'+
     esc(absolute(base,'mod/'+m.slug+'/'))+'">'+esc(m.name)+'</a></h2>'+
@@ -178,11 +178,42 @@ function sitemap(pages) {
         '<xhtml:link rel="alternate" hreflang="'+lang+'" href="'+esc(url)+'"/>').join('')+
       '</url>').join('\n')+'\n</urlset>\n';
 }
+function homeSeo(catalog,base){
+  const fields=catalog.site.seo&&typeof catalog.site.seo==='object'
+    ? catalog.site.seo:{};
+  const title=typeof fields.title==='string'&&fields.title.trim()
+    ? fields.title.trim().slice(0,100):'Zovrax — Minecraft Java Mods';
+  const description=typeof fields.description==='string'&&fields.description.trim()
+    ? fields.description.trim().slice(0,230):text(catalog.site.description,'en');
+  const keywords=onlyStrings(fields.keywords,30,80);
+  const file=path.join(site,'index.html');
+  let document=fs.readFileSync(file,'utf8');
+  const replaceMeta=(key,val)=>{
+    const kind=key.startsWith('og:')?'property':'name';
+    const re=new RegExp('<meta '+kind+'="'+key+'" content="[^"]*">');
+    const tag='<meta '+kind+'="'+key+'" content="'+esc(val)+'">';
+    if(re.test(document)) document=document.replace(re,tag);
+    else document=document.replace('</head>',tag+'\n</head>');
+  };
+  document=document.replace(/<title>[^<]*<\/title>/,'<title>'+esc(title)+'</title>');
+  replaceMeta('description',description);
+  replaceMeta('keywords',keywords.join(', '));
+  replaceMeta('og:title',title);
+  replaceMeta('og:description',description);
+  replaceMeta('og:url',base);
+  replaceMeta('twitter:title',title);
+  replaceMeta('twitter:description',description);
+  document=document.replace(/<link rel="canonical" href="[^"]*">/,
+    '<link rel="canonical" href="'+esc(base)+'">');
+  fs.writeFileSync(file,document);
+}
+
 export function buildSeo() {
   const catalog=JSON.parse(fs.readFileSync(path.join(site,'data/catalog.json'),'utf8'));
   let base=new URL(catalog.site.siteUrl);
   if(base.protocol!=='https:')throw Error('siteUrl must be HTTPS');
   base=base.href.endsWith('/')?base.href:base.href+'/';
+  homeSeo(catalog,base);
   const mods=catalog.mods.map(m=>
     JSON.parse(fs.readFileSync(path.join(site,'data/mods',m.slug+'.json'),'utf8')));
   fs.rmSync(output,{recursive:true,force:true}); // 'site/mod' is generated-only.
