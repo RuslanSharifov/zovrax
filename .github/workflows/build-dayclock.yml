@@ -1,0 +1,84 @@
+name: Build DayClock HUD (Fabric 1.21.10)
+
+on:
+  push:
+    branches: [feat/dayclock-hud-fabric-12110]
+    paths:
+      - 'mods/dayclock/**'
+      - '.github/workflows/build-dayclock.yml'
+  pull_request:
+    paths:
+      - 'mods/dayclock/**'
+      - '.github/workflows/build-dayclock.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fabric-build:
+    name: Compile and package DayClock 0.1.0
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Restore source files from initial upload
+        if: github.event_name == 'push' && github.ref == 'refs/heads/feat/dayclock-hud-fabric-12110'
+        shell: bash
+        run: |
+          set -euo pipefail
+          if test -f mods/dayclock/source.bundle.b64; then
+            base64 -d mods/dayclock/source.bundle.b64 | tar -xJf - -C .
+            rm mods/dayclock/source.bundle.b64
+          fi
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.1.0'
+      - name: Check day and clock math
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/dayclock-tests
+          javac -d /tmp/dayclock-tests mods/dayclock/src/main/java/az/zovrax/dayclock/ClockMath.java mods/dayclock/tools/ClockMathCheck.java
+          java -cp /tmp/dayclock-tests ClockMathCheck
+      - name: Compile Java, remap Fabric JAR
+        run: gradle --no-daemon --project-dir mods/dayclock build
+      - name: Prepare real JAR and release selector metadata
+        run: node mods/dayclock/tools/package-release.mjs
+      - name: Verify Java class and mod metadata inside JAR
+        shell: bash
+        run: |
+          set -euo pipefail
+          JAR=mods/dayclock/releases/zovrax-dayclock-0.1.0-fabric-1.21.10.jar
+          jar tf "$JAR" | grep -Fx 'fabric.mod.json'
+          jar tf "$JAR" | grep -Fx 'az/zovrax/dayclock/DayClockClient.class'
+          jar tf "$JAR" | grep -Fx 'az/zovrax/dayclock/DayClockHud.class'
+          jar tf "$JAR" | grep -Fx 'az/zovrax/dayclock/DayClockSettingsScreen.class'
+          jar tf "$JAR" | grep -Fx 'az/zovrax/dayclock/DayClockPositionScreen.class'
+      - name: Validate generated Zovrax catalog
+        run: |
+          node .github/scripts/build-catalog.mjs
+          node .github/scripts/validate-catalog.mjs
+      - name: Upload compiled beta artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: zovrax-dayclock-0.1.0-fabric-1.21.10
+          path: mods/dayclock/releases/zovrax-dayclock-0.1.0-fabric-1.21.10.jar
+          if-no-files-found: error
+      - name: Commit real JAR and release metadata back to feature branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/feat/dayclock-hud-fabric-12110'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git config user.name 'github-actions[bot]'
+          git add -A mods/dayclock
+          if git diff --cached --quiet; then
+            echo 'Release JAR and metadata already current'
+          else
+            git commit -m 'release(dayclock): add compiled Fabric 1.21.10 beta 0.1.0'
+            git push origin HEAD:refs/heads/feat/dayclock-hud-fabric-12110
+          fi
