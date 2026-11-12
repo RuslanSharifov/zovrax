@@ -2,14 +2,19 @@ package az.zovrax.smartreturn;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Heightmap;
+import net.minecraft.world.RaycastContext;
+
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,217 +24,246 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Observes local exploration without changing Minecraft world state. */
+/**
+ * Client-only exploration recorder. Routes are separated by world and dimension.
+ * Different cave entrances stay in different networks until the player actually
+ * walks through a shared passage, at which point two networks are joined.
+ */
 public final class RouteRecorder {
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private Object worldObject;
+    private static final Gson GSON=new GsonBuilder().setPrettyPrinting().create();
+    private static final int MAX_CAVES=8;
+    private final List<RouteGraph> caves=new ArrayList<>();
+    private final ArrayDeque<Vec3d> approach=new ArrayDeque<>();
+    private Object worldIdentity;
     private String worldId;
-    private Path saveFile;
-    private RouteGraph graph;
-    private boolean guiding;
-    private boolean paused;
+    private Path file;
+    private RouteGraph active;
+    private RouteGraph selected;
+    private RouteGraph.Path directions;
+    private boolean guidanceOn;
     private boolean reminderSent;
-    private boolean newTripReady;
-    private int ticks;
-    private int enclosedTicks;
-    private int outdoorTicks;
-    private int savedAt;
-    private int recordedAt;
-    private Vec3d lastOutdoor;
-    private int lastOutdoorAt;
-    private final ArrayDeque<Vec3d> prelude = new ArrayDeque<>();
-    private List<Vec3d> guidance = List.of();
+    private int ticks,deepTicks,daylightTicks,startedAt,lastSavedAt;
+    private Vec3d lastInside;
 
-    public RouteGraph graph() { return graph; }
-    public boolean guiding() { return guiding; }
-    public List<Vec3d> guidance() { return guidance; }
+    public boolean guiding(){return guidanceOn && directions!=null;}
+    public List<Vec3d> guidance(){return directions==null?List.of():directions.points();}
+    public double distance(){return directions==null?0:directions.distance();}
+    public Vec3d target(){return directions==null?null:directions.exit();}
+    public int caveCount(){return caves.size();}
+    public int entranceCount(){return caves.stream().mapToInt(g->g.entrances().size()).sum();}
 
-    private static void message(MinecraftClient mc, String text) {
-        if (mc.player != null) mc.player.sendMessage(Text.literal("SmartReturn: " + text), true);
+    private static Vec3d position(MinecraftClient mc){
+        return new Vec3d(mc.player.getX(),mc.player.getY(),mc.player.getZ());
     }
-
-    private String locationId(MinecraftClient mc) {
-        String game = mc.getCurrentServerEntry() != null
-                ? "server:" + mc.getCurrentServerEntry().address
-                : mc.getServer() != null
-                    ? "singleplayer:" + mc.getServer().getSaveProperties().getLevelName()
-                    : "unknown-local-world";
-        return game + "/" + mc.world.getRegistryKey().getValue();
+    private static void say(MinecraftClient mc,String key,Object... args){
+        if(mc.player!=null)mc.player.sendMessage(Text.translatable(key,args),true);
     }
-
-    private Path fileFor(String value) throws Exception {
-        byte[] hash = MessageDigest.getInstance("SHA-256").digest(value.getBytes(StandardCharsets.UTF_8));
-        StringBuilder name = new StringBuilder();
-        for (byte valueByte : hash) name.append(String.format("%02x", valueByte & 0xff));
-        return FabricLoader.getInstance().getConfigDir()
-                .resolve("zovrax-smart-return").resolve("routes").resolve(name + ".json");
+    private static String locationId(MinecraftClient mc){
+        String game=mc.getCurrentServerEntry()!=null?
+            "server:"+mc.getCurrentServerEntry().address :
+            mc.getServer()!=null ?
+                "singleplayer:"+mc.getServer().getSaveProperties().getLevelName():
+                "unknown-local-world";
+        return game+"/"+mc.world.getRegistryKey().getValue();
     }
-
-    private void changeWorld(MinecraftClient mc) {
-        flush();
-        worldObject = mc.world;
-        worldId = null;
-        graph = null;
-        guidance = List.of();
-        guiding = false;
-        paused = true;
-        reminderSent = false;
-        newTripReady = false;
-        ticks = enclosedTicks = outdoorTicks = savedAt = recordedAt = 0;
-        lastOutdoor = null;
-        lastOutdoorAt = 0;
-        prelude.clear();
-        saveFile = null;
-        if (mc.world == null) return;
+    private static Path dataFile(String id)throws Exception{
+        byte[] hash=MessageDigest.getInstance("SHA-256").digest(id.getBytes(StandardCharsets.UTF_8));
+        StringBuilder name=new StringBuilder();
+        for(byte b:hash)name.append(String.format("%02x",b&0xff));
+        return FabricLoader.getInstance().getConfigDir().resolve("zovrax-smart-return")
+            .resolve("routes").resolve(name+".json");
+    }
+    private void changeWorld(MinecraftClient mc){
+        save();
+        worldIdentity=mc.world;
+        worldId=null;file=null;
+        caves.clear();active=null;selected=null;directions=null;
+        guidanceOn=false;reminderSent=false;
+        ticks=deepTicks=daylightTicks=startedAt=lastSavedAt=0;
+        lastInside=null;approach.clear();
+        if(mc.world==null)return;
         try {
-            worldId = locationId(mc);
-            saveFile = fileFor(worldId);
-            if (Files.isRegularFile(saveFile)) {
-                JsonObject record = JsonParser.parseString(Files.readString(saveFile)).getAsJsonObject();
-                if (worldId.equals(record.get("world").getAsString()))
-                    graph = RouteGraph.fromJson(record.getAsJsonObject("route"));
+            worldId=locationId(mc);
+            file=dataFile(worldId);
+            if(Files.isRegularFile(file)){
+                JsonObject root=JsonParser.parseString(Files.readString(file)).getAsJsonObject();
+                if(!worldId.equals(root.get("world").getAsString()))return;
+                if(root.has("caves")){
+                    for(JsonElement entry:root.getAsJsonArray("caves")){
+                        if(caves.size()>=MAX_CAVES)break;
+                        caves.add(RouteGraph.fromJson(entry.getAsJsonObject()));
+                    }
+                }else if(root.has("route")){
+                    // Automatic import from the 0.1.0 single-cave save format.
+                    caves.add(RouteGraph.fromJson(root.getAsJsonObject("route")));
+                }
             }
-        } catch (Exception e) {
-            System.err.println("[SmartReturn] Saved route unavailable: " + e);
-            graph = null;
+        }catch(Exception e){System.err.println("[SmartReturn] Could not read saved routes: "+e);}
+    }
+
+    private boolean walkable(Vec3d a,Vec3d b){
+        MinecraftClient mc=MinecraftClient.getInstance();
+        if(mc.world==null||mc.player==null)return false;
+        if(a.distanceTo(b)<.05)return true;
+        if(a.distanceTo(b)>5.5)return false;
+        Vec3d from=a.add(0,.8,0),to=b.add(0,.8,0);
+        return mc.world.raycast(new RaycastContext(from,to,
+            RaycastContext.ShapeType.COLLIDER,RaycastContext.FluidHandling.NONE,
+            mc.player)).getType()==HitResult.Type.MISS;
+    }
+
+    private void addApproach(Vec3d p){
+        if(approach.isEmpty()||approach.getLast().distanceTo(p)>0.9)
+            approach.addLast(p);
+        while(approach.size()>200)approach.removeFirst();
+    }
+    private void beginCave(Vec3d pos){
+        Vec3d first=approach.isEmpty()?pos:approach.getFirst();
+        // An existing path is resumed only if we are physically standing
+        // beside it. A close but wall-separated cave is a different network.
+        RouteGraph existing=null;
+        for(RouteGraph g:caves){
+            int at=g.nearest(first,1.15);
+            if(at>=0 && walkable(first,g.node(at))){
+                existing=g;break;
+            }
+        }
+        if(existing==null){
+            if(caves.size()>=MAX_CAVES) caves.remove(0); // bounded archive
+            existing=new RouteGraph(first);
+            caves.add(existing);
+        }else existing.reattach(first);
+        active=existing;
+        for(Vec3d step:approach)active.sample(step,this::walkable);
+        active.sample(pos,this::walkable);
+        approach.clear();
+        startedAt=ticks-deepTicks;
+        reminderSent=false;
+        save();
+    }
+    private void mergeIfMet(Vec3d at){
+        if(active==null)return;
+        for(int i=caves.size()-1;i>=0;i--){
+            RouteGraph other=caves.get(i);
+            if(other==active)continue;
+            int near=other.nearest(at,.85);
+            if(near<0 || !walkable(at,other.node(near)))continue;
+            if(active.mergeAt(other,at,this::walkable)){
+                if(selected==other){selected=active;directions=null;}
+                caves.remove(i);
+            }
         }
     }
 
-    public void tick(MinecraftClient mc, SmartReturnConfig config) {
-        if (worldObject != mc.world) changeWorld(mc);
-        if (mc.player == null || mc.world == null || !config.enabled) return;
+    public void tick(MinecraftClient mc,SmartReturnConfig config){
+        if(worldIdentity!=mc.world)changeWorld(mc);
+        if(mc.world==null||mc.player==null||!config.enabled)return;
         ticks++;
-        if (ticks % 3 != 0) return; // ~6-7 observations/s; no corners skipped at sprint speed
-        Vec3d pos = new Vec3d(mc.player.getX(),mc.player.getY(),mc.player.getZ());
-        BlockPos feet = mc.player.getBlockPos();
-        int roofDepth = mc.world.getTopY(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES,
-                feet.getX(), feet.getZ()) - feet.getY();
-        boolean hasSky = mc.world.isSkyVisible(feet.up());
-        boolean cave = !hasSky && roofDepth >= 8;
-        if (hasSky) {
-            lastOutdoor = pos;
-            lastOutdoorAt = ticks;
-            // Keep a rolling approach so a vertical shaft still connects
-            // to the actual daylight entrance before cave detection fires.
-            prelude.clear();
-            prelude.addLast(pos);
-        } else if (!cave && (graph == null || paused)) {
-            if (prelude.isEmpty() || prelude.getLast().distanceTo(pos) > 1.0)
-                prelude.addLast(pos);
-            while (prelude.size() > 240) prelude.removeFirst();
-        }
-        if (cave) {
-            enclosedTicks += 3;
-            outdoorTicks = 0;
-            if (graph == null || paused) {
-                if (prelude.isEmpty() || prelude.getLast().distanceTo(pos) > 1.2) prelude.addLast(pos);
-                while (prelude.size() > 240) prelude.removeFirst();
-            }
-            if (enclosedTicks >= 120 && (graph == null || paused)) {
-                if (graph == null || newTripReady
-                        || prelude.isEmpty() || graph.nearest(prelude.getFirst(), 1.4) < 0) {
-                    Vec3d entrance = lastOutdoor != null && ticks - lastOutdoorAt < 1200
-                            && lastOutdoor.distanceTo(pos) < 64
-                            ? lastOutdoor : prelude.getFirst();
-                    graph = new RouteGraph(entrance);
-                    recordedAt = ticks - enclosedTicks;
-                    reminderSent = false;
-                    newTripReady = false;
-                    for (Vec3d waypoint : prelude) graph.sample(waypoint);
-                } else {
-                    // Reattach from a physically nearby old node, never join across a wall.
-                    graph.reconnect(prelude.getFirst());
-                    for (Vec3d waypoint : prelude) graph.sample(waypoint);
+        if(ticks%3!=0)return; // ~6 samples/s, low-overhead
+        Vec3d p=position(mc);
+        BlockPos block=mc.player.getBlockPos();
+        boolean daylight=mc.world.isSkyVisible(block.up());
+        int roof=mc.world.getTopY(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES,
+            block.getX(),block.getZ())-block.getY();
+        boolean deep=!daylight && roof>=8;
+        if(deep)deepTicks+=3;
+        else deepTicks=0;
+
+        if(active==null){
+            if(daylight){approach.clear();addApproach(p);}
+            else addApproach(p);
+            if(deepTicks>=100) beginCave(p); // 5 seconds of definite cave
+        }else{
+            if(daylight) {
+                daylightTicks+=3;
+                // Record the last few steps to the real opening, not across
+                // open fields. A newly found exit is only added on transition.
+                if(daylightTicks<=12)active.sample(p,this::walkable);
+                if(daylightTicks==30){
+                    active.addExitNear(lastInside==null?p:lastInside);
+                    active=null;
+                    reminderSent=false;
+                    say(mc,"smartreturn.message.cave_saved");
+                    save();
+                    approach.clear();addApproach(p);
                 }
-                prelude.clear();
-                paused = false;
-                flush();
-            }
-        } else {
-            outdoorTicks += 3;
-            enclosedTicks = 0;
-            if (graph != null && outdoorTicks >= 120) {
-                paused = true;
-                if (graph.entrance().distanceTo(pos) < 12 && guiding) {
-                    guiding = false;
-                    guidance = List.of();
-                    message(mc, "You are back near the cave entrance.");
+            }else{
+                daylightTicks=0;
+                active.sample(p,this::walkable);
+                lastInside=p;
+                mergeIfMet(p);
+                if(config.reminders&&!reminderSent &&
+                        ticks-startedAt>=config.reminderMinutes*1200){
+                    reminderSent=true;
+                    say(mc,"smartreturn.message.reminder");
                 }
-                if (graph.entrance().distanceTo(pos) > 60) newTripReady = true;
             }
         }
-        if (graph != null && !paused) {
-            graph.sample(pos);
-            if (config.reminders && !reminderSent
-                    && ticks - recordedAt >= config.reminderMinutes * 1200) {
-                reminderSent = true;
-                message(mc, "Cave path saved quietly. Press R if you want directions back.");
+        if(active==null && daylight) { // remember current outdoor approach
+            approach.clear();addApproach(p);
+        }
+        if(guidanceOn){
+            if(selected==null){guidanceOn=false;directions=null;}
+            else{
+                directions=selected.homeward(p);
+                if(directions==null){
+                    guidanceOn=false;
+                    say(mc,"smartreturn.message.no_connected_path");
+                }else if(p.distanceTo(directions.exit())<2.6){
+                    guidanceOn=false;directions=null;
+                    say(mc,"smartreturn.message.arrived");
+                }
             }
         }
-        if (guiding) {
-            guidance = graph == null ? List.of() : graph.homeward(pos);
-            if (guidance.isEmpty()) {
-                guiding = false;
-                message(mc, "Cannot find a connected walked route from here.");
-            } else if (pos.distanceTo(graph.entrance()) < 3.0) {
-                guiding = false;
-                guidance = List.of();
-                message(mc, "Cave entrance reached.");
+        if(ticks-lastSavedAt>=600)save();
+    }
+
+    public void toggle(MinecraftClient mc){
+        if(mc.player==null)return;
+        if(guidanceOn){
+            guidanceOn=false;directions=null;
+            say(mc,"smartreturn.message.off");
+            return;
+        }
+        Vec3d p=position(mc);
+        RouteGraph bestGraph=null;
+        RouteGraph.Path bestRoute=null;
+        for(RouteGraph g:caves){
+            RouteGraph.Path path=g.homeward(p);
+            if(path!=null && (bestRoute==null || path.distance()<bestRoute.distance())){
+                bestGraph=g;bestRoute=path;
             }
         }
-        if (graph != null && ticks - savedAt >= 600) flush();
-    }
-
-    public void toggle(MinecraftClient mc) {
-        if (mc.player == null) return;
-        if (guiding) {
-            guiding = false;
-            guidance = List.of();
-            message(mc, "Return guidance off. Recording remains active.");
+        if(bestRoute==null){
+            say(mc,caves.isEmpty()?"smartreturn.message.no_route":
+                "smartreturn.message.no_connected_path");
             return;
         }
-        if (graph == null) {
-            message(mc, "No cave path recorded yet.");
-            return;
-        }
-        guidance = graph.homeward(new Vec3d(mc.player.getX(),mc.player.getY(),mc.player.getZ()));
-        if (guidance.isEmpty()) {
-            message(mc, "Move back onto your recorded path first.");
-            return;
-        }
-        guiding = true;
-        message(mc, "Return guidance on. Press R again to hide it.");
+        selected=bestGraph;directions=bestRoute;guidanceOn=true;
+        say(mc,"smartreturn.message.on");
     }
-
-    public void forget(MinecraftClient mc) {
-        graph = null;
-        guidance = List.of();
-        guiding = false;
-        paused = true;
-        newTripReady = false;
-        reminderSent = false;
-        enclosedTicks = 0;
-        prelude.clear();
-        if (saveFile != null) {
-            try { Files.deleteIfExists(saveFile); }
-            catch (Exception e) { System.err.println("[SmartReturn] Failed to delete route: " + e); }
-        }
-        message(mc, "Saved cave path cleared.");
+    public void forget(MinecraftClient mc){
+        caves.clear();active=null;selected=null;directions=null;
+        guidanceOn=false;reminderSent=false;deepTicks=daylightTicks=0;
+        approach.clear();lastInside=null;
+        if(file!=null)try{Files.deleteIfExists(file);}
+        catch(Exception e){System.err.println("[SmartReturn] Failed to forget saved routes: "+e);}
+        say(mc,"smartreturn.message.cleared");
     }
-
-    public void flush() {
-        if (saveFile == null || graph == null || worldId == null) return;
-        try {
-            Files.createDirectories(saveFile.getParent());
-            JsonObject record = new JsonObject();
-            record.addProperty("world", worldId);
-            record.add("route", graph.toJson());
-            Path temp = saveFile.resolveSibling(saveFile.getFileName() + ".tmp");
-            Files.writeString(temp, GSON.toJson(record), StandardCharsets.UTF_8);
-            Files.move(temp, saveFile, StandardCopyOption.REPLACE_EXISTING);
-            savedAt = ticks;
-        } catch (Exception e) {
-            System.err.println("[SmartReturn] Could not save cave route: " + e);
-        }
+    public void save(){
+        if(file==null||worldId==null||caves.isEmpty())return;
+        try{
+            Files.createDirectories(file.getParent());
+            JsonObject root=new JsonObject();
+            root.addProperty("world",worldId);
+            root.addProperty("format",2);
+            JsonArray list=new JsonArray();
+            for(RouteGraph cave:caves)list.add(cave.toJson());
+            root.add("caves",list);
+            Path temp=file.resolveSibling(file.getFileName().toString()+".tmp");
+            Files.writeString(temp,GSON.toJson(root),StandardCharsets.UTF_8);
+            Files.move(temp,file,StandardCopyOption.REPLACE_EXISTING);
+            lastSavedAt=ticks;
+        }catch(Exception e){System.err.println("[SmartReturn] Could not save routes: "+e);}
     }
 }
