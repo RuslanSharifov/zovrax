@@ -120,7 +120,7 @@ public final class RouteGraph {
             }
         }
         for (int exit:other.exits) if (!exits.contains(offset+exit)) exits.add(offset+exit);
-        connect(local,offset+remote,nodes.get(local).distanceTo(nodes.get(offset+remote)));
+        connect(local,offset+remote,Math.max(.05,nodes.get(local).distanceTo(nodes.get(offset+remote))));
         // Prevent consecutive samples after merge from jumping back to the
         // other recorder's previous player position.
         return true;
