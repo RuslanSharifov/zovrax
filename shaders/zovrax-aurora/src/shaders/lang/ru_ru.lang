@@ -8,3 +8,13 @@ screen.CLOUD=Облака
 screen.FOLIAGE=Листва и ветер
 screen.WATER=Вода и отражения
 screen.POST=Обработка изображения
+
+# Aurora 0.2.0 visual engine controls
+option.SCREEN_REFLECTIONS=Отражения окружения в воде
+option.SSR_STEPS=Качество отражений
+option.SSR_STRENGTH=Сила отражений
+option.DISTANCE_FOG=Атмосферный туман
+option.FOG_DISTANCE=Дальность тумана
+option.FOG_STRENGTH=Плотность тумана
+option.COLOR_STRENGTH=Цветокоррекция
+option.WATER_BRIGHTNESS=Яркость воды

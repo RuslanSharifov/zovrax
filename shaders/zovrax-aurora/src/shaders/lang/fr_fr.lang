@@ -8,3 +8,13 @@ screen.CLOUD=Nuages
 screen.FOLIAGE=Feuillage et vent
 screen.WATER=Eau et reflets
 screen.POST=Post-traitement
+
+# Aurora 0.2.0 visual engine controls
+option.SCREEN_REFLECTIONS=Reflets des objets dans l'eau
+option.SSR_STEPS=Qualité des reflets
+option.SSR_STRENGTH=Intensité des reflets
+option.DISTANCE_FOG=Brume atmosphérique
+option.FOG_DISTANCE=Distance de brume
+option.FOG_STRENGTH=Densité de brume
+option.COLOR_STRENGTH=Étalonnage des couleurs
+option.WATER_BRIGHTNESS=Luminosité de l'eau
