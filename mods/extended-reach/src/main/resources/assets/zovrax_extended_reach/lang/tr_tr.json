@@ -1,0 +1,9 @@
+{
+  "key.category.zovrax_extended_reach.main": "Uzak Erişim",
+  "key.zovrax_extended_reach.settings": "Uzak Erişim Ayarlarını Aç",
+  "screen.zovrax_extended_reach.title": "Uzak Erişim Ayarları",
+  "screen.zovrax_extended_reach.distance": "Blok mesafesi: %s blok",
+  "screen.zovrax_extended_reach.help": "Kırma ve yerleştirme mesafesi · 5–16 blok",
+  "screen.zovrax_extended_reach.server": "Çok oyunculuda mod sunucuda da yüklü olmalıdır.",
+  "screen.zovrax_extended_reach.done": "Tamam"
+}

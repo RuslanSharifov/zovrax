@@ -1,0 +1,67 @@
+name: Build Extended Reach (Fabric 1.21.10)
+
+on:
+  push:
+    branches: [feat/extended-reach-fabric-12110]
+    paths:
+      - 'mods/extended-reach/**'
+      - '.github/workflows/build-extended-reach.yml'
+  pull_request:
+    paths:
+      - 'mods/extended-reach/**'
+      - '.github/workflows/build-extended-reach.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fabric-build:
+    name: Compile, verify and package Extended Reach
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.1.0'
+      - name: Verify distance bounds independently
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/extended-reach-check
+          javac -d /tmp/extended-reach-check \
+            mods/extended-reach/src/main/java/az/zovrax/extendedreach/ReachLimits.java \
+            mods/extended-reach/tools/ReachLimitsCheck.java
+          java -cp /tmp/extended-reach-check ReachLimitsCheck
+      - name: Compile and remap real Fabric JAR
+        run: gradle --no-daemon --project-dir mods/extended-reach build
+      - name: Verify JAR content and prepare release file
+        run: node mods/extended-reach/tools/package-release.mjs
+      - name: Validate updated site catalog
+        run: |
+          node .github/scripts/build-catalog.mjs
+          node .github/scripts/validate-catalog.mjs
+      - name: Upload verified JAR artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: zovrax-extended-reach-0.1.0-fabric-1.21.10
+          path: mods/extended-reach/releases/zovrax-extended-reach-0.1.0-fabric-1.21.10.jar
+          if-no-files-found: error
+      - name: Commit verified release onto feature branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/feat/extended-reach-fabric-12110'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git config user.name 'github-actions[bot]'
+          git add mods/extended-reach/zovrax.json mods/extended-reach/releases/
+          if git diff --cached --quiet; then
+            echo 'Verified JAR and release metadata are already up to date'
+          else
+            git commit -m 'release(extended-reach): publish validated Fabric beta 0.1.0'
+            git push origin HEAD:refs/heads/feat/extended-reach-fabric-12110
+          fi

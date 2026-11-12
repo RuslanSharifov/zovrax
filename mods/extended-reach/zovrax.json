@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 2,
+  "slug": "extended-reach",
+  "name": "Extended Reach",
+  "category": "utility",
+  "status": "released",
+  "featured": false,
+  "accent": "blue",
+  "icon": "assets/icon.svg",
+  "summary": {
+    "en": "Break and place blocks up to 16 blocks away with an adjustable, server-verified range.",
+    "ru": "Ломайте и размещайте блоки на расстоянии до 16 блоков с настройками.",
+    "fr": "Cassez et placez des blocs à distance réglable jusqu'à 16 blocs.",
+    "az": "Blokları 16 bloka qədər məsafədən qırın və yerləşdirin; məsafəni ayarlardan seçin."
+  },
+  "tags": [
+    "Building",
+    "Block Reach",
+    "QoL",
+    "Multiplayer"
+  ],
+  "minecraftVersions": [
+    "1.21.10"
+  ],
+  "loaders": [
+    "Fabric"
+  ],
+  "authors": [
+    "ruslan"
+  ],
+  "updatedAt": "2026-11-13",
+  "license": "MIT",
+  "source": "https://github.com/RuslanSharifov/zovrax/tree/main/mods/extended-reach",
+  "features": [
+    {
+      "en": "Adjust block breaking and placement reach from 5 to 16 blocks (8 by default)",
+      "ru": "Дальность разрушения и установки: 5–16 блоков",
+      "fr": "Portée de destruction et placement réglable de 5 à 16 blocs",
+      "az": "Blok qırma və qoyma məsafəsi 5–16 blok (standart 8)"
+    },
+    {
+      "en": "O key opens a native in-game slider; optional Mod Menu Configure button",
+      "ru": "Меню настройки по O; поддержка Mod Menu необязательна",
+      "fr": "Réglages avec la touche O ; intégration Mod Menu facultative",
+      "az": "O düyməsi ilə ayarlar; əlavə Mod Menu dəstəyi"
+    },
+    {
+      "en": "Server validates the 16-block cap; client/server installation required for multiplayer",
+      "ru": "Проверка ограничения в 16 блоков на сервере",
+      "fr": "Limite de 16 blocs validée côté serveur",
+      "az": "16 blok həddini server yoxlayır; multiplayer üçün hər iki tərəfdə mod lazımdır"
+    }
+  ],
+  "screenshots": [],
+  "releases": [
+    {
+      "version": "0.1.0",
+      "releasedAt": "2026-11-13",
+      "prerelease": true,
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "loaders": [
+        "Fabric"
+      ],
+      "downloads": [
+        {
+          "file": "releases/zovrax-extended-reach-0.1.0-fabric-1.21.10.jar",
+          "label": "Fabric 1.21.10 · Beta 0.1.0",
+          "minecraftVersions": [
+            "1.21.10"
+          ],
+          "loaders": [
+            "Fabric"
+          ]
+        }
+      ],
+      "changelog": {
+        "en": "Initial beta: configurable 5–16 block breaking and placing reach, persisted native settings, optional Mod Menu, client/server validation and respawn synchronization. Java build and archive validated; in-game tests pending.",
+        "ru": "Первая бета: изменение дальности разрушения и размещения блоков (5–16), меню настроек, проверка на сервере. Сборка проверена; тесты в игре ещё нужны.",
+        "fr": "Première bêta : distance de destruction et placement de 5 à 16 blocs, réglages et validation serveur. Compilation vérifiée ; essais en jeu à faire."
+      }
+    }
+  ],
+  "monetization": {
+    "type": "free",
+    "premiumUrl": null,
+    "premiumLabel": "Get Premium"
+  },
+  "seo": {
+    "title": "Extended Reach — Break & Place Blocks Up to 16 Blocks | Zovrax",
+    "description": "Extended Reach for Minecraft Java Fabric 1.21.10: adjustable 5–16 block mining and placement distance with server verification.",
+    "keywords": [
+      "Minecraft extended reach",
+      "long reach mod",
+      "16 block reach",
+      "Minecraft block placement range",
+      "Fabric 1.21.10 reach mod"
+    ]
+  }
+}
