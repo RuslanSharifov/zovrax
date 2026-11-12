@@ -1,28 +1,23 @@
-# HarvestPulse
+# HarvestPulse · Smart Farm Tracker
 
-**Free crop-growth tracker for Minecraft Java 1.21.10 · Fabric.**
+**Free beta 0.2.0 · Minecraft Java 1.21.10 · Fabric · Java 21**
 
-Know when your farm is ready without constantly travelling back to check it. HarvestPulse monitors up to 8 named farms, shows a compact crop-readiness bar, and displays a **bell at 100%**. You can choose a bar that is always shown, **only appears when fully ready**, or is entirely hidden.
+Know precisely how ready your wheat, potatoes, carrots, beets and other supported crops are — even from the other end of your world. HarvestPulse tracks several named farms, shows crop maturity as elegant progress bars, and optionally rings the bell only when a harvest is fully ready.
 
-## Choose any rectangular field
+## Select farms visually
 
-1. Press **H** and choose **Track new field**.
-2. Right-click two opposite corners of a farm (up to 16 × 16 blocks).
-3. Rename the field and choose percentage, ready/total count, or both.
-4. Rearrange the list, delete fields, or drag the HUD wherever you want.
+Press **H** to open the farm manager, choose **16×16, 32×32, 64×64 or 128×128**, then right-click two opposite field corners. Watch the translucent terrain-following preview: **mint green** for valid land, **red** if too big or overlapping another field, **cyan-blue** for fields already tracked. Press **H** again to cancel from the manager without adding a farm.
 
-For example, **32 ready of 64 crops = 50%**. Empty farmland slots count as not yet ready; the bell only appears when there is at least one valid crop/plot and every counted slot is mature.
+## A minimal HUD that tells you when to harvest
 
-## Crops grow even when you travel away
+Track up to eight individually named farms per world. Show percentage, `ready/total`, or both. Each bar can stay visible, appear **only at 100%**, or stay hidden. When a field becomes completely mature, a **gold bell appears**, the bar slides and fades into place, and (if enabled) a bell sound plus Minecraft’s familiar **top-right toast** announces the harvest.
 
-HarvestPulse is **not client-only**. It runs on the **Minecraft server** (including the integrated singleplayer server), keeps track of your saved crop positions, and performs bounded server-authoritative growth attempts when the farm is too far away for vanilla random ticks. The progress bar is updated from the actual remote crop blocks, not from guesses.
+To customize quickly, open the HUD editor, **hold and drag** the bars to move them or **click** the HUD to adjust opacity, background, scale, sound and animation right there. HarvestPulse has its own icon in Fabric's in-game mod list and an independent saved config.
 
-Supported: wheat, potatoes, carrots, beetroot, nether wart, cocoa, and sweet berry bushes. Maximum 8 farms per player, 16 × 16 each. Farms receive updates while their owner is online and the server runs. `randomTickSpeed=0`, insufficient light, incorrect soil or stopped servers still prevent growth. Other modded plants are not supported yet.
+## Remote crop growth
 
-## Install
+With the mod installed on both client and server, registered plants get server-side growth attempts even outside normal player tick range. A full farm scan is split across server ticks and uses actual crop states for its numbers. Huge 128×128 farms update **less frequently** than small plots; performance limits, growth rules and vanilla randomness still apply. This beta doesn't promise exact vanilla growth timing or instant percentages at extreme distances. Please back up your multiplayer worlds and test the new release before relying on large-scale production fields.
 
-Requires **Minecraft Java 1.21.10**, **Fabric Loader**, **Fabric API** and **Java 21**. On multiplayer servers, install the mod on both the server and the client. The HUD, preferences and saved fields are local to you; server-side field tracking is saved in your world.
+**Requires Fabric Loader, Fabric API and Minecraft 1.21.10; install the same JAR on the server in multiplayer. No payment required.**
 
-**Beta 0.1.0**: automated source/JAR and catalog validation passed. The behavior has **not** been verified in a real Minecraft session yet. Report issues, especially growth behavior far from loaded chunks and compatibility with server-side crop mods.
-
-Free and open source (MIT). No premium downloads.
+*Automated Java/Gradle and metadata checks do not substitute for live game testing.*

@@ -17,6 +17,11 @@ public final class HarvestPulseConfig {
 
     public boolean enabled = true;
     public int scale = 100;
+    /** Chosen by the player; independent of server hard limit. */
+    public int selectionLimit = 16;
+    public boolean soundAlerts = true;
+    public boolean toastAlerts = true;
+    public boolean animateAlerts = true;
     public int opacity = 100;
     public int backgroundOpacity = 45;
     public double x = 0.025;
@@ -40,6 +45,8 @@ public final class HarvestPulseConfig {
         public transient boolean loaded;
         public transient boolean sampled;
         public transient long lastSampleMillis;
+        public transient long readySinceMillis;
+        public transient boolean notifiedReady;
     }
 
     public static HarvestPulseConfig load() {
@@ -62,6 +69,7 @@ public final class HarvestPulseConfig {
 
     public void sanitize() {
         scale = Math.clamp(scale, 50, 200);
+        if (!FieldMath.validLimit(selectionLimit)) selectionLimit = 16;
         opacity = Math.clamp(opacity, 0, 100);
         backgroundOpacity = Math.clamp(backgroundOpacity, 0, 100);
         if (!Double.isFinite(x)) x = 0.025;
@@ -70,7 +78,7 @@ public final class HarvestPulseConfig {
         y = Math.clamp(y, 0d, 1d);
         if (fields == null) fields = new ArrayList<>();
         fields.removeIf(f -> f == null || !FieldMath.validArea(f.x1, f.y1, f.z1, f.x2, f.y2, f.z2));
-        if (fields.size() > FieldMath.MAX_FIELDS) fields = new ArrayList<>(fields.subList(0, FieldMath.MAX_FIELDS));
+        if (fields.size() > 64) fields = new ArrayList<>(fields.subList(0, 64));
         for (Field f : fields) {
             if (f.id == null || f.id.isBlank()) f.id = UUID.randomUUID().toString();
             if (f.name == null || f.name.isBlank()) f.name = "New field";

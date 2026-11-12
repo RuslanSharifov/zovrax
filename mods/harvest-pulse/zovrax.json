@@ -8,10 +8,10 @@
   "accent": "lime",
   "icon": "assets/icon.svg",
   "summary": {
-    "en": "Name and track up to 8 crop fields with live readiness bars and bell alerts; registered crops can continue growing while you are far away.",
-    "ru": "Отслеживайте до 8 полей: прогресс урожая, сигналы готовности и рост растений вдали от игрока.",
-    "fr": "Suivez jusqu'à 8 champs : progression, alertes de récolte et pousse des cultures loin du joueur.",
-    "az": "8-ə qədər tarlada yetişmə faizini, bildirişləri və oyunçudan uzaqda da məhsul böyüməsini izləyin."
+    "en": "HarvestPulse 0.2.0: select and color-preview farms up to 128×128, grow crops remotely, and get animated bell/toast alerts when harvests are ready.",
+    "ru": "HarvestPulse 0.2.0: подсветка полей до 128×128, удалённый рост и анимированные оповещения о готовом урожае.",
+    "fr": "HarvestPulse 0.2.0 : aperçu coloré des champs jusqu’à 128×128, pousse à distance et alertes animées de récolte.",
+    "az": "HarvestPulse 0.2.0: 128×128-ə qədər rəngli tarla seçimi, uzaqdan böyümə və animasiyalı məhsul bildirişləri."
   },
   "tags": [
     "Farming",
@@ -34,33 +34,57 @@
   "source": "https://github.com/RuslanSharifov/zovrax/tree/main/mods/harvest-pulse",
   "features": [
     {
-      "en": "Select two opposite farm corners by right-clicking blocks; validated server-side.",
-      "ru": "Выберите два угла поля кликами по блокам.",
-      "fr": "Sélectionnez deux coins opposés du champ en cliquant sur les blocs."
+      "en": "Color preview follows terrain: green valid, red oversized/overlapping, cyan already tracked; H opens a Cancel option."
     },
     {
-      "en": "Track up to 8 bounded fields (16 x 16) with progress bars and harvestable / total counts.",
-      "ru": "До 8 полей 16 × 16 с прогрессом и счётчиками урожая.",
-      "fr": "Jusqu'à 8 champs de 16 × 16 avec barres et compteurs de récolte."
+      "en": "Choose an individual selection bound of 16, 32, 64 or 128 blocks per side. Server validates absolute maximum, overlap and ownership."
     },
     {
-      "en": "Rename, reorder and remove fields; choose always visible, ready-only or hidden.",
-      "ru": "Переименуйте, упорядочьте, удалите поля и выберите режим отображения.",
-      "fr": "Renommez, triez, supprimez les champs et choisissez leur visibilité."
+      "en": "Monitor up to eight named fields per world, with % and ready/total counts and ready-only/always/hidden modes."
     },
     {
-      "en": "A bell appears at 100% readiness; optional percent, count or both.",
-      "ru": "Значок колокольчика при 100%; процент, количество или оба.",
-      "fr": "Cloche à 100 % ; pourcentage, nombre ou les deux."
+      "en": "100% bell indicator, slide-and-fade entrance, optional one-time sound and top-right vanilla toast."
     },
     {
-      "en": "Server-authoritative remote crop ticks when all players are outside the normal crop-ticking range; capped workload.",
-      "ru": "Сервер выполняет удалённые тики посевов в пределах ограниченной нагрузки.",
-      "fr": "Le serveur simule la pousse à distance avec des limites de charge."
+      "en": "Click HUD to edit opacity, background, size and alerts in place, or hold and drag to reposition."
+    },
+    {
+      "en": "Server-authoritative budgeted remote growth and progressive full-field scans, optimized for large selections."
+    },
+    {
+      "en": "64×64 PNG logo in Fabric Mod Menu; site catalog SVG icon; free Fabric 1.21.10 + Java 21."
     }
   ],
   "screenshots": [],
   "releases": [
+    {
+      "version": "0.2.0",
+      "releasedAt": "2026-11-12",
+      "prerelease": true,
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "loaders": [
+        "Fabric"
+      ],
+      "downloads": [
+        {
+          "file": "releases/zovrax-harvest-pulse-0.2.0-fabric-1.21.10.jar",
+          "label": "Fabric 1.21.10 · Beta 0.2.0",
+          "minecraftVersions": [
+            "1.21.10"
+          ],
+          "loaders": [
+            "Fabric"
+          ]
+        }
+      ],
+      "changelog": {
+        "en": "Second beta: terrain-following green/red/blue area selection; 16/32/64/128-block size settings; duplicate-region protection; animated 100%-ready bell bar, optional sound and vanilla toast; click-to-edit/drag HUD; in-game mod icon; budgeted large-field scans. Compiled validation required; real gameplay tests still pending.",
+        "ru": "Бета 0.2.0: визуальный выбор поля, размеры 16–128, уведомления, звуки, управление HUD и иконка в списке модов.",
+        "fr": "Bêta 0.2.0 : sélection visuelle, limites 16–128, notifications, sons, éditeur HUD et icône dans la liste des mods."
+      }
+    },
     {
       "version": "0.1.0",
       "releasedAt": "2026-11-12",
