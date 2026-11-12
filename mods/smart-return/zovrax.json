@@ -88,5 +88,19 @@
     "type": "free",
     "premiumUrl": null,
     "premiumLabel": "Get Premium"
+  },
+  "seo": {
+    "title": "SmartReturn — Find Your Cave Exit in Minecraft Fabric | Zovrax",
+    "description": "SmartReturn silently records Minecraft cave paths and guides you back using optional 3D arrows or a mini compass on Fabric 1.21.10.",
+    "keywords": [
+      "SmartReturn Minecraft mod",
+      "Minecraft cave exit finder",
+      "Minecraft cave navigation",
+      "find way back Minecraft cave",
+      "Fabric return path mod",
+      "3D cave navigation arrows",
+      "Minecraft cave compass",
+      "save cave route"
+    ]
   }
 }
