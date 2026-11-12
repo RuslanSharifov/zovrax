@@ -109,13 +109,21 @@ public final class RouteRecorder {
         if (hasSky) {
             lastOutdoor = pos;
             lastOutdoorAt = ticks;
+            // Keep a rolling approach so a vertical shaft still connects
+            // to the actual daylight entrance before cave detection fires.
+            prelude.clear();
+            prelude.addLast(pos);
+        } else if (!cave && (graph == null || paused)) {
+            if (prelude.isEmpty() || prelude.getLast().distanceTo(pos) > 1.0)
+                prelude.addLast(pos);
+            while (prelude.size() > 240) prelude.removeFirst();
         }
         if (cave) {
             enclosedTicks += 3;
             outdoorTicks = 0;
             if (graph == null || paused) {
                 if (prelude.isEmpty() || prelude.getLast().distanceTo(pos) > 1.2) prelude.addLast(pos);
-                while (prelude.size() > 100) prelude.removeFirst();
+                while (prelude.size() > 240) prelude.removeFirst();
             }
             if (enclosedTicks >= 120 && (graph == null || paused)) {
                 if (graph == null || newTripReady
@@ -140,7 +148,6 @@ public final class RouteRecorder {
         } else {
             outdoorTicks += 3;
             enclosedTicks = 0;
-            prelude.clear();
             if (graph != null && outdoorTicks >= 120) {
                 paused = true;
                 if (graph.entrance().distanceTo(pos) < 12 && guiding) {
