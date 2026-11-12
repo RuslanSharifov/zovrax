@@ -20,7 +20,7 @@ public final class SmartReturnHud {
         List<Vec3d> route = recorder.guidance();
         if (route.isEmpty()) return;
 
-        Vec3d location = mc.player.getPos();
+        Vec3d location = new Vec3d(mc.player.getX(),mc.player.getY(),mc.player.getZ());
         Vec3d waypoint = route.get(0);
         for (Vec3d p : route) {
             if (p.distanceTo(location) > 2.25) { waypoint = p; break; }
