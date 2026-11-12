@@ -10,7 +10,7 @@ A separate Zovrax Java 21/Fabric mod that increases **block breaking and placing
 - Press **O** (remappable in Controls > Key Binds) to open **Extended Reach Settings**, or use the **Configure** button in optional **Mod Menu 16.0.1**.
 - Move the distance slider from **5** to **16** blocks; changes are saved immediately to `config/zovrax-extended-reach.json` and sent to the server. Defaults to **8** blocks. The server clamps requested values to at most **16**.
 
-The selected reach is reapplied after player respawn and reconnect (if both sides have the mod). If you join an unmodded multiplayer server, your local setting is saved but will not override the server's normal rules. A server may use other mods or restrictions affecting interaction range.
+Reach uses Minecraft's normal block targeting and line-of-sight rules; it does not place or break through solid walls. The selected reach is reapplied after player respawn and reconnect (if both sides have the mod). If you join an unmodded multiplayer server, your local setting is saved but will not override the server's normal rules. A server may use other mods or restrictions affecting interaction range.
 
 ## Architecture
 
