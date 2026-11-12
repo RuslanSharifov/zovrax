@@ -100,7 +100,7 @@ public final class RouteRecorder {
         if (mc.player == null || mc.world == null || !config.enabled) return;
         ticks++;
         if (ticks % 10 != 0) return; // ~2 samples/s, minimal client work
-        Vec3d pos = mc.player.getPos();
+        Vec3d pos = new Vec3d(mc.player.getX(),mc.player.getY(),mc.player.getZ());
         BlockPos feet = mc.player.getBlockPos();
         int roofDepth = mc.world.getTopY(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES,
                 feet.getX(), feet.getZ()) - feet.getY();
@@ -184,7 +184,7 @@ public final class RouteRecorder {
             message(mc, "No cave path recorded yet.");
             return;
         }
-        guidance = graph.homeward(mc.player.getPos());
+        guidance = graph.homeward(new Vec3d(mc.player.getX(),mc.player.getY(),mc.player.getZ()));
         if (guidance.isEmpty()) {
             message(mc, "Move back onto your recorded path first.");
             return;
