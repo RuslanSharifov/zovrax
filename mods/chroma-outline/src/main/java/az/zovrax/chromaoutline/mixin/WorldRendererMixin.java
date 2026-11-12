@@ -2,7 +2,7 @@ package az.zovrax.chromaoutline.mixin;
 
 import az.zovrax.chromaoutline.ChromaOutlineClient;
 import az.zovrax.chromaoutline.ChromaOutlineConfig;
-import az.zovrax.chromaoutline.ColorMath;
+import az.zovrax.chromaoutline.OutlinePalette;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexRendering;
 import net.minecraft.client.render.WorldRenderer;
@@ -33,7 +33,7 @@ public abstract class WorldRendererMixin {
         double x = state.pos().getX() - cameraX;
         double y = state.pos().getY() - cameraY;
         double z = state.pos().getZ() - cameraZ;
-        int color = ColorMath.resolve(config, System.nanoTime());
+        int color = OutlinePalette.resolve(config, System.nanoTime());
         double expansion = config.expansion * 0.001;
 
         if (expansion > 0) {
