@@ -48,6 +48,7 @@ export function homeView({ catalog }) {
       h('p', { class: 'lead' }, pick(site.description)),
       h('div', { class: 'cta-row' },
         h('a', { class: 'btn btn-primary btn-lg', href: '#/mods' }, t('actionExplore'), icon('arrowRight', { size: 18 })),
+        h('a', { class: 'btn btn-ghost btn-lg', href: '#/shaders' }, t('actionExploreShaders'), icon('arrowRight', { size: 18 })),
         h('a', { class: 'btn btn-ghost btn-lg', href: site.repository, target: '_blank', rel: 'noopener noreferrer' },
           icon('github', { size: 18 }), t('actionGithub'))),
       h('p', { class: 'hero-badge' }, t('heroBadge'))),

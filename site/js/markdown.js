@@ -13,7 +13,7 @@ const ABSOLUTE_URL = /^(https?:|mailto:)/i;
  * @param {{ slug: string, repository: string, resolveFile: (path: string) => string | null }} options
  * @returns {DocumentFragment}
  */
-export function renderMarkdown(source, { slug, repository, resolveFile }) {
+export function renderMarkdown(source, { slug, repository, resolveFile, collection = 'mods' }) {
   const html = marked.parse(String(source ?? ''), { gfm: true, breaks: false });
   const fragment = DOMPurify.sanitize(html, { RETURN_DOM_FRAGMENT: true, ADD_ATTR: ['target'] });
 
@@ -41,7 +41,7 @@ export function renderMarkdown(source, { slug, repository, resolveFile }) {
     if (ABSOLUTE_URL.test(href)) continue;
     // Relative file links point into the mod folder on GitHub.
     const clean = href.replace(/^\.?\/*/, '');
-    link.setAttribute('href', `${repository}/blob/main/mods/${slug}/${clean}`);
+    link.setAttribute('href', `${repository}/blob/main/${collection === 'shaders' ? 'shaders' : 'mods'}/${slug}/${clean}`);
   }
 
   for (const table of [...fragment.querySelectorAll('table')]) {

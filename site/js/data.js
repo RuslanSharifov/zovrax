@@ -29,6 +29,18 @@ export const loadCatalog = () => memo('catalog', () => getJson('catalog.json').t
   return data;
 }));
 
+export function loadShader(slug) {
+  if (!SLUG.test(slug)) return Promise.resolve(null);
+  return memo('shader:'+slug, () => getJson('shaders/'+slug+'.json'));
+}
+
+export function shaderFileUrl(slug, file) {
+  if (!SLUG.test(slug) || typeof file !== 'string') return null;
+  const clean = file.replace(/^\.\//, '');
+  if (!clean || clean.startsWith('/') || clean.includes('\\') || clean.split('/').some(part => part === '..' || part === '.')) return null;
+  return new URL('shaders/'+slug+'/'+clean, DATA_ROOT).href;
+}
+
 export function loadMod(slug) {
   if (!SLUG.test(slug)) return Promise.resolve(null);
   return memo(`mod:${slug}`, () => getJson(`mods/${slug}.json`));

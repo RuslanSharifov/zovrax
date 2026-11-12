@@ -8,6 +8,7 @@ import { renderHeader, renderFooter } from './layout.js';
 import { homeView } from './views/home.js';
 import { exploreView } from './views/explore.js';
 import { modView } from './views/mod.js';
+import { shadersView, shaderView } from './views/shaders.js';
 import { developersView, developerView } from './views/developers.js';
 import { aboutView } from './views/about.js';
 import { supportView } from './views/support.js';
@@ -41,6 +42,8 @@ const context = (params, query) => ({
 defineRoute('/', (ctx) => homeView(ctx));
 defineRoute('/mods', (ctx) => exploreView(ctx));
 defineRoute('/mods/:slug', (ctx) => modView(ctx));
+defineRoute('/shaders', (ctx) => shadersView(ctx));
+defineRoute('/shaders/:slug', (ctx) => shaderView(ctx));
 defineRoute('/developers', (ctx) => developersView(ctx));
 defineRoute('/developers/:id', (ctx) => developerView(ctx));
 defineRoute('/about', (ctx) => aboutView(ctx));
