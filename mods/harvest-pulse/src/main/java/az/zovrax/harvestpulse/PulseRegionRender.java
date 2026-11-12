@@ -2,10 +2,12 @@ package az.zovrax.harvestpulse;
 
 import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderContext;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.text.Text;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexRendering;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.util.BufferAllocator;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -20,17 +22,51 @@ public final class PulseRegionRender {
     private static final int VIEW_RADIUS = 18;
     private static final int MAX_PREVIEW_TILES = 512;
     private static final int MAX_EXISTING_TILES = 160;
+
+    // The world renderer's context.consumers() shares fixed buffers, but
+    // DEBUG_FILLED_BOX is not guaranteed to be in a building state there.
+    // Writing to it caused IllegalStateException: Not building! when the
+    // player clicked "Add field" and the first preview was rendered.
+    // Use independent, explicitly started and flushed buffers for BOTH
+    // debug fill and outline layers; never touch world renderer buffers.
+    private static final BufferAllocator FILL_ALLOCATOR = new BufferAllocator(1 << 20);
+    private static final BufferAllocator OUTLINE_ALLOCATOR = new BufferAllocator(1 << 18);
+    private static final VertexConsumerProvider.Immediate FILLS = VertexConsumerProvider.immediate(FILL_ALLOCATOR);
+    private static final VertexConsumerProvider.Immediate OUTLINES = VertexConsumerProvider.immediate(OUTLINE_ALLOCATOR);
+
+    private static boolean previewDisabledForSession;
+
     private PulseRegionRender() { }
 
     public static void render(WorldRenderContext context) {
+        if (previewDisabledForSession) return;
+        try {
+            renderFrame(context);
+        } catch (IllegalStateException error) {
+            // Driver/mod combinations (including Android OpenGL translation)
+            // can still reject certain debug render layers. Never allow the
+            // visual helper to take down the whole game; keep field selection,
+            // server growth, and HUD active with a one-time warning instead.
+            previewDisabledForSession = true;
+            System.err.println("[HarvestPulse] 3D selection preview disabled after a render error:");
+            error.printStackTrace();
+            MinecraftClient mc = MinecraftClient.getInstance();
+            if (mc.player != null) mc.player.sendMessage(
+                Text.literal("HarvestPulse: 3D highlight unavailable on this renderer; field selection still works."), false);
+        }
+    }
+
+    private static void renderFrame(WorldRenderContext context) {
         MinecraftClient mc=MinecraftClient.getInstance();
         if (!HarvestPulseClient.selecting() || mc.player==null || mc.world==null) return;
         if (mc.currentScreen!=null || mc.options.hudHidden) return;
         MatrixStack matrices=context.matrices();
-        VertexConsumerProvider providers=context.consumers();
-        if (matrices==null || providers==null) return;
-        VertexConsumer fills=providers.getBuffer(RenderLayer.getDebugFilledBox());
-        VertexConsumer strokes=providers.getBuffer(RenderLayer.getLines());
+        if (matrices==null) return;
+        // This event permits direct/immediate world drawing. Our own
+        // providers begin BufferBuilder for the requested layer via
+        // getBuffer and finish it with draw() after vertex extraction.
+        VertexConsumer fills=FILLS.getBuffer(RenderLayer.getDebugFilledBox());
+        VertexConsumer strokes=OUTLINES.getBuffer(RenderLayer.getLines());
         Vec3d camera=mc.player.getCameraPosVec(1.0f);
         matrices.push();
         matrices.translate(-camera.x,-camera.y,-camera.z);
@@ -64,7 +100,13 @@ public final class PulseRegionRender {
                 Math.max(first.getX(),second.getX()),Math.min(first.getZ(),second.getZ()),
                 Math.max(first.getZ(),second.getZ()),valid?0.23f:1.0f,
                 valid?0.95f:0.23f,valid?0.48f:0.31f,MAX_PREVIEW_TILES);
-        } finally { matrices.pop(); }
+        } finally {
+            matrices.pop();
+            // Always close both builds, including the first-corner early return.
+            // A subsequent frame must never inherit half-written geometry.
+            FILLS.draw();
+            OUTLINES.draw();
+        }
     }
 
     private static int paint(MinecraftClient mc,MatrixStack matrices,VertexConsumer fills,

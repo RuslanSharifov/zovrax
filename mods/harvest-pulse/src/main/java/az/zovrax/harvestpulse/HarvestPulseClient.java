@@ -110,7 +110,7 @@ public final class HarvestPulseClient implements ClientModInitializer {
                 if (mc.player != null && mc.currentScreen == null) mc.setScreen(new HarvestPulseScreen(null));
             }
         });
-        net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderEvents.AFTER_ENTITIES.register(PulseRegionRender::render);
+        net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderEvents.BEFORE_DEBUG_RENDER.register(PulseRegionRender::render);
         HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT,
             Identifier.of(ID,"overlay"),HarvestPulseHud::render);
         UseBlockCallback.EVENT.register((player,world,hand,hit)->{
