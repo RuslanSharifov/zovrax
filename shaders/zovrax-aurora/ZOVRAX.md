@@ -1,23 +1,23 @@
-# Zovrax Aurora — light, stars and moving skies
+# Zovrax Aurora 0.2 — rebuilt Minecraft lighting and sky
 
-Zovrax's first highly adjustable Minecraft Java 1.21.10 Iris shaderpack. Choose **FAST / BALANCED / HIGH / ULTRA**, or configure effects individually.
+**Visual overhaul beta:** The original Aurora 0.1 pack had too little impact on how Minecraft looked. Version 0.2 rebuilds the effect pipeline rather than adding empty settings.
 
-## Sunlight through the leaves
+## Brighter sunshine, stronger shadows
 
-Leaves glow when backlit by sunshine. The shadow pass can leave tiny gaps between leaf clusters, creating a gentle dappled canopy effect. Grass and tree foliage can wave in the wind.
+Light now varies by surface direction with a visibly warmer sun and cooler shadow, while lantern and torch lighting gets a warm tint. Leaves receive directional green backlighting and foliage has dappled canopy shadows.
 
-## A remarkable night sky
+## Sky worth looking at
 
-Dark blue nights feature scattered procedural stars, a softly glowing moon and optional gentle moon-cast shadows. Sunrise, sunset and atmospheric haze can be tuned independently.
+The sky has a larger and brighter star field, thicker moving clouds with sunny highlights, golden dawn/dusk colors, a glowing sun and moon, and adjustable atmospheric distance fog.
 
-## Clouds, water and reflection
+## Water that can reflect nearby terrain
 
-Animated cloud layers move with configurable speed and appearance. Water has wind-driven ripples, a Fresnel-style sky reflection, and bright sun/moon specular highlights.
+Water uses animated surface ripples, Fresnel sky reflection and an optional screen-space reflection pass to sample **visible world geometry**, with independent quality and strength settings. Plants and their cast shadows move together in world space.
 
-## Performance-conscious design
+## Make it fit your computer
 
-Disable shadows, sun shafts, bloom, cloud shadows, screen-space ambient occlusion, leaf motion and water reflections separately. Shadow resolution/distance, cloud quality, wind speed and post-processing strengths are all adjustable.
+Choose FAST, BALANCED, HIGH or ULTRA. Toggle shadows, water reflections, distance fog, clouds, sunshafts, ambient occlusion and bloom; configure sunshine, torch warmth, star brightness, cloud cover and wind.
 
-**Beta notice:** This pack is a real, deterministic ZIP containing the shader source and is checked for source structure and GLSL syntax. It has **not been tested in a running Minecraft client** or benchmarked for FPS. Its moving clouds and reflections are lightweight approximations, not true volumetric clouds or path tracing.
+**Experimental beta:** The real ZIP and GLSL programs pass automated structural and compile checks, but the pack has **not been tested in a running Minecraft client or measured for FPS**. Clouds are layered procedural approximations; water SSR has screen-edge and offscreen limitations. No guaranteed visual or performance claim.
 
-**Requirements:** Minecraft Java 1.21.10, Fabric and Iris (not a mod JAR). Download the ZIP, place it inside the shaderpacks folder, choose Zovrax Aurora in the game's shader menu and adjust settings.
+**Compatible target:** Minecraft Java 1.21.10, Fabric + Iris. Download Aurora **0.2.0-beta ZIP** into shaderpacks, not mods. The old beta remains available.

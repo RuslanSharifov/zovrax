@@ -1,51 +1,53 @@
-# Zovrax Aurora — configurable FPS-first shaderpack
+# Zovrax Aurora — visual overhaul beta
 
-**Beta 0.1.0 · Minecraft Java 1.21.10 · Fabric + Iris shader loader · Free · MIT license**
+**Current release: 0.2.0-beta · Minecraft Java 1.21.10 · Iris · Free**
 
-An original shaderpack for the Zovrax platform. It provides optional sun/moon shadow mapping, sunlight through leaves, animated foliage, water sky reflections, a starry night sky and drifting procedural cloud layers.
+Aurora 0.1.0 changed the game too little. The 0.2.0 update is a rendering overhaul, not a menu rename.
 
-## Installation
+## Visual changes in 0.2.0
 
-1. Install Minecraft Java 1.21.10 with Fabric + an Iris version compatible with 1.21.10. Install any additional dependencies required by Iris.
-2. Download the release ZIP (do not extract the ZIP).
-3. Copy the ZIP into the Minecraft shaderpacks folder, NOT the mods folder.
-4. In Video Settings, open Shader Packs, choose Zovrax Aurora, then open Shader Pack Settings.
+- Rebuilt terrain: brighter directional sunlight, a subtle cool moonlight color, golden sunlight and warm torch lighting. Shadows and backlit leaves have more distinct contrast.
+- Rebuilt sky: denser and brighter stars, stronger cloud shapes and highlights, warmer dawn/dusk and a clearer sun disc.
+- New color pipeline: filmic tone mapping, color grading, more distinct saturation and contrast, sunshafts, and optional bloom/SSAO.
+- Atmospheric depth: configurable world-distance fog adds a backdrop to forests and hills.
+- Water: a water-only secondary buffer marks surface normals, allowing optional screen-space reflections of nearby visible blocks in addition to Fresnel sky and sunlight reflection.
+- World-space animated foliage: wind is calculated from reconstructed world position, including a corresponding shadow pass.
 
-## Presets
+All controls are in Shader Pack Settings; FAST/BALANCED/HIGH/ULTRA profiles trade image quality against GPU work.
 
-- FAST: maximum performance intent. Disables shadows, shafts, ambient occlusion and bloom; cloud detail is minimal.
-- BALANCED (default): 1024px shadows, moderate shadow distance and simple clouds.
-- HIGH: more shadow taps and distance, richer clouds and optional post processing.
-- ULTRA: 2048px shadows, maximum included cloud quality and additional graphics effects.
+## Install
 
-Over 40 controls are organized in Light & Shadows, Sky, Clouds, Foliage, Water and Post settings. Every listed effect is implemented in a shader stage and may affect framerate.
+1. Use **Minecraft Java 1.21.10** with compatible **Fabric + Iris**.
+2. Download the **zovrax-aurora-0.2.0-beta.zip** file. Keep it zipped.
+3. Copy it to .minecraft/shaderpacks/, NOT to mods/.
+4. Enable shaderpacks in video settings, select **Zovrax Aurora**, open Shader Pack Settings and select BALANCED.
+5. Compare forest shade, water, noon sunlight, sunset clouds and midnight stars against vanilla.
 
-## Effects and technical limits
+If the game still looks unchanged, check that Iris shaderpacks are enabled and **0.2.0** (not 0.1.0) was selected. If any effect is broken, send Iris logs, hardware and screenshots for diagnosis.
 
-- **Leaves:** configurable translucency, canopy-hole dithering in shadow pass, sunlight between leaf clusters, wind movement.
-- **Moon:** moon disc/glow, night tint and dim shadowing based on the available moon shadow map.
-- **Clouds:** procedural, moving layered noise with height, cover, scale, speed, density and octaves. This is a 2D/2.5D approximation, NOT volumetric raymarching.
-- **Water:** waves, Fresnel-weighted approximate reflection of the sky, sun/moon highlights. It does NOT reflect scene geometry by ray tracing.
-- **Sky:** stars, dawn/dusk haze, sun and moon glow, optional light aurora.
-- **Post:** optional 4-tap bloom, SSAO approximation, tonemapping, exposure, contrast, saturation and vignette.
+## Profiles
 
-The goal is flexible visual effects with reasonable rendering cost. No benchmarked FPS gain, shader-loader runtime compatibility guarantee, or in-game visual validation is claimed. The ZIP is created and reproducibly verified, with GLSL stages statically checked. Actual game/GPU tests remain necessary.
+- FAST: cheapest default profile intent, disables GPU-heavy shadows, reflections, shafts, SSAO and bloom; keeps sky and grading.
+- BALANCED: colored lighting, dynamic sky, 1024 shadow map, 8-step water SSR and atmosphere.
+- HIGH: longer shadows, optional bloom/SSAO, 12-step reflections.
+- ULTRA: 2048 shadow map, 16-step reflections, detailed clouds and optional aurora.
 
-## Reproducible release build
+## Technical limitations
 
-From the repository root:
+The cloud layer is procedural 2D/2.5D, not raymarched volumetric clouds. SSR only reflects objects on the screen, can fail at edges and may show artifacts. It is not ray tracing or a complete reflective-water solution. Sunlight through leaves is simulated by backlighting and dithered shadow samples. More visual quality costs FPS on weaker hardware.
+
+**This version has automated GLSL syntax compilation and deterministic ZIP validation, but NO verified in-game visual test or real FPS benchmark.** This distinction matters after the disappointing 0.1.0 launch.
+
+## Building and rollback
+
+Source is in src/shaders. Releases 0.1.0-beta and 0.2.0-beta remain available for rollback.
+
+From repo root run:
 
     node shaders/zovrax-aurora/scripts/build.mjs
     node shaders/zovrax-aurora/scripts/build.mjs --check
-    node .github/scripts/build-catalog.mjs
-    node --test .github/scripts/shaders.test.mjs
-
-When glslang-tools is available, additionally run:
-
+    node --test shaders/zovrax-aurora/scripts/test.mjs
     node shaders/zovrax-aurora/scripts/check-glsl.mjs
+    node .github/scripts/build-catalog.mjs
 
-Source files live under src/shaders. The builder packages them into the ZIP under the required shaders/ root. ZIP checks and GLSL compilation do NOT replace a Minecraft runtime test.
-
-Compatibility is declared for Minecraft 1.21.10 / Iris only; do not assume OptiFine compatibility. Keep old release ZIPs intact when upgrading.
-
-Copyright (c) 2026 Ruslan Sharifov. MIT licensed original code, subject to the repository LICENSE.
+The GLSL checker requires glslangValidator (glslang-tools package). It tests syntax, not the Iris runtime, graphics driver or perceived visual quality.
