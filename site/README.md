@@ -1,13 +1,14 @@
 # Zovrax
 
-Zovrax is an open-source library and discovery site for Minecraft Java Edition mods. Every mod is developed in the open, described by structured metadata, and listed on the site only after a maintainer approves and merges it.
+Zovrax is a Minecraft Java Edition mods and shaderpacks catalog. The authoritative source is the repository root: `../mods/<slug>/` for Fabric mod JARs and `../shaders/<slug>/` for shader ZIPs. Only real, approved builds are advertised as downloads.
 
 The site is a static single-page app served from GitHub Pages. It is available in English, Russian and French.
 
 ## What the site offers
 
 - **Homepage** with an auto-scrolling showcase of featured and recent mods (paused on hover and focus; static when reduced motion is requested).
-- **Explorer** with search, category, Minecraft version, loader, status and sort filters, grid and list views, and browser-local favorites. Filters are reflected in the URL so views can be shared.
+- **Mods** (`#/mods`) with search, category, Minecraft version, Fabric loader, status and sort filters, grid and list views, and browser-local favorites. Filters are reflected in the URL so views can be shared.
+- **Shaders** (`#/shaders`) with independent Minecraft version, shader-loader and category filters, plus details and verified ZIP downloads when released.
 - **Mod pages** with the rendered GitHub-style README (images, tables, task lists, in-page anchors), features, version-specific downloads with SHA-256 checksums, changelogs, screenshots, authors and related mods.
 - **Developer profiles** with avatar, biography, social links, published mods and an optional Ko-fi link.
 - **Support** (platform and developer donation links, shown only when configured), **About**, and **Contribute** (an interactive walkthrough, a metadata generator and downloadable templates).
@@ -30,11 +31,14 @@ js/                   Application code (ES modules, no build step)
   data.js             Runtime loader for the generated catalog
 vendor/               marked and DOMPurify (vendored, with licences)
 assets/               Logo and favicon
-config/               Site settings and categories (source of truth)
-developers/           One JSON profile per contributor (source of truth)
-mods/<slug>/          One folder per mod: metadata, README, assets, releases (source of truth)
+config/               Legacy site configuration and categories
+developers/           Legacy site-specific developer profile examples
+mods/<slug>/          Legacy site-specific examples; NOT the authoritative mod source
 data/                 GENERATED catalog consumed by the site. Do not edit by hand.
-scripts/              build-catalog.mjs (generator and validator), serve.mjs (preview)
+scripts/              Legacy catalog utilities and the serve.mjs preview server
+../mods/<slug>/       Authoritative mod metadata, sources and real JAR releases
+../shaders/<slug>/    Authoritative shader metadata, sources and real ZIP releases
+../.github/scripts/   Production catalog builder, shader validator and SEO generator
 templates/            Starter files for contributors
 tests/                Unit tests (node:test) and an optional browser smoke test
 .github/              Workflows (validation, deployment) and the PR template
@@ -44,20 +48,20 @@ CONTRIBUTING.md       How to add or update a mod
 
 ## How data flows
 
-1. Contributors edit the source files in `config/`, `developers/` and `mods/`.
-2. `scripts/build-catalog.mjs` validates every file against the schema and writes `data/catalog.json` (the index used by lists and filters), `data/mods/<slug>.json` (full detail per mod) and copies each mod's `assets/` folder.
-3. The site loads those JSON files at runtime. Adding hundreds of mods only adds files; the index stays small and the detail pages load on demand.
+1. Contributors edit the authoritative `../mods/<slug>/` or `../shaders/<slug>/` directories and their schemaVersion 2 metadata, Markdown, assets and real releases.
+2. `../.github/scripts/build-catalog.mjs` generates `data/catalog.json`, mod and shader detail JSON, verified static JAR/ZIP download files, and crawlable `/mod/` and `/shader/` SEO pages. The `npm run build` command in this directory delegates to that root generator.
+3. The frontend loads the generated JSON files at runtime. Download links appear only for real released files.
 
-Validation is strict. The generator reports every problem at once. Examples of rules it enforces: `planned` and `development` mods cannot list downloads, `released` mods must have one, all download and source links must be HTTPS, payment links must point to `ko-fi.com`, every author needs a profile, and an English README and summary are required.
+Validation is strict: planned/development listings have no downloads, free released mods require real JAR files, released shaders require real shader ZIPs, and all authors must be registered. Shader packs use `shaderLoaders` (e.g. Iris or verified OptiFine) instead of Fabric mod loaders. ZIP structural validation does not prove in-game rendering compatibility.
 
 ## Local development
 
 Requirements: Node.js 20 or newer. There are no runtime dependencies.
 
 ```bash
-npm run build      # validate sources and regenerate data/
+npm run build      # run the root catalog builder; generate mods, shaders, and SEO pages
 npm start          # preview at http://localhost:8080/
-npm run check      # validate that data/ is current, then run unit tests
+npm run check      # rebuild, validate the root catalog, and run site unit tests
 ```
 
 Optional browser smoke test:
@@ -75,9 +79,9 @@ UI strings live in `js/i18n/en.js`, `ru.js` and `fr.js`. All three must have ide
 
 ## Deployment
 
-`.github/workflows/deploy.yml` runs on every push to `main`. It validates the catalog and tests, stages a clean `_site` folder that excludes development files, and deploys it with `actions/deploy-pages`. In the repository settings, set **Pages → Build and deployment → Source** to **GitHub Actions**.
+The production deployment workflow is **`../.github/workflows/deploy.yml`** at repository root. It runs the root catalog builder and deploys the `site/` directory through GitHub Pages. `../.github/workflows/validate.yml` checks JavaScript, per-file releases, static pages, localization and both root and site npm workflows.
 
-`.github/workflows/validate.yml` runs on every pull request and branch push. It fails if the source and generated catalog differ, so contributors must commit a regenerated `data/`.
+`site/.github/workflows/` and `site/scripts/build-catalog.mjs` are retained for legacy compatibility; they are not the production deployment or catalog-generation entrypoints.
 
 The site is served from a sub-path (`/zovrax/`). All URLs are relative to `index.html`, so it works both there and at a custom domain root.
 
@@ -94,4 +98,4 @@ The site is served from a sub-path (`/zovrax/`). All URLs are relative to `index
 - `vendor/marked.esm.js` (MIT) and `vendor/purify.es.mjs` (Apache-2.0 / MPL-2.0) are copied unmodified. Licence texts are in `vendor/`.
 - Fonts (DM Sans, Space Grotesk) are loaded from Google Fonts. Avatars are loaded from GitHub.
 - Zovrax is an independent community project and is not affiliated with Mojang or Microsoft. Minecraft is a trademark of Mojang Synergies AB.
-- The repository does not yet declare a licence for the project itself. The maintainer should add a `LICENSE` file.
+- The repository root includes a `LICENSE` file; check the file and each contribution's licensing terms before redistribution.
