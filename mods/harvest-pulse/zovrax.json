@@ -132,5 +132,18 @@
     "type": "free",
     "premiumUrl": null,
     "premiumLabel": "Get Premium"
+  },
+  "seo": {
+    "title": "HarvestPulse — Minecraft Crop Growth & Farm Monitor | Zovrax",
+    "description": "Monitor Minecraft farm areas and crop growth with HarvestPulse for Fabric 1.21.10, including selectable fields and harvest alerts.",
+    "keywords": [
+      "HarvestPulse Minecraft",
+      "Minecraft crop growth monitor",
+      "Minecraft farm HUD",
+      "harvest alert mod",
+      "crop progress Minecraft",
+      "Fabric farming utility",
+      "farm field selector"
+    ]
   }
 }
