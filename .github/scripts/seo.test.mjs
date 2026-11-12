@@ -91,3 +91,26 @@ test('homepage and AI reference index link to crawlable mod directory',()=>{
   assert(fs.existsSync(path.join(site,'css/seo-pages.css')));
   assert(fs.readFileSync(path.join(site,'robots.txt'),'utf8').includes(absolute('sitemap.xml')));
 });
+
+test('shader pages are crawlable and only advertise ZIPs actually present',()=>{
+  const directory=fs.readFileSync(path.join(site,'shader/index.html'),'utf8');
+  const url=absolute('shader/');
+  assert(directory.includes('<link rel="canonical" href="'+url+'">'));
+  assert(directory.includes('application/ld+json'));
+  const map=fs.readFileSync(path.join(site,'sitemap.xml'),'utf8');
+  assert(map.includes('<loc>'+url+'</loc>'));
+  const llms=fs.readFileSync(path.join(site,'llms.txt'),'utf8');
+  assert(llms.includes(url));
+  for(const shader of (catalog.shaders||[])){
+    const detail=JSON.parse(fs.readFileSync(path.join(site,'data/shaders',shader.slug+'.json'),'utf8'));
+    const page=fs.readFileSync(path.join(site,'shader',shader.slug,'index.html'),'utf8');
+    assert(map.includes('<loc>'+absolute('shader/'+shader.slug+'/')+'</loc>'));
+    const download=detail.releases.flatMap(r=>r.downloads).filter(d=>d.url.endsWith('.zip'));
+    if(!download.length)assert(!page.includes('downloadUrl'));
+    for(const file of download){
+      assert.match(file.sha256,/^[0-9a-f]{64}$/);
+      assert(fs.existsSync(path.join(site,file.url)));
+      assert(page.includes(absolute(file.url)));
+    }
+  }
+});
