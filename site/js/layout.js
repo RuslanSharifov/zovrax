@@ -13,10 +13,23 @@ export const NAV_ITEMS = [
 
 export const asset = path => new URL(path, document.baseURI).href;
 
-export function setPageMeta({ title, description } = {}) {
-  document.title = title ? `${title} · Zovrax` : 'Zovrax — Minecraft mods';
-  const meta = document.querySelector('meta[name="description"]');
-  if (meta && description) meta.setAttribute('content', description);
+export function setPageMeta({ title, description, canonical } = {}) {
+  document.title = title ? `${title} · Zovrax` : 'Zovrax — Minecraft Java Fabric Mods';
+  const defaultDescription = 'Discover Minecraft Java Edition Fabric mods, compatibility details and verified downloads on Zovrax.';
+  const text = description || defaultDescription;
+  const setMeta = (selector, value) => {
+    const element = document.querySelector(selector);
+    if (element) element.setAttribute('content', value);
+  };
+  setMeta('meta[name="description"]', text);
+  setMeta('meta[property="og:title"]', document.title);
+  setMeta('meta[property="og:description"]', text);
+  setMeta('meta[name="twitter:title"]', document.title);
+  setMeta('meta[name="twitter:description"]', text);
+  const href = canonical || new URL('./', document.baseURI).href;
+  const link = document.querySelector('link[rel="canonical"]');
+  if (link) link.setAttribute('href', href);
+  setMeta('meta[property="og:url"]', href);
 }
 
 function brand(site) {
