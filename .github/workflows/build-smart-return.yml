@@ -12,6 +12,10 @@ on:
       - '.github/workflows/build-smart-return.yml'
   workflow_dispatch:
 
+concurrency:
+  group: smart-return-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: write
 
