@@ -5,10 +5,10 @@
   "category": "realistic",
   "status": "released",
   "summary": {
-    "en": "FPS-conscious adjustable shaderpack with sun/moon shadows, light through leaves, moving plants, stars, animated clouds and reflective water.",
-    "ru": "Настраиваемые шейдеры: тени солнца и луны, свет сквозь листву, ветер, звёзды, облака и водные отражения.",
-    "fr": "Shader configurable avec ombres du soleil et de la lune, lumière à travers les feuilles, vent, étoiles, nuages et reflets.",
-    "az": "Tənzimlənən shader: günəş və ay kölgələri, yarpaqlardan keçən işıq, küləkli bitkilər, ulduzlar, buludlar və su əksləri."
+    "en": "Rebuilt visual shader with stronger sun and moon lighting, denser clouds and stars, distance fog, bright foliage and screen-space water reflections.",
+    "ru": "Новая визуальная версия с более ярким освещением, облаками, звёздами, атмосферным туманом и экранными отражениями воды.",
+    "fr": "Nouvelle version visuelle avec éclairage renforcé, nuages, étoiles, brume et reflets dans l'eau.",
+    "az": "Yenidən işlənmiş vizual shader: daha güclü günəş/ay işığı, buludlar, ulduzlar, duman, yarpaqlardan işıq və suda ekran-uzayı əksləri."
   },
   "authors": [
     "ruslan"
@@ -27,7 +27,10 @@
     "Clouds",
     "Water",
     "Leaves",
-    "FPS"
+    "FPS",
+    "Fog",
+    "Screen-space reflections",
+    "Color grading"
   ],
   "featured": true,
   "accent": "blue",
@@ -37,22 +40,42 @@
   "source": "https://github.com/RuslanSharifov/zovrax/tree/main/shaders/zovrax-aurora",
   "features": [
     {
-      "en": "Sun/moon shadow maps and configurable light through leaves"
+      "en": "Stronger direct sun, moon and warm torch lighting"
     },
     {
-      "en": "Animated leaves, flowers, crops and water"
+      "en": "Atmospheric distance fog and vibrant sky, clouds and stars"
     },
     {
-      "en": "Moving layered clouds and procedural stars"
+      "en": "Configurable screen-space water reflections of visible terrain"
     },
     {
-      "en": "Approximate Fresnel sky and sun reflections"
+      "en": "Canopy lighting and world-space leaf motion"
     },
     {
-      "en": "Four profiles and dozens of shader options"
+      "en": "Four quality profiles and extensive GPU tuning controls"
     }
   ],
   "releases": [
+    {
+      "version": "0.2.0-beta",
+      "releasedAt": "2026-11-12",
+      "prerelease": true,
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "shaderLoaders": [
+        "Iris"
+      ],
+      "downloads": [
+        {
+          "label": "Zovrax Aurora — visual overhaul beta ZIP",
+          "file": "releases/zovrax-aurora-0.2.0-beta.zip"
+        }
+      ],
+      "changelog": {
+        "en": "Rebuilt direct lighting, stronger stars/clouds and sun, distance atmosphere, water screen-space reflections, richer color grading and corrected wind. Beta without in-game validation."
+      }
+    },
     {
       "version": "0.1.0-beta",
       "releasedAt": "2026-11-12",

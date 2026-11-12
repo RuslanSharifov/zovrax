@@ -64,3 +64,16 @@ option.BLOOM=Small-radius bloom
 option.BLOOM_STRENGTH=Bloom intensity
 option.VIGNETTE=Subtle vignette
 option.VIGNETTE_STRENGTH=Vignette intensity
+
+# Aurora 0.2.0 visual engine controls
+option.SHADOW_CONTRAST=Shadow contrast
+option.SUN_WARMTH=Golden sunlight tint
+option.TORCH_WARMTH=Warm torch & lantern light
+option.DISTANCE_FOG=Atmospheric distance fog
+option.FOG_DISTANCE=Fog starting distance
+option.FOG_STRENGTH=Fog density
+option.SCREEN_REFLECTIONS=Reflect nearby blocks in water
+option.SSR_STEPS=Water reflection quality
+option.SSR_STRENGTH=Water scene reflection strength
+option.WATER_BRIGHTNESS=Water brightness
+option.COLOR_STRENGTH=Cinematic color grading

@@ -4,6 +4,7 @@
 attribute vec2 mc_Entity;
 uniform vec3 cameraPosition;
 uniform float frameTimeCounter;
+uniform mat4 gbufferModelViewInverse;
 varying vec2 texcoord;
 varying vec2 lmcoord;
 varying vec4 vertexColor;
@@ -12,7 +13,8 @@ varying vec3 eyeNormal;
 varying float blockKind;
 void main() {
     blockKind = mc_Entity.x;
-    vec3 moved = zxWind(gl_Vertex.xyz, cameraPosition, frameTimeCounter, blockKind);
+    vec3 world = (gbufferModelViewInverse * gl_ModelViewMatrix * gl_Vertex).xyz + cameraPosition;
+    vec3 moved = zxWind(gl_Vertex.xyz, world, frameTimeCounter, blockKind);
     vec4 view = gl_ModelViewMatrix * vec4(moved, 1.0);
     eyePos = view.xyz;
     eyeNormal = normalize(gl_NormalMatrix * gl_Normal);

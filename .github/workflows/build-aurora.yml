@@ -2,7 +2,7 @@ name: Build Aurora shaderpack beta ZIP
 
 on:
   push:
-    branches: [feature/zovrax-aurora-shaderpack]
+    branches: ['feature/aurora-*', 'fix/aurora-*']
     paths:
       - 'shaders/zovrax-aurora/src/**'
       - 'shaders/zovrax-aurora/scripts/**'
@@ -32,13 +32,13 @@ jobs:
         run: |
           node shaders/zovrax-aurora/scripts/build.mjs
           node shaders/zovrax-aurora/scripts/build.mjs --check
-          unzip -t shaders/zovrax-aurora/releases/zovrax-aurora-0.1.0-beta.zip
+          unzip -t shaders/zovrax-aurora/releases/zovrax-aurora-0.2.0-beta.zip
       - name: Commit built release to feature branch
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add shaders/zovrax-aurora/releases/zovrax-aurora-0.1.0-beta.zip
+          git add shaders/zovrax-aurora/releases/zovrax-aurora-0.2.0-beta.zip
           if ! git diff --cached --quiet; then
-            git commit -m "build(shader): publish reproducible Aurora 0.1.0 beta ZIP"
-            git push origin HEAD:feature/zovrax-aurora-shaderpack
+            git commit -m "build(shader): publish reproducible Aurora 0.2.0 beta ZIP"
+            git push origin "HEAD:$GITHUB_REF_NAME"
           fi

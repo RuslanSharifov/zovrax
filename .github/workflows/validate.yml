@@ -51,6 +51,7 @@ jobs:
         run: |
           node shaders/zovrax-aurora/scripts/build.mjs --check
           node --test shaders/zovrax-aurora/scripts/test.mjs
+          unzip -t shaders/zovrax-aurora/releases/zovrax-aurora-0.2.0-beta.zip
           unzip -t shaders/zovrax-aurora/releases/zovrax-aurora-0.1.0-beta.zip
       - name: Install GLSL compiler and check Aurora stages
         run: |
