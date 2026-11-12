@@ -112,7 +112,8 @@ export async function modView({ params, catalog, onCleanup }) {
   const devById = new Map(developers.map(dev => [dev.id, dev]));
   const categoryTitle = pick(catalog.categories.find(c => c.id === mod.category)?.title, mod.category);
   const summary = pick(mod.summary);
-  setPageMeta({ title: mod.name, description: summary });
+  setPageMeta({ title: mod.name, description: mod.seo?.description || summary,
+    canonical: new URL('mod/' + mod.slug + '/', document.baseURI).href });
 
   const latest = mod.releases[0] ?? null;
   const downloadPicker = createDownloadDialog(mod);
