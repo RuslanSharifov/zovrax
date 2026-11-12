@@ -23,3 +23,8 @@ The build script creates the PNG resources, `fabric.mod.json`, `pack.mcmeta`, an
 - No network access, settings UI, premium tier, or server-side code.
 
 MIT licensed. This project is independent of Mojang and Microsoft.
+
+## Initial 0.1.0 preview release
+
+A real JAR is now committed at `releases/clear-connected-glass-0.1.0-fabric-1.21.10.jar`. Run `node build.mjs` locally using Java 21 and Node.js 22+ to regenerate the pack with valid RGBA PNG files. The preview has passed JAR structure and PNG decoding checks; in-game testing remains pending.
+
