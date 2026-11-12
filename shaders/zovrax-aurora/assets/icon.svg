@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160" role="img" aria-label="Zovrax Aurora sunlight through trees">
+<defs><linearGradient id="s" x2="0" y2="1"><stop stop-color="#10182f"/><stop offset=".6" stop-color="#346c82"/><stop offset="1" stop-color="#e5b36b"/></linearGradient><linearGradient id="b" x2=".5" y2="1"><stop stop-color="#ffe8a6" stop-opacity=".75"/><stop offset="1" stop-color="#ffe8a6" stop-opacity="0"/></linearGradient></defs>
+<rect x="3" y="3" width="154" height="154" rx="30" fill="url(#s)"/>
+<circle cx="98" cy="48" r="16" fill="#fff4b5"/>
+<path d="M89 57L46 157h47l17-100z" fill="url(#b)"/>
+<path d="M35 115l24-63 21 63H69l17 42H21z" fill="#112e35"/>
+<path d="M107 130l22-69 22 69h-14l10 27h-57z" fill="#16353b"/>
+<path d="M75 118l25-42 24 42H110l11 39H62z" fill="#21494a"/>
+<path d="M28 143h104" stroke="#b7f0cb" stroke-opacity=".43" stroke-width="3"/>
+<rect x="3" y="3" width="154" height="154" rx="30" fill="none" stroke="#a1d6d3" stroke-opacity=".6" stroke-width="3"/>
+</svg>
