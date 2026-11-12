@@ -5,67 +5,60 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 
-/** Vanilla-style controls: no optional config-screen mod needed. */
+/** Native controls screen; visual adjustments live on a separate page. */
 public final class SmartReturnSettings extends Screen {
     private final Screen parent;
-    private final SmartReturnConfig config = SmartReturnClient.config();
-    public SmartReturnSettings(Screen parent) {
-        super(Text.literal("SmartReturn Settings"));
-        this.parent = parent;
+    private final SmartReturnConfig cfg=SmartReturnClient.config();
+
+    public SmartReturnSettings(Screen parent){
+        super(Text.translatable("smartreturn.settings.title"));
+        this.parent=parent;
     }
-    @Override protected void init() {
-        int w = Math.min(290, width - 36);
-        int x = (width - w)/2;
-        int top = Math.max(35, (height - 226)/2);
-        addDrawableChild(ButtonWidget.builder(Text.empty(), b -> {
-            config.enabled = !config.enabled;
-            b.setMessage(Text.literal("Quiet recording: " + (config.enabled ? "ON":"OFF")));
-            config.save();
-        }).dimensions(x,top,w,20).build()).setMessage(Text.literal(
-            "Quiet recording: " + (config.enabled ? "ON":"OFF")));
-        addDrawableChild(ButtonWidget.builder(Text.empty(), b -> {
-            config.displayMode = (config.displayMode + 1)%3;
-            b.setMessage(Text.literal(displayLabel()));
-            config.save();
-        }).dimensions(x,top+27,w,20).build()).setMessage(Text.literal(displayLabel()));
-        addDrawableChild(ButtonWidget.builder(Text.empty(), b -> {
-            config.reminders = !config.reminders;
-            b.setMessage(Text.literal("One quiet reminder: " + (config.reminders ? "ON":"OFF")));
-            config.save();
-        }).dimensions(x,top+54,w,20).build()).setMessage(Text.literal(
-            "One quiet reminder: " + (config.reminders ? "ON":"OFF")));
-        addDrawableChild(ButtonWidget.builder(Text.empty(), b -> {
-            config.reminderMinutes = config.reminderMinutes >= 10 ? 1 : config.reminderMinutes + 1;
-            b.setMessage(Text.literal("Reminder after: " + config.reminderMinutes + " min"));
-            config.save();
-        }).dimensions(x,top+81,w,20).build()).setMessage(Text.literal(
-            "Reminder after: " + config.reminderMinutes + " min"));
-        addDrawableChild(ButtonWidget.builder(Text.empty(), b -> {
-            config.showDistance = !config.showDistance;
-            b.setMessage(Text.literal("Show remaining distance: " + (config.showDistance ? "ON":"OFF")));
-            config.save();
-        }).dimensions(x,top+108,w,20).build()).setMessage(Text.literal(
-            "Show remaining distance: " + (config.showDistance ? "ON":"OFF")));
-        addDrawableChild(ButtonWidget.builder(Text.literal("Forget saved cave route"), b -> {
-            if (client != null) SmartReturnClient.routes().forget(client);
-        }).dimensions(x,top+141,w,20).build());
-        addDrawableChild(ButtonWidget.builder(Text.literal("Done"),b -> close())
-            .dimensions(x,top+177,w,20).build());
+    private Text status(String key,boolean flag){
+        return Text.translatable(key,Text.translatable(flag?"smartreturn.on":"smartreturn.off"));
     }
-    private String displayLabel() {
-        return "Directions: " + switch(config.displayMode) {
-            case 1 -> "Mini compass";
-            case 2 -> "3D arrows + mini compass";
-            default -> "3D arrows";
-        };
+    private Text mode(){
+        return Text.translatable("smartreturn.settings.display",
+            Text.translatable("smartreturn.mode."+cfg.displayMode));
     }
-    @Override public void render(DrawContext ctx,int mouseX,int mouseY,float delta) {
-        renderBackground(ctx,mouseX,mouseY,delta);
-        ctx.drawCenteredTextWithShadow(textRenderer,title,width/2,Math.max(12,(height-226)/2-20),0xffffffff);
-        super.render(ctx,mouseX,mouseY,delta);
+    @Override protected void init(){
+        int w=Math.min(292,width-34),x=(width-w)/2;
+        int top=Math.max(28,(height-225)/2);
+        addDrawableChild(ButtonWidget.builder(status("smartreturn.settings.record",cfg.enabled),b->{
+            cfg.enabled=!cfg.enabled;
+            b.setMessage(status("smartreturn.settings.record",cfg.enabled));cfg.save();
+        }).dimensions(x,top,w,20).build());
+        addDrawableChild(ButtonWidget.builder(mode(),b->{
+            cfg.displayMode=(cfg.displayMode+1)%3;b.setMessage(mode());cfg.save();
+        }).dimensions(x,top+25,w,20).build());
+        addDrawableChild(ButtonWidget.builder(status("smartreturn.settings.reminder",cfg.reminders),b->{
+            cfg.reminders=!cfg.reminders;
+            b.setMessage(status("smartreturn.settings.reminder",cfg.reminders));cfg.save();
+        }).dimensions(x,top+50,w,20).build());
+        addDrawableChild(new SmartReturnSlider(x,top+75,w,1,10,cfg.reminderMinutes,
+            v->Text.translatable("smartreturn.settings.minutes",v),
+            v->{cfg.reminderMinutes=v;cfg.save();}));
+        addDrawableChild(ButtonWidget.builder(status("smartreturn.settings.distance",cfg.showDistance),b->{
+            cfg.showDistance=!cfg.showDistance;
+            b.setMessage(status("smartreturn.settings.distance",cfg.showDistance));cfg.save();
+        }).dimensions(x,top+100,w,20).build());
+        addDrawableChild(ButtonWidget.builder(Text.translatable("smartreturn.settings.visuals"),b->{
+            if(client!=null)client.setScreen(new SmartReturnVisualSettings(this));
+        }).dimensions(x,top+125,w,20).build());
+        addDrawableChild(ButtonWidget.builder(Text.translatable("smartreturn.settings.forget"),b->{
+            if(client!=null)SmartReturnClient.routes().forget(client);
+        }).dimensions(x,top+150,w,20).build());
+        addDrawableChild(ButtonWidget.builder(Text.translatable("smartreturn.settings.done"),b->close())
+            .dimensions(x,top+180,w,20).build());
     }
-    @Override public void close() {
-        config.save();
-        if (client != null) client.setScreen(parent);
+    @Override public void render(DrawContext ctx,int mx,int my,float delta){
+        renderBackground(ctx,mx,my,delta);
+        ctx.drawCenteredTextWithShadow(textRenderer,title,width/2,
+            Math.max(8,(height-225)/2+8),0xffffffff);
+        super.render(ctx,mx,my,delta);
+    }
+    @Override public void close(){
+        cfg.save();
+        if(client!=null)client.setScreen(parent);
     }
 }
