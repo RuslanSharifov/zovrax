@@ -94,5 +94,18 @@
     "type": "free",
     "premiumUrl": null,
     "premiumLabel": "Get Premium"
+  },
+  "seo": {
+    "title": "DayClock HUD — Minecraft Time, Day Counter & Sleep Icon | Zovrax",
+    "description": "See Minecraft game time, day count and sleep readiness with DayClock HUD for Fabric 1.21.10. Optional coordinates, biome and more.",
+    "keywords": [
+      "DayClock HUD",
+      "Minecraft clock HUD",
+      "Minecraft day counter mod",
+      "Minecraft sleep indicator",
+      "Minecraft in game time",
+      "coordinates HUD Fabric",
+      "biome display mod"
+    ]
   }
 }

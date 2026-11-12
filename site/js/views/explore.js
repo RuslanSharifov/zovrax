@@ -40,6 +40,7 @@ function matchesQuery(mod, query, authorNames) {
     mod.name,
     ...Object.values(mod.summary),
     ...mod.tags,
+    ...(Array.isArray(mod.seo?.keywords) ? mod.seo.keywords : []),
     ...mod.loaders,
     ...mod.authors.map(id => authorNames.get(id) ?? id),
   ].join(' ').toLowerCase();

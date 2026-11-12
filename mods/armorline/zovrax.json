@@ -154,5 +154,18 @@
     "type": "free",
     "premiumUrl": null,
     "premiumLabel": "Get Premium"
+  },
+  "seo": {
+    "title": "ArmorLine — Armor Durability HUD for Minecraft Fabric | Zovrax",
+    "description": "ArmorLine shows armor, item durability, held tools and offhand gear in a configurable Minecraft 1.21.10 Fabric HUD.",
+    "keywords": [
+      "ArmorLine Minecraft",
+      "armor durability HUD",
+      "Minecraft armor display",
+      "Fabric armor HUD",
+      "offhand shield display",
+      "Minecraft tool durability",
+      "armor overlay"
+    ]
   }
 }

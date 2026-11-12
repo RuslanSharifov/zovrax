@@ -31,6 +31,9 @@ jobs:
           node --check site/js/layout.js
           node --check site/js/views/contribute.js
           node --check .github/scripts/build-catalog.mjs
+          node --check .github/scripts/build-seo.mjs
+          node --check .github/scripts/seo-utils.mjs
+          node --check .github/scripts/seo.test.mjs
           node --check site/app.js
           node --check site/guide.js
           node --check .github/scripts/validate-catalog.mjs
@@ -38,5 +41,7 @@ jobs:
         run: node --test site/js/download-options.test.mjs
       - name: Generate catalog from per-mod metadata and site Markdown
         run: node .github/scripts/build-catalog.mjs
+      - name: Validate generated crawlable mod pages, SEO tags and structured data
+        run: node --test .github/scripts/seo.test.mjs
       - name: Validate catalog
         run: node .github/scripts/validate-catalog.mjs

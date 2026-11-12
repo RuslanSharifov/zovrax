@@ -187,5 +187,17 @@
     "type": "free",
     "premiumUrl": null,
     "premiumLabel": "Get Premium"
+  },
+  "seo": {
+    "title": "Inventory Pickup — Minecraft Item & XP Pickup Notifications | Zovrax",
+    "description": "See item pickup notifications, item totals and collected XP with the Inventory Pickup HUD for Minecraft Java 1.21.10 Fabric.",
+    "keywords": [
+      "Inventory Pickup Minecraft",
+      "Minecraft pickup notifications",
+      "item pickup HUD Fabric",
+      "Minecraft XP notifications",
+      "inventory item counter",
+      "pickup popup Minecraft"
+    ]
   }
 }

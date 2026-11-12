@@ -7,6 +7,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
+import { normalizedSeo, onlyStrings } from './seo-utils.mjs';
+import { buildSeo } from './build-seo.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const modsDir = path.join(root, 'mods');
@@ -85,6 +87,8 @@ for (const folder of fs.readdirSync(modsDir, { withFileTypes: true })) {
   if (!slugPattern.test(slug) || slugs.has(slug)) fail(slug, 'invalid or duplicate slug');
   slugs.add(slug);
   const m = JSON.parse(fs.readFileSync(manifest, 'utf8'));
+  const displayTags = onlyStrings(m.tags, 30, 64);
+  const seo = normalizedSeo(m);
   if (m.schemaVersion !== 2 || m.slug !== slug) fail(slug, 'schemaVersion must be 2 and slug must match folder');
   if (!nonempty(m.name) || !categories.has(m.category)) fail(slug, 'name or category missing');
   if (!['planned','development','released','archived'].includes(m.status)) fail(slug, 'invalid status');
@@ -137,18 +141,18 @@ for (const folder of fs.readdirSync(modsDir, { withFileTypes: true })) {
     return { ...r, minecraftVersions:rv, loaders:rl, downloads };
   });
   releases.sort((a,b) => b.version.localeCompare(a.version,undefined,{numeric:true}));
-  const detail = { ...m, source, monetization, icon, screenshots, releases, readme, latestVersion:releases[0]?.version ?? null };
+  const detail = { ...m, tags: displayTags, seo, source, monetization, icon, screenshots, releases, readme, latestVersion:releases[0]?.version ?? null };
   for (const v of compatibleVersions) versions.add(v);
   for (const l of compatibleLoaders) loaders.add(l);
   for (const release of releases) {
     for (const v of release.minecraftVersions) versions.add(v);
     for (const l of release.loaders) loaders.add(l);
   }
-  for (const tag of array(m.tags)) tags.add(tag);
+  for (const tag of displayTags) tags.add(tag);
   const out = path.join(detailDir, `${slug}.json`);
   fs.writeFileSync(out, JSON.stringify(detail,null,2)+'\n');
   summaries.push({ slug, name:m.name, summary:m.summary, category:m.category, status:m.status,
-    featured:!!m.featured, accent:m.accent || 'lime', icon, tags:array(m.tags),
+    featured:!!m.featured, accent:m.accent || 'lime', icon, tags:displayTags, seo,
     minecraftVersions:[...new Set([...compatibleVersions,...releases.flatMap(r=>r.minecraftVersions)])],
     loaders:[...new Set([...compatibleLoaders,...releases.flatMap(r=>r.loaders)])],
     authors:authorIds, monetization, updatedAt:m.updatedAt || null, latestVersion:detail.latestVersion });
@@ -168,3 +172,4 @@ for (const dev of catalog.developers) dev.modSlugs = summaries.filter(m=>m.autho
 catalog.counts = { mods:summaries.length, developers:catalog.developers.length };
 fs.writeFileSync(catalogPath, JSON.stringify(catalog,null,2)+'\n');
 console.log(`Zovrax catalog built: ${summaries.length} mods, ${versions.size} Minecraft versions, ${loaders.size} loaders`);
+buildSeo();

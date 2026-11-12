@@ -40,5 +40,13 @@
     "type": "free",
     "premiumUrl": null,
     "premiumLabel": "Get Premium"
+  },
+  "seo": {
+    "title": "My Mod — Minecraft Fabric Mod | Zovrax",
+    "description": "Describe precisely what this Minecraft Java Edition mod does in one useful sentence.",
+    "keywords": [
+      "Minecraft Fabric mod",
+      "Minecraft Java mod"
+    ]
   }
 }

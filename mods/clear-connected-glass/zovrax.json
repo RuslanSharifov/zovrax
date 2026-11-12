@@ -110,5 +110,17 @@
     "type": "free",
     "premiumUrl": null,
     "premiumLabel": "Get Premium"
+  },
+  "seo": {
+    "title": "Clear Connected Glass — Minecraft Fabric Glass Textures | Zovrax",
+    "description": "Near-clear glass textures for Minecraft Java 1.21.10 Fabric, with optional Continuity for connected glass borders.",
+    "keywords": [
+      "clear connected glass Minecraft",
+      "Minecraft clear glass textures",
+      "connected glass Fabric",
+      "Continuity connected textures",
+      "glass border removal",
+      "transparent glass mod"
+    ]
   }
 }

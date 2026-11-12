@@ -27,6 +27,18 @@
     ],
     "support": {
       "kofi": "https://ko-fi.com/ruslansharifov"
+    },
+    "seo": {
+      "title": "Zovrax — Minecraft Java Fabric Mods & Downloads",
+      "description": "Discover Minecraft Java Edition Fabric mods on Zovrax. Explore real releases, developer details, compatibility and verified JAR downloads.",
+      "keywords": [
+        "Zovrax Minecraft mods",
+        "Minecraft Java mods",
+        "Minecraft Fabric mods",
+        "Minecraft mod downloads",
+        "Fabric 1.21.10 mods",
+        "Minecraft quality of life mods"
+      ]
     }
   },
   "categories": [
