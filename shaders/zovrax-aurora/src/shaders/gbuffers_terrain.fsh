@@ -36,7 +36,7 @@ float zxShadow(vec3 viewPosition, vec3 normalView, vec3 lightDirection) {
     float visibility = 0.0;
     const int taps = SHADOW_SAMPLES;
     for (int i = 0; i < taps; ++i) {
-        vec2 offset = vec2(float(i % 2), float(i / 2)) - vec2(0.5);
+        vec2 offset = vec2(mod(float(i), 2.0), floor(float(i) * 0.5)) - vec2(0.5);
         // Four taps are useful on high quality; one/two taps on low.
 #ifdef SOFT_SHADOWS
         offset *= SHADOW_SOFTNESS / float(shadowMapResolution);
