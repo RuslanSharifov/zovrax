@@ -931,3 +931,14 @@ h1:focus { outline: none; }
 .seo-directory-link { margin: 28px auto 42px; max-width: 1100px; padding: 0 28px; text-align: center; font-size: .82rem; }
 .seo-directory-link a { color: var(--text-muted, #c0d5cf); text-underline-offset: 3px; }
 .seo-directory-link a:hover { color: var(--accent, #8af6d4); }
+
+/* Shader packs share the Zovrax card system while keeping downloads distinct. */
+.shader-toolbar{flex-wrap:wrap}
+.shader-detail{display:grid;gap:1.5rem}
+.shader-content{display:grid;grid-template-columns:minmax(0,2fr) minmax(240px,1fr);gap:1.25rem;align-items:start}
+.shader-panel{padding:1.5rem;min-width:0}
+.shader-panel h3{margin:1.2rem 0 .45rem}
+.shader-release-grid{display:grid;gap:1rem}
+.shader-screenshots{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.75rem;margin-top:1rem}
+.shader-screenshots img{width:100%;height:auto;border-radius:12px}
+@media(max-width:760px){.shader-content{grid-template-columns:1fr}.shader-panel{padding:1rem}}

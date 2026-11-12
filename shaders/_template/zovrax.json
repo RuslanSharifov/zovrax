@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2,
+  "slug": "example-shader",
+  "name": "Example Shader",
+  "category": "stylized",
+  "status": "planned",
+  "summary": {
+    "en": "Replace with a true description of your shader."
+  },
+  "authors": [
+    "ruslan"
+  ],
+  "minecraftVersions": [
+    "1.21.10"
+  ],
+  "shaderLoaders": [
+    "Iris"
+  ],
+  "features": [],
+  "tags": [],
+  "icon": null,
+  "screenshots": [],
+  "releases": [],
+  "monetization": {
+    "type": "free",
+    "premiumUrl": null
+  }
+}

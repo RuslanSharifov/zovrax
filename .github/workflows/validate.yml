@@ -31,6 +31,12 @@ jobs:
           node --check site/js/layout.js
           node --check site/js/views/contribute.js
           node --check .github/scripts/build-catalog.mjs
+          node --check .github/scripts/build-shaders.mjs
+          node --check .github/scripts/build-shader-seo.mjs
+          node --check site/js/views/shaders.js
+          node --check site/js/i18n/en.js
+          node --check site/js/i18n/ru.js
+          node --check site/js/i18n/fr.js
           node --check .github/scripts/build-seo.mjs
           node --check .github/scripts/seo-utils.mjs
           node --check .github/scripts/seo.test.mjs
@@ -39,6 +45,10 @@ jobs:
           node --check .github/scripts/validate-catalog.mjs
       - name: Test release picker availability rules
         run: node --test site/js/download-options.test.mjs
+      - name: Test shader ZIP and metadata rules
+        run: node --test .github/scripts/shaders.test.mjs
+      - name: Test frontend translations and icons
+        run: node --test site/tests/i18n.test.mjs
       - name: Generate catalog from per-mod metadata and site Markdown
         run: node .github/scripts/build-catalog.mjs
       - name: Validate generated crawlable mod pages, SEO tags and structured data

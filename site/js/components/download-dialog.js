@@ -2,8 +2,10 @@ import { h, icon } from '../dom.js';
 import { t } from '../i18n/index.js';
 import { availableBuilds, distinctOptions, matchingBuilds } from '../download-options.js';
 
-export function createDownloadDialog(mod) {
-  const builds = availableBuilds(mod);
+export function createDownloadDialog(mod, { shader = false } = {}) {
+  const entry = shader ? { ...mod, releases: mod.releases.map(r => ({ ...r, loaders: r.shaderLoaders,
+    downloads: r.downloads.map(f => ({ ...f, loaders: f.shaderLoaders })) })) } : mod;
+  const builds = availableBuilds(entry);
   if (!builds.length) return null;
 
   const state = { minecraft: '', loader: '', release: '', file: '' };
@@ -27,7 +29,7 @@ export function createDownloadDialog(mod) {
     h('label', { class: 'field' },
       h('span', { class: 'field-label' }, t('filterVersion')), minecraftSelect),
     h('label', { class: 'field' },
-      h('span', { class: 'field-label' }, t('filterLoader')), loaderSelect),
+      h('span', { class: 'field-label' }, t(shader ? 'shaderFilterLoader' : 'filterLoader')), loaderSelect),
     h('label', { class: 'field' },
       h('span', { class: 'field-label' }, t('filterRelease')), releaseSelect),
     fileField, details, downloadLink,
@@ -94,7 +96,7 @@ export function createDownloadDialog(mod) {
   fileSelect.addEventListener('change', () => { state.file = fileSelect.value; refresh('file'); });
 
   dialog.append(h('div', { class: 'download-dialog-head' },
-    h('div', null, h('p', { class: 'eyebrow' }, t('downloadPickerEyebrow')),
+    h('div', null, h('p', { class: 'eyebrow' }, t(shader ? 'shaderDownloadEyebrow' : 'downloadPickerEyebrow')),
       h('h2', { class: 'block-title' }, t('downloadPickerTitle')),
       h('p', { class: 'muted small' }, mod.name)),
     close), form);

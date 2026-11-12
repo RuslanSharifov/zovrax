@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {normalizedSeo,onlyStrings} from './seo-utils.mjs';
+import {buildShaderSeo} from './build-shader-seo.mjs';
 
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');
 const site=path.join(root,'site');
@@ -234,6 +235,7 @@ export function buildSeo() {
       pages.push({url:urls[lang],date:validDate(m),alternate:urls});
     }
   }
+  const shaders=buildShaderSeo(catalog,site,base,pages);
   fs.writeFileSync(path.join(site,'sitemap.xml'),sitemap(pages));
   fs.writeFileSync(path.join(site,'robots.txt'),
     '# GitHub Pages project: crawlers read domain-root robots.txt, not this subpath file.\n'+
@@ -244,6 +246,7 @@ export function buildSeo() {
     '> Independent mod listings; versions, dependencies and downloads are sourced from creator metadata.','',
     '- [Home]('+base+')',
     '- [Mod directory]('+absolute(base,'mod/')+')',
+    '- [Shader directory]('+absolute(base,'shader/')+')',
     '- [Sitemap]('+absolute(base,'sitemap.xml')+')',
     '- [Source]('+catalog.site.repository+')','','## Mods'
   ];
@@ -251,6 +254,9 @@ export function buildSeo() {
     absolute(base,'mod/'+m.slug+'/')+'): '+text(m.summary,'en').replace(/\s+/g,' ').trim()+
     ' Status: '+m.status+'. Minecraft: '+onlyStrings(m.minecraftVersions).join(', ')+
     '. Loader: '+onlyStrings(m.loaders).join(', ')+'.');
+  llms.push('','## Shaders');
+  for(const s of shaders) llms.push('- ['+s.name.replace(/[\[\]\r\n]/g,'')+']('+
+    absolute(base,'shader/'+s.slug+'/')+'): '+text(s.summary,'en').replace(/\s+/g,' ').trim()+'.');
   llms.push('','This optional file is an informational index, not a ranking guarantee.','');
   fs.writeFileSync(path.join(site,'llms.txt'),llms.join('\n'));
   console.log('Zovrax SEO built: '+mods.length+' mods, '+pages.length+' sitemap URLs');

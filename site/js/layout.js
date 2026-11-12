@@ -4,6 +4,7 @@ import { getTheme, setTheme } from './state.js';
 
 export const NAV_ITEMS = [
   { href: '#/mods', label: 'navExplore', match: '/mods' },
+  { href: '#/shaders', label: 'navShaders', match: '/shaders' },
   { href: '#/developers', label: 'navDevelopers', match: '/developers' },
   { href: '#/contribute', label: 'navContribute', match: '/contribute' },
   { href: '#/about', label: 'navAbout', match: '/about' },

@@ -9,6 +9,7 @@ import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { normalizedSeo, onlyStrings } from './seo-utils.mjs';
 import { buildSeo } from './build-seo.mjs';
+import { buildShaders } from './build-shaders.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const modsDir = path.join(root, 'mods');
@@ -170,6 +171,7 @@ catalog.filters = {
 };
 for (const dev of catalog.developers) dev.modSlugs = summaries.filter(m=>m.authors.includes(dev.id)).map(m=>m.slug);
 catalog.counts = { mods:summaries.length, developers:catalog.developers.length };
+buildShaders(root, catalog);
 fs.writeFileSync(catalogPath, JSON.stringify(catalog,null,2)+'\n');
 console.log(`Zovrax catalog built: ${summaries.length} mods, ${versions.size} Minecraft versions, ${loaders.size} loaders`);
 buildSeo();

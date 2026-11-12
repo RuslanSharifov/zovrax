@@ -160,7 +160,8 @@
         "inventory-pickup"
       ],
       "official": true,
-      "role": "founder"
+      "role": "founder",
+      "shaderSlugs": []
     }
   ],
   "mods": [
@@ -211,6 +212,13 @@
   },
   "counts": {
     "mods": 1,
-    "developers": 1
+    "developers": 1,
+    "shaders": 0
+  },
+  "shaders": [],
+  "shaderFilters": {
+    "minecraftVersions": [],
+    "shaderLoaders": [],
+    "tags": []
   }
 }
