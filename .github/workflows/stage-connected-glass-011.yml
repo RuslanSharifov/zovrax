@@ -35,7 +35,8 @@ jobs:
               assert manifest['id']=='clear_connected_glass'
               assert manifest['version']=='0.1.1'
               assert manifest['depends']['minecraft']=='1.21.10'
-              assert 'continuity' in manifest['depends']
+              assert 'continuity' not in manifest['depends']
+              assert 'continuity' in manifest['suggests']
               assert manifest['environment']=='client'
               assert pack['pack']['min_format']==[69,0]
               assert pack['pack']['max_format']==[69,0]
