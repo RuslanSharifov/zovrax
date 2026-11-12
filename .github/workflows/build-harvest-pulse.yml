@@ -1,0 +1,84 @@
+name: Build HarvestPulse (Fabric 1.21.10)
+
+on:
+  push:
+    branches: [feat/harvest-pulse-remote-growth-12110]
+    paths:
+      - 'mods/harvest-pulse/**'
+      - '.github/workflows/build-harvest-pulse.yml'
+  pull_request:
+    paths:
+      - 'mods/harvest-pulse/**'
+      - '.github/workflows/build-harvest-pulse.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unpack initial sources on the dedicated feature branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/feat/harvest-pulse-remote-growth-12110'
+        shell: bash
+        run: |
+          set -euo pipefail
+          if test -f mods/harvest-pulse/source.bundle.b64; then
+            base64 -d mods/harvest-pulse/source.bundle.b64 | tar -xJf - -C .
+            rm mods/harvest-pulse/source.bundle.b64
+          fi
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.1.0'
+      - name: Validate crop proportions, limits, and random-tick probabilities
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/harvestpulse-test
+          javac -d /tmp/harvestpulse-test mods/harvest-pulse/src/main/java/az/zovrax/harvestpulse/FieldMath.java mods/harvest-pulse/tools/FieldMathCheck.java
+          java -cp /tmp/harvestpulse-test FieldMathCheck
+      - name: Compile Java 21 / Fabric 1.21.10
+        run: gradle --no-daemon --project-dir mods/harvest-pulse build
+      - name: Package and verify real mod JAR and 0.1.0 release metadata
+        run: node mods/harvest-pulse/tools/package-release.mjs
+      - name: Inspect compiled client and server entrypoints
+        shell: bash
+        run: |
+          set -euo pipefail
+          JAR=mods/harvest-pulse/releases/zovrax-harvest-pulse-0.1.0-fabric-1.21.10.jar
+          jar tf "$JAR" | grep -Fx 'fabric.mod.json'
+          jar tf "$JAR" | grep -Fx 'az/zovrax/harvestpulse/PulseServer.class'
+          jar tf "$JAR" | grep -Fx 'az/zovrax/harvestpulse/PulsePackets.class'
+          jar tf "$JAR" | grep -Fx 'az/zovrax/harvestpulse/HarvestPulseClient.class'
+          jar tf "$JAR" | grep -Fx 'az/zovrax/harvestpulse/HarvestPulseHud.class'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Generate and validate the Zovrax catalog
+        run: |
+          node .github/scripts/build-catalog.mjs
+          node .github/scripts/validate-catalog.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: zovrax-harvest-pulse-0.1.0-fabric-1.21.10
+          path: mods/harvest-pulse/releases/zovrax-harvest-pulse-0.1.0-fabric-1.21.10.jar
+          if-no-files-found: error
+          retention-days: 30
+      - name: Commit reviewed sources, built JAR and metadata to feature branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/feat/harvest-pulse-remote-growth-12110'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git config user.name 'github-actions[bot]'
+          git add -A mods/harvest-pulse
+          if ! git diff --cached --quiet; then
+            git commit -m 'release(harvest-pulse): compile real Fabric 1.21.10 beta 0.1.0'
+            git push origin HEAD:refs/heads/feat/harvest-pulse-remote-growth-12110
+          fi

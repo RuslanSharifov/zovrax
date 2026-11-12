@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "zovrax_harvestpulse",
+  "version": "${version}",
+  "name": "HarvestPulse",
+  "description": "Track multiple crop fields and keep registered crops growing while players are far away.",
+  "authors": ["Ruslan Sharifov"],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["az.zovrax.harvestpulse.PulseServer"],
+    "client": ["az.zovrax.harvestpulse.HarvestPulseClient"]
+  },
+  "depends": {
+    "fabricloader": ">=0.17.3",
+    "minecraft": "1.21.10",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
