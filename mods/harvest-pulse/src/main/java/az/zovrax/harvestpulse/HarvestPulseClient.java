@@ -1,6 +1,10 @@
 package az.zovrax.harvestpulse;
 
 import com.google.gson.JsonParser;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.toast.SystemToast;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.hit.BlockHitResult;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.fabricmc.api.ClientModInitializer;
@@ -28,8 +32,52 @@ public final class HarvestPulseClient implements ClientModInitializer {
     private static boolean selecting;
     private static BlockPos firstCorner;
     private static String scope;
+    private static int firstLimit = 16;
     private KeyBinding key;
     public static HarvestPulseConfig config() { return CONFIG; }
+    public static boolean selecting() { return selecting; }
+    public static BlockPos firstCorner() { return firstCorner; }
+    public static int selectionLimit() { return firstLimit; }
+    public static BlockPos hoverCorner(MinecraftClient mc) {
+        if (!(mc.crosshairTarget instanceof BlockHitResult hit) || mc.world == null) return null;
+        BlockPos p=hit.getBlockPos();
+        return mc.world.getBlockState(p).getBlock() instanceof FarmlandBlock ? p.up() : p;
+    }
+    public static boolean overlapsExisting(MinecraftClient mc, BlockPos first, BlockPos second) {
+        String world=FieldTracker.worldKey(mc), dimension=FieldTracker.dimension(mc);
+        for (HarvestPulseConfig.Field field:CONFIG.fields) {
+            if (!field.worldKey.equals(world) || !field.dimension.equals(dimension)) continue;
+            int minY=Math.min(first.getY(),second.getY()), maxY=Math.max(first.getY(),second.getY());
+            if (minY>Math.max(field.y1,field.y2)+2 || maxY+2<Math.min(field.y1,field.y2)) continue;
+            if (FieldMath.overlaps(first.getX(),first.getZ(),second.getX(),second.getZ(),
+                field.x1,field.z1,field.x2,field.z2)) return true;
+        }
+        return false;
+    }
+    public static boolean validSecond(MinecraftClient mc, BlockPos second) {
+        return firstCorner!=null && second!=null && scope!=null
+            && scope.equals(FieldTracker.worldKey(mc)+"|"+FieldTracker.dimension(mc))
+            && FieldMath.validArea(firstCorner.getX(),firstCorner.getY(),firstCorner.getZ(),
+                second.getX(),second.getY(),second.getZ(),firstLimit)
+            && !overlapsExisting(mc,firstCorner,second);
+    }
+    public static void cancelSelection() {
+        if (selecting) transmit("{\"action\":\"cancel\"}");
+        selecting=false;firstCorner=null;scope=null;
+    }
+    public static void drawSelectionBanner(DrawContext ctx,MinecraftClient mc) {
+        if (!selecting || mc.currentScreen!=null || mc.player==null) return;
+        BlockPos hovered=hoverCorner(mc);
+        boolean second=firstCorner!=null;
+        String status = !second ? "Choose FIRST corner" : hovered==null ? "Aim at SECOND corner"
+            : validSecond(mc,hovered) ? "GREEN - valid / right click" : "RED - too large, slope or overlap";
+        String line="HarvestPulse  ["+firstLimit+"x"+firstLimit+"]  "+status+"  |  H: manage / cancel";
+        int x=(ctx.getScaledWindowWidth()-mc.textRenderer.getWidth(line))/2;
+        x=Math.max(6,x);
+        int w=mc.textRenderer.getWidth(line)+12;
+        ctx.fill(x-6,4,x+w,23,0xB5102018);
+        ctx.drawTextWithShadow(mc.textRenderer,line,x,10, !second?0xFFEBD99A:validSecond(mc,hovered)?0xFF89EBA7:0xFFFF7979);
+    }
 
     public static boolean online(MinecraftClient mc) {
         return mc.getNetworkHandler() != null && ClientPlayNetworking.canSend(PulsePackets.Action.ID);
@@ -41,6 +89,7 @@ public final class HarvestPulseClient implements ClientModInitializer {
     private static void select(BlockPos pos, String id) {
         JsonObject j = new JsonObject();
         j.addProperty("action","corner");j.addProperty("id",id);
+        j.addProperty("limit",firstLimit);
         j.addProperty("x",pos.getX());j.addProperty("y",pos.getY());j.addProperty("z",pos.getZ());
         transmit(j.toString());
     }
@@ -58,10 +107,10 @@ public final class HarvestPulseClient implements ClientModInitializer {
         ClientTickEvents.END_CLIENT_TICK.register(mc -> {
             FieldTracker.tick(mc);
             while (key.wasPressed()) {
-                selecting=false;firstCorner=null;
                 if (mc.player != null && mc.currentScreen == null) mc.setScreen(new HarvestPulseScreen(null));
             }
         });
+        net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderEvents.AFTER_ENTITIES.register(PulseRegionRender::render);
         HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT,
             Identifier.of(ID,"overlay"),HarvestPulseHud::render);
         UseBlockCallback.EVENT.register((player,world,hand,hit)->{
@@ -72,18 +121,17 @@ public final class HarvestPulseClient implements ClientModInitializer {
             BlockPos pos=world.getBlockState(clicked).getBlock() instanceof FarmlandBlock ? clicked.up() : clicked;
             String current=FieldTracker.worldKey(mc)+"|"+FieldTracker.dimension(mc);
             if (firstCorner==null) {
-                firstCorner=pos.toImmutable();scope=current;
+                firstCorner=pos.toImmutable();scope=current;firstLimit=CONFIG.selectionLimit;
                 select(pos,"");
                 player.sendMessage(Text.literal("HarvestPulse: corner 1. Right-click opposite corner."),true);
             } else {
-                if(!current.equals(scope)||!FieldMath.validArea(firstCorner.getX(),firstCorner.getY(),firstCorner.getZ(),
-                    pos.getX(),pos.getY(),pos.getZ())) {
-                    player.sendMessage(Text.literal("HarvestPulse: 16x16 maximum, max height difference 2. Retry corner 2."),true);
+                if (!validSecond(mc,pos)) {
+                    player.sendMessage(Text.literal("HarvestPulse: RED selection (limit, 32-block height, or existing area). Choose another corner or press H to cancel."),true);
                     return ActionResult.FAIL;
                 }
                 if(CONFIG.fields.size()>=FieldMath.MAX_FIELDS) {
                     player.sendMessage(Text.literal("HarvestPulse: maximum 8 fields per player."),true);
-                    selecting=false;firstCorner=null;return ActionResult.FAIL;
+                    cancelSelection();return ActionResult.FAIL;
                 }
                 HarvestPulseConfig.Field f=new HarvestPulseConfig.Field();
                 f.name="Field "+(CONFIG.fields.size()+1);
@@ -93,8 +141,8 @@ public final class HarvestPulseClient implements ClientModInitializer {
                 f.x2=pos.getX();f.y2=pos.getY();f.z2=pos.getZ();
                 select(pos,f.id);
                 CONFIG.fields.add(f);CONFIG.save();
-                selecting=false;firstCorner=null;
-                player.sendMessage(Text.literal("HarvestPulse: field submitted. Waiting for server crop data."),true);
+                selecting=false;firstCorner=null;scope=null;
+                player.sendMessage(Text.literal("HarvestPulse: field submitted. Server will confirm the region."),true);
                 mc.execute(() -> mc.setScreen(new HarvestPulseFieldScreen(new HarvestPulseScreen(null),f.id)));
             }
             // Cancel vanilla use, e.g. planting, while choosing corners.
@@ -112,9 +160,24 @@ public final class HarvestPulseClient implements ClientModInitializer {
                 JsonObject j=entry.getAsJsonObject();
                 HarvestPulseConfig.Field f=CONFIG.byId(j.get("id").getAsString());
                 if (f==null || !f.worldKey.equals(FieldTracker.worldKey(mc))) continue;
+                if (j.has("error")) {
+                    String reason=j.get("error").getAsString();
+                    CONFIG.fields.remove(f); CONFIG.save();
+                    mc.player.sendMessage(Text.literal("HarvestPulse: field rejected - "+reason),false);
+                    continue;
+                }
+                boolean wasReady=f.hasReadyState && f.previouslyReady;
                 f.mature=Math.max(0,j.get("mature").getAsInt());
                 f.total=Math.max(f.mature,j.get("total").getAsInt());
                 f.loaded=true;f.sampled=true;f.lastSampleMillis=System.currentTimeMillis();
+                boolean ready=FieldMath.ready(f.mature,f.total);
+                if (ready && !wasReady) {
+                    f.animationStartMillis=System.currentTimeMillis();
+                    if (CONFIG.notifyToast) SystemToast.add(mc.getToastManager(),SystemToast.Type.PERIODIC_NOTIFICATION,
+                        Text.literal("HarvestPulse - Harvest ready!"),Text.literal(f.name+" · "+f.mature+"/"+f.total));
+                    if (CONFIG.notifySound) mc.player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BELL.value(),0.7f,1.25f);
+                }
+                f.previouslyReady=ready;f.hasReadyState=true;
             }
         } catch (Exception ignored) { }
     }
@@ -127,8 +190,8 @@ public final class HarvestPulseClient implements ClientModInitializer {
         if(CONFIG.fields.size()>=FieldMath.MAX_FIELDS) {
             mc.player.sendMessage(Text.literal("HarvestPulse: 8-field limit reached."),false);return;
         }
-        selecting=true;firstCorner=null;scope=null;
+        selecting=true;firstCorner=null;scope=null;firstLimit=CONFIG.selectionLimit;
         mc.setScreen(null);
-        mc.player.sendMessage(Text.literal("HarvestPulse: right-click two field corners. H cancels."),false);
+        mc.player.sendMessage(Text.literal("HarvestPulse: right-click two corners. H opens manager with Cancel button."),false);
     }
 }

@@ -1,9 +1,9 @@
-# HarvestPulse
+# HarvestPulse — Suivi intelligent des champs
 
-Mod gratuit pour Minecraft Java 1.21.10 / Fabric : surveillez la maturité de plusieurs champs et recevez une alerte quand tout est prêt.
+**Bêta gratuite 0.2.0 · Minecraft Java 1.21.10 · Fabric**
 
-Appuyez sur **H** puis cliquez sur deux coins opposés du champ. Renommez les champs, réorganisez la liste, choisissez un affichage permanent ou uniquement à **100 %**, ou cachez les jauges. Chaque barre affiche le pourcentage, le nombre de plants prêts et une cloche lorsque la récolte est entièrement mûre. Le HUD est déplaçable.
+Sélectionnez la taille maximale (16×16, 32×32, 64×64 ou 128×128) et cliquez sur deux coins du terrain. L’aperçu translucide suit le terrain visible : **vert** sélection valide, **rouge** invalide, **cyan** champ déjà enregistré. Appuyez sur H pour annuler la sélection.
 
-Le mod doit être installé **sur le client et sur le serveur** en multijoueur. Il effectue des tentatives de croissance autorisées même lorsque les cultures sont éloignées du joueur, avec des limites de charge : huit champs maximum par joueur, de 16 × 16 blocs chacun. Blé, carottes, pommes de terre, betteraves, verrues du Nether, cacao et baies sucrées sont pris en charge. Le serveur et le joueur doivent rester connectés pour la croissance à distance. Fabric API et Java 21 sont requis.
+Nommez et réorganisez plusieurs champs. Affichez le pourcentage et le nombre de cultures mûres, ou la barre uniquement à 100 %. Une cloche, une animation de déplacement et d’apparition, un son et une notification en haut à droite (facultatifs) signalent la maturité complète. Cliquez sur le HUD dans son éditeur pour régler l’opacité et la taille, maintenez ou double-cliquez puis glissez pour le déplacer.
 
-**Bêta 0.1.0** : compilation et archive JAR vérifiées, mais pas encore de test en jeu. Licence MIT, entièrement gratuit.
+Le serveur doit également installer le mod pour que les cultures continuent à pousser à distance. Le suivi de grandes zones est échelonné pour limiter le coût CPU et E/S. Les tests en jeu restent à effectuer.

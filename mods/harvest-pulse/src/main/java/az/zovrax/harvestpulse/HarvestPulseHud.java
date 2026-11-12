@@ -39,8 +39,9 @@ public final class HarvestPulseHud {
     public static void render(DrawContext ctx, RenderTickCounter tick) {
         MinecraftClient mc = MinecraftClient.getInstance();
         HarvestPulseConfig cfg = HarvestPulseClient.config();
-        if (!cfg.enabled || mc.player == null || mc.world == null || mc.currentScreen != null || mc.options.hudHidden) return;
-        if (visible(mc,false).isEmpty()) return;
+        if (mc.player == null || mc.world == null || mc.currentScreen != null || mc.options.hudHidden) return;
+        HarvestPulseClient.drawSelectionBanner(ctx,mc);
+        if (!cfg.enabled || visible(mc,false).isEmpty()) return;
         draw(ctx,cfg,x(cfg,ctx.getScaledWindowWidth()),y(cfg,mc,ctx.getScaledWindowHeight(),false),false);
     }
 
@@ -70,6 +71,14 @@ public final class HarvestPulseHud {
             int i=0;
             for (HarvestPulseConfig.Field f : farms) {
                 int top = PAD+i*ROW_H;
+                // Only a newly completed field enters with a subtle slide/fade.
+                long elapsed = System.currentTimeMillis()-f.animationStartMillis;
+                float progress = f.animationStartMillis>0 && elapsed>=0 && elapsed<650
+                    ? Math.clamp(elapsed/650f,0f,1f) : 1f;
+                float ease = 1f-(1f-progress)*(1f-progress)*(1f-progress);
+                int rowAlpha = Math.max(1,Math.round(textA * ease));
+                ctx.getMatrices().pushMatrix();
+                ctx.getMatrices().translate(Math.round((1f-ease)*27f),0);
                 int mature = f.mature;
                 int total = f.total;
                 boolean fresh = f.loaded && f.sampled;
@@ -77,7 +86,7 @@ public final class HarvestPulseHud {
                 int ratio = fresh ? FieldMath.percent(mature,total) : 0;
                 String name = f.name == null ? "Field" : f.name;
                 if (name.length() > 15) name=name.substring(0,14)+"…";
-                int labelColor = (textA << 24) | 0xF1FFF4;
+                int labelColor = (rowAlpha << 24) | 0xF1FFF4;
                 ctx.drawTextWithShadow(mc.textRenderer,name,PAD,top+1,labelColor);
                 String value = fresh ? switch (f.valueMode) {
                     case 1 -> ratio+"%";
@@ -87,13 +96,14 @@ public final class HarvestPulseHud {
                 if (ready) value += "  !";
                 int vx=WIDTH-PAD-mc.textRenderer.getWidth(value) - (ready ? 13 : 0);
                 ctx.drawTextWithShadow(mc.textRenderer,value,Math.max(70,vx),top+1,labelColor);
-                if (ready) drawBell(ctx,WIDTH-PAD-10,top, textA);
+                if (ready) drawBell(ctx,WIDTH-PAD-10,top, rowAlpha);
                 int barX=PAD,barY=top+17,barW=WIDTH-PAD*2;
-                ctx.fill(barX,barY,barX+barW,barY+7,(Math.max(28,textA/2)<<24)|0x24382D);
+                ctx.fill(barX,barY,barX+barW,barY+7,(Math.max(10,rowAlpha/2)<<24)|0x24382D);
                 if (fresh && ratio>0) {
                     int fillW=Math.clamp(Math.round(barW*ratio/100f),0,barW);
-                    ctx.fill(barX,barY,barX+fillW,barY+7,(textA<<24)|(ready?0xE5BF51:0x76D68A));
+                    ctx.fill(barX,barY,barX+fillW,barY+7,(rowAlpha<<24)|(ready?0xE5BF51:0x76D68A));
                 }
+                ctx.getMatrices().popMatrix();
                 i++;
             }
         } finally { ctx.getMatrices().popMatrix(); }
