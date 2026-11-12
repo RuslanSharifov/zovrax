@@ -3,7 +3,7 @@
   "slug": "chroma-outline",
   "name": "Chroma Outline",
   "category": "visual",
-  "status": "development",
+  "status": "released",
   "featured": false,
   "accent": "purple",
   "icon": "assets/icon.svg",
@@ -60,7 +60,36 @@
     }
   ],
   "screenshots": [],
-  "releases": [],
+  "releases": [
+    {
+      "version": "0.1.0",
+      "releasedAt": "2026-11-12",
+      "prerelease": true,
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "loaders": [
+        "Fabric"
+      ],
+      "downloads": [
+        {
+          "file": "releases/zovrax-chroma-outline-0.1.0-fabric-1.21.10.jar",
+          "label": "Fabric 1.21.10 · Beta 0.1.0",
+          "minecraftVersions": [
+            "1.21.10"
+          ],
+          "loaders": [
+            "Fabric"
+          ]
+        }
+      ],
+      "changelog": {
+        "en": "Initial client-only beta: animated rainbow and solid RGB outlines, opacity, pulse, approximate thickness, shape expansion, full-cube option and native multi-page settings. Build and metadata checked; in-game verification pending.",
+        "ru": "Первая клиентская бета. Проверена сборка и метаданные; тестирование в игре ещё требуется.",
+        "fr": "Première version bêta client. Compilation et métadonnées vérifiées ; essai en jeu à effectuer."
+      }
+    }
+  ],
   "monetization": {
     "type": "free",
     "premiumUrl": null,
