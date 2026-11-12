@@ -58,7 +58,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          JAR=mods/harvest-pulse/releases/zovrax-harvest-pulse-0.2.0-fabric-1.21.10.jar
+          JAR=mods/harvest-pulse/releases/zovrax-harvest-pulse-0.2.0-fabric-1.21.10-renderfix.jar
           test -s "$JAR"
           jar tf "$JAR" | grep -Fx 'fabric.mod.json'
           jar tf "$JAR" | grep -Fx 'az/zovrax/harvestpulse/PulseServer.class'
@@ -78,7 +78,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: zovrax-harvest-pulse-0.2.0-fabric-1.21.10
-          path: mods/harvest-pulse/releases/zovrax-harvest-pulse-0.2.0-fabric-1.21.10.jar
+          path: mods/harvest-pulse/releases/zovrax-harvest-pulse-0.2.0-fabric-1.21.10-renderfix.jar
           if-no-files-found: error
           retention-days: 30
       - name: Commit verified source, real JAR and release metadata to dedicated branch

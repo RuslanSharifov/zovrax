@@ -83,8 +83,8 @@
       ],
       "downloads": [
         {
-          "file": "releases/zovrax-harvest-pulse-0.2.0-fabric-1.21.10.jar",
-          "label": "Fabric 1.21.10 · Beta 0.2.0",
+          "file": "releases/zovrax-harvest-pulse-0.2.0-fabric-1.21.10-renderfix.jar",
+          "label": "Fabric 1.21.10 · Beta 0.2.0 (crash fixed)",
           "minecraftVersions": [
             "1.21.10"
           ],

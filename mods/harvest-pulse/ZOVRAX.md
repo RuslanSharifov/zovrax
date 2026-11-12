@@ -25,4 +25,4 @@ Supported: wheat, carrots, potatoes, beetroot, nether wart, cocoa and sweet berr
 
 ### 0.2.0 crash correction
 
-The 0.2.0 Fabric JAR has been replaced in place to address a crash when activating region selection (`IllegalStateException: Not building!`). The 3D area preview uses dedicated filled/outline render buffers, explicitly flushed after every frame. The public release remains **0.2.0**; there is no separate broken 0.2.0 download. Build validation passes; real in-game confirmation is still pending.
+The 0.2.0 Fabric JAR has been replaced in place to address a crash when activating region selection (`IllegalStateException: Not building!`). The 3D area preview uses dedicated filled/outline render buffers, explicitly flushed after every frame. The public release remains **0.2.0**, using a new download filename to bypass stale browser caches. The broken 0.2.0 JAR is deleted from the catalog and releases directory. Build validation passes; real in-game confirmation is still pending.
