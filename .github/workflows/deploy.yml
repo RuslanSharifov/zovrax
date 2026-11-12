@@ -16,6 +16,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
   pages: write
   id-token: write
 
@@ -37,8 +38,34 @@ jobs:
       - name: Build catalog from approved mod folders
         run: node .github/scripts/build-catalog.mjs
       - uses: actions/configure-pages@v5
+      # GitHub can take a moment to index the uploaded artifact. On re-runs,
+      # re-use the existing artifact so deploy-pages never sees duplicates.
+      - name: Check for existing Pages artifact
+        id: artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          count="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts" --jq '[.artifacts[] | select(.name == "github-pages" and .expired == false)] | length')"
+          if [ "$count" -gt 1 ]; then
+            echo "Multiple Pages artifacts exist for this run" >&2
+            exit 1
+          fi
+          if [ "$count" -eq 1 ]; then echo "already_uploaded=true" >> "$GITHUB_OUTPUT"; fi
       - uses: actions/upload-pages-artifact@v4
+        if: steps.artifact.outputs.already_uploaded != 'true'
         with:
           path: './site'
+      - name: Wait for Pages artifact indexing
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for attempt in $(seq 1 12); do
+            count="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts" --jq '[.artifacts[] | select(.name == "github-pages" and .expired == false)] | length')"
+            if [ "$count" -eq 1 ]; then exit 0; fi
+            if [ "$count" -gt 1 ]; then echo "Duplicate Pages artifacts" >&2; exit 1; fi
+            sleep 5
+          done
+          echo "Pages artifact was not indexed in time" >&2
+          exit 1
       - id: deployment
         uses: actions/deploy-pages@v4
