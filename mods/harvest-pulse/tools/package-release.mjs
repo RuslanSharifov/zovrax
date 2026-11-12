@@ -23,7 +23,7 @@ meta.releases=[{
   version:'0.2.0',releasedAt:'2026-11-12',prerelease:true,
   minecraftVersions:['1.21.10'],loaders:['Fabric'],
   downloads:[{file:'releases/'+name,label:'Fabric 1.21.10 · Beta 0.2.0',minecraftVersions:['1.21.10'],loaders:['Fabric']}],
-  changelog:{en:'Beta 0.2.0: valid/invalid/existing terrain overlays, 16/32/64/128 per-side selector, server-side resource budgets, Cancel selection, animated harvest-complete HUD, toast and sound toggles, and packaged Fabric mod icon. Compiled and catalog-validated; gameplay tests still pending.',ru:'Бета 0.2.0: выделение полей, размер до 128, уведомления, иконка и ограничение нагрузки сервера.',fr:'Bêta 0.2.0 : sélection visuelle, champs jusqu’à 128, notifications et icône.'}
+  changelog:{en:'Beta 0.2.0 (render crash hotfix): replaces the initial crashing 0.2.0 JAR with dedicated, correctly flushed world-render buffers to fix IllegalStateException: Not building! when starting field selection. Includes valid/invalid/existing terrain overlays, 16/32/64/128 per-side selector, server-side resource budgets, Cancel selection, animated harvest-complete HUD, toast and sound toggles, and packaged Fabric mod icon. Compiled and catalog-validated; gameplay tests still pending.',ru:'Бета 0.2.0: выделение полей, размер до 128, уведомления, иконка и ограничение нагрузки сервера.',fr:'Bêta 0.2.0 : sélection visuelle, champs jusqu’à 128, notifications et icône.'}
 },...meta.releases.filter(r=>r.version!=='0.2.0')];
 fs.writeFileSync(metaPath,JSON.stringify(meta,null,2)+'\n');
 console.log('Real compiled JAR and Zovrax 0.2.0 release metadata prepared:',dest);

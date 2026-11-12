@@ -33,6 +33,12 @@ Free independent **Minecraft Java 1.21.10, Fabric, Java 21** mod with both clien
 - Supported crops: wheat, carrots, potatoes, beetroot, nether wart, cocoa and sweet berry bushes. New modded crops are not guaranteed to be recognized.
 - The maximum-size selector is **a UI cap**, not a way around the server-wide aggregate budget. Overlapping horizontal plots in the same dimension and height range are rejected for the same owner.
 
+## 0.2.0 crash hotfix (12 November 2026)
+
+The first 0.2.0 build could exit the game with `java.lang.IllegalStateException: Not building!` immediately after pressing **Add field** / activating world-region selection. The stack trace pointed at `PulseRegionRender.paint` line 83. The issue was writing translucent fill vertices to Minecraft's borrowed `context.consumers()` buffer for a render layer that was not actively building.
+
+The corrected **same-version 0.2.0 release JAR replaces the broken file at its existing download path**. The overlay now draws in `WorldRenderEvents.BEFORE_DEBUG_RENDER`, using two independently allocated `VertexConsumerProvider.Immediate` instances (fill/outline) and flushing them in a `finally` block on every frame. The build pipeline includes a regression guard that rejects a return to borrowed buffers and validates the flush calls. **Source compilation and static buffer-lifecycle checks passed, but a Minecraft runtime test (especially Android/Mojo and Iris/Sodium) is still needed.** The previously published broken 0.2.0 binary is not offered as a separate rollback release; 0.1.0 remains available.
+
 ## Build and validation
 
 From the repository root with Gradle 9.1.0, Node 22 and Java 21 installed:

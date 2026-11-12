@@ -21,3 +21,8 @@ The authoritative server tracks selected crop blocks, keeps growing remote field
 Supported: wheat, carrots, potatoes, beetroot, nether wart, cocoa and sweet berry bushes. Up to **8 fields/player**, **64 fields/server**, and **131,072 tracked plot columns/server**.
 
 **0.2.0 is a real compiled, free beta release.** Automated build and catalog validation completed, but live gameplay and cross-mod testing remain necessary. No paid features.
+
+
+### 0.2.0 crash correction
+
+The 0.2.0 Fabric JAR has been replaced in place to address a crash when activating region selection (`IllegalStateException: Not building!`). The 3D area preview uses dedicated filled/outline render buffers, explicitly flushed after every frame. The public release remains **0.2.0**; there is no separate broken 0.2.0 download. Build validation passes; real in-game confirmation is still pending.
