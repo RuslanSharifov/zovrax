@@ -3,7 +3,7 @@
   "slug": "smart-return",
   "name": "SmartReturn",
   "category": "quality",
-  "status": "development",
+  "status": "released",
   "featured": false,
   "accent": "teal",
   "icon": "assets/icon.svg",
@@ -54,7 +54,36 @@
     }
   ],
   "screenshots": [],
-  "releases": [],
+  "releases": [
+    {
+      "version": "0.1.0",
+      "releasedAt": "2026-11-12",
+      "prerelease": true,
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "loaders": [
+        "Fabric"
+      ],
+      "downloads": [
+        {
+          "file": "releases/zovrax-smart-return-0.1.0-fabric-1.21.10.jar",
+          "label": "Fabric 1.21.10 · Beta 0.1.0",
+          "minecraftVersions": [
+            "1.21.10"
+          ],
+          "loaders": [
+            "Fabric"
+          ]
+        }
+      ],
+      "changelog": {
+        "en": "Initial beta: quiet automatic cave detection, persistent route graph with loop-shortened walked returns, optional reminder, manual guidance, 3D arrow markers and/or mini compass, native settings. Build and archive checks passed; live Minecraft testing is still required.",
+        "ru": "Первая бета: запись пещерных маршрутов, стрелки и компас. Компиляция проверена; тестирование в игре требуется.",
+        "fr": "Première bêta : chemins mémorisés, flèches et boussole. Compilation vérifiée ; tests en jeu requis."
+      }
+    }
+  ],
   "monetization": {
     "type": "free",
     "premiumUrl": null,
