@@ -134,6 +134,8 @@ public final class RouteRecorder {
             caves.add(existing);
         }else existing.reattach(first);
         active=existing;
+        lastInside=pos;
+        daylightTicks=0;
         for(Vec3d step:approach)active.sample(step,this::walkable);
         active.sample(pos,this::walkable);
         approach.clear();
