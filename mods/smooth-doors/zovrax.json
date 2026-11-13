@@ -3,7 +3,7 @@
   "slug": "smooth-doors",
   "name": "Smooth Doors",
   "category": "visual",
-  "status": "development",
+  "status": "released",
   "featured": false,
   "accent": "teal",
   "icon": "assets/icon.svg",
@@ -56,7 +56,36 @@
     }
   ],
   "screenshots": [],
-  "releases": [],
+  "releases": [
+    {
+      "version": "0.1.0",
+      "releasedAt": "2026-11-14",
+      "prerelease": true,
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "loaders": [
+        "Fabric"
+      ],
+      "downloads": [
+        {
+          "file": "releases/zovrax-smooth-doors-0.1.0-fabric-1.21.10.jar",
+          "label": "Fabric 1.21.10 · Beta 0.1.0",
+          "minecraftVersions": [
+            "1.21.10"
+          ],
+          "loaders": [
+            "Fabric"
+          ]
+        }
+      ],
+      "changelog": {
+        "en": "Initial beta: time-based opening and closing animation for doors and trapdoors, individual speed controls and enable switches. Compiled and packaged; in-game verification outstanding.",
+        "ru": "Первая бета: плавные двери и люки, отдельные скорости открытия и закрытия. Компиляция проверена, тесты в игре ещё не проведены.",
+        "fr": "Première bêta : portes et trappes animées, vitesses distinctes. Compilation validée ; tests en jeu à faire."
+      }
+    }
+  ],
   "monetization": {
     "type": "free",
     "premiumUrl": null,
