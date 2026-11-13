@@ -4,9 +4,7 @@
   "compatibilityLevel": "JAVA_21",
   "client": [
     "ClientLevelMixin",
-    "RenderSectionRegionMixin",
-    "ModelBlockRendererMixin",
-    "LevelRendererMixin"
+    "RenderSectionRegionMixin"
   ],
   "injectors": {"defaultRequire": 1}
 }

@@ -138,8 +138,8 @@ public final class MotionTracker {
 
     private static void dirty(BlockPos pos) {
         Minecraft client = Minecraft.getInstance();
-        if (client.level != null && client.levelExtractor != null) {
-            client.levelExtractor.blockChanged(pos, 3);
+        if (client.level != null && client.levelRenderer != null) {
+            client.levelRenderer.setSectionDirty(pos.getX() >> 4, pos.getY() >> 4, pos.getZ() >> 4);
         }
     }
 }
