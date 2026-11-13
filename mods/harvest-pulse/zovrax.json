@@ -71,9 +71,9 @@
   ],
   "screenshots": [
     {
-      "src": "assets/pickup-preview.gif",
+      "src": "assets/harvest-preview.gif",
       "alt": {
-        "en": "Inventory Pickup gameplay preview"
+        "en": "HarvestPulse farm monitoring gameplay preview"
       }
     }
   ],
