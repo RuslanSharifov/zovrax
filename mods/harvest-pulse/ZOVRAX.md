@@ -4,6 +4,12 @@
 
 Know exactly when every one of your fields is ready for harvest — even when you travel far from home. HarvestPulse combines client-side farm-area highlighting, live progress bars, ready-time notifications and server-managed remote crop growth.
 
+## Gameplay preview
+
+![HarvestPulse farm selection, growth monitoring and alerts](assets/harvest-preview.gif)
+
+Watch the farm monitor in action.
+
 ## Color-coded selection you can see
 
 Press **H**, pick your field limit (**16×16, 32×32, 64×64 or 128×128**), then right-click two opposite crop-field corners. The highlighted ground follows the local terrain: **green** means valid, **red** means invalid (over your chosen limit, too steep or overlapping an existing field), and **cyan** marks registered fields. Use **H → Cancel selection** to give up at any point. Highlights are clipped to the nearby visible terrain for good performance.
