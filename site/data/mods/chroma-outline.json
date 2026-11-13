@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 2,
+  "slug": "chroma-outline",
+  "name": "Chroma Outline",
+  "category": "visual",
+  "status": "released",
+  "featured": false,
+  "accent": "purple",
+  "icon": "mods/chroma-outline/assets/icon.svg",
+  "summary": {
+    "en": "Animated rainbow or custom RGB selection outlines with opacity, pulse effects, shape controls and a built-in settings menu.",
+    "ru": "Радужная или однотонная RGB-обводка блоков с прозрачностью, пульсацией и настройками.",
+    "fr": "Contours de blocs RGB ou arc-en-ciel, avec opacité, pulsation et menu de personnalisation.",
+    "az": "Baxdığın blokun rəngli konturu: göyqurşağı, sabit RGB, şəffaflıq, pulsasiya və ayarlar."
+  },
+  "tags": [
+    "Visual",
+    "Block Outline",
+    "Rainbow",
+    "RGB",
+    "Client-side",
+    "Customization"
+  ],
+  "minecraftVersions": [
+    "1.21.10"
+  ],
+  "loaders": [
+    "Fabric"
+  ],
+  "authors": [
+    "ruslan"
+  ],
+  "updatedAt": "2026-11-12",
+  "license": "MIT",
+  "source": "https://github.com/RuslanSharifov/zovrax/tree/main/mods/chroma-outline",
+  "features": [
+    {
+      "en": "Animated rainbow border with adjustable speed, brightness and saturation",
+      "ru": "Радужная анимация с настройкой скорости, яркости и насыщенности",
+      "fr": "Arc-en-ciel animé avec vitesse, luminosité et saturation",
+      "az": "Sürəti, parlaqlığı və doyğunluğu dəyişən göyqurşağı konturu"
+    },
+    {
+      "en": "Custom fixed RGB color and opacity",
+      "ru": "Фиксированный RGB и прозрачность",
+      "fr": "Couleur RGB fixe et opacité",
+      "az": "Sabit RGB rəngi və şəffaflıq"
+    },
+    {
+      "en": "Optional pulse, approximate line thickness, expansion, full cube and presets",
+      "ru": "Пульсация, толщина, расширение и шаблоны",
+      "fr": "Pulsation, épaisseur simulée, agrandissement et profils",
+      "az": "Pulsasiya, təxmini xətt qalınlığı, genişlətmə və hazır seçimlər"
+    },
+    {
+      "en": "Press O for multi-page settings; config saved automatically",
+      "ru": "Настройки клавишей O с сохранением",
+      "fr": "Réglages avec O et sauvegarde automatique",
+      "az": "O düyməsi ilə ayarlar və avtomatik yaddaş"
+    }
+  ],
+  "screenshots": [],
+  "releases": [
+    {
+      "version": "0.1.0",
+      "releasedAt": "2026-11-12",
+      "prerelease": true,
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "loaders": [
+        "Fabric"
+      ],
+      "downloads": [
+        {
+          "label": "Fabric 1.21.10 · Beta 0.1.0",
+          "url": "data/mods/chroma-outline/releases/zovrax-chroma-outline-0.1.0-fabric-1.21.10.jar",
+          "name": "zovrax-chroma-outline-0.1.0-fabric-1.21.10.jar",
+          "minecraftVersions": [
+            "1.21.10"
+          ],
+          "loaders": [
+            "Fabric"
+          ],
+          "size": 17065,
+          "sha256": "bfa7b0eea9ee65cecdddbbe40cdd21fd9bdf8e01c6aeb2ac6bee5dc3055f55a8"
+        }
+      ],
+      "changelog": {
+        "en": "Initial client-only beta: animated rainbow and solid RGB outlines, opacity, pulse, approximate thickness, shape expansion, full-cube option and native multi-page settings. Build and metadata checked; in-game verification pending.",
+        "ru": "Первая клиентская бета. Проверена сборка и метаданные; тестирование в игре ещё требуется.",
+        "fr": "Première version bêta client. Compilation et métadonnées vérifiées ; essai en jeu à effectuer."
+      }
+    }
+  ],
+  "monetization": {
+    "type": "free",
+    "premiumUrl": null,
+    "premiumLabel": "Get Premium"
+  },
+  "seo": {
+    "title": "Chroma Outline — Rainbow & RGB Block Borders for Minecraft | Zovrax",
+    "description": "Custom animated rainbow or solid RGB block outlines for Minecraft Fabric 1.21.10, with opacity, pulse and native settings.",
+    "keywords": [
+      "Minecraft rainbow outline mod",
+      "Fabric block border",
+      "block selection outline RGB",
+      "Chroma Outline",
+      "Zovrax",
+      "Chroma Outline Minecraft mod",
+      "Minecraft Java Edition",
+      "Visual",
+      "Block Outline",
+      "Rainbow",
+      "RGB",
+      "Client-side",
+      "Customization",
+      "Fabric mod",
+      "Minecraft 1.21.10"
+    ]
+  },
+  "readme": {
+    "en": "# Chroma Outline\r\n\r\nTurn the ordinary block-selection border into a colorful animated accent without changing Minecraft gameplay.\r\n\r\n## Customize the border\r\n\r\n**Rainbow mode:** A continuously cycling color with configurable animation speed, saturation and brightness.\r\n\r\n**Solid color:** Choose your exact red, green and blue levels, and set opacity independently.\r\n\r\n**Extra polish:** Enable breathing/pulse brightness, configure pulse speed and depth, set the outline weight, add a little shape expansion, or switch between the natural block outline and a full-block cube.\r\n\r\n## In-game settings\r\n\r\nPress **O** while playing. The built-in settings menu includes three pages covering colors, effects and ready-made presets. All changes save automatically to your own `zovrax-chroma-outline.json` file.\r\n\r\n## Compatibility\r\n\r\nMinecraft Java **1.21.10**, **Fabric**, **Java 21**, plus **Fabric API**. This is a lightweight, client-only visual mod; it does not require installation on the server.\r\n\r\n**Note:** The Minecraft 1.21.10 renderer does not support an adjustable per-line pixel width in its outline API. The weight control uses extra close lines as an approximation, so results depend on camera distance. Expanded outlines use the block's bounding shape. The outline remains depth-tested rather than visible through walls.\r\n\r\nThe first beta build is checked by CI; gameplay and shader compatibility should be tested separately.\r\n",
+    "ru": "# Chroma Outline\r\n\r\nИзмените обычную обводку блока, на который вы смотрите.\r\n\r\n- Радужная анимация со скоростью, насыщенностью и яркостью.\r\n- Однотонный цвет с настройкой RGB и прозрачности.\r\n- Эффект пульсации, приблизительная толщина линий, расширение формы.\r\n- Контур по форме блока или по полному кубу, готовые профили.\r\n\r\nНажмите **O** в игре для настроек. Конфигурация сохраняется автоматически.\r\nТребуются **Minecraft Java 1.21.10**, **Fabric**, **Java 21** и **Fabric API**.\r\nТолщина создаётся дополнительными линиями, а не точной шириной в пикселях.\r\n",
+    "fr": "# Chroma Outline\r\n\r\nPersonnalisez le contour du bloc visé.\r\n\r\n- Arc-en-ciel animé : vitesse, saturation et luminosité réglables.\r\n- Couleur fixe RGB et opacité.\r\n- Pulsation, épaisseur approximative, agrandissement du contour.\r\n- Forme réelle du bloc ou cube entier, avec plusieurs préréglages.\r\n\r\nAppuyez sur **O** en jeu pour ouvrir les réglages. Les préférences sont enregistrées automatiquement.\r\nNécessite **Minecraft Java 1.21.10**, **Fabric**, **Java 21** et **Fabric API**.\r\nL'épaisseur est simulée par plusieurs lignes, pas par une taille exacte en pixels.\r\n"
+  },
+  "latestVersion": "0.1.0"
+}

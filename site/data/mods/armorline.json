@@ -1,0 +1,194 @@
+{
+  "schemaVersion": 2,
+  "slug": "armorline",
+  "name": "ArmorLine",
+  "category": "hud",
+  "status": "released",
+  "featured": true,
+  "accent": "teal",
+  "icon": "mods/armorline/assets/icon.svg",
+  "summary": {
+    "en": "ArmorLine 0.3.0: screenshot-style armor column with main-hand tools and offhand shield or Totem of Undying.",
+    "ru": "ArmorLine 0.3.0: компактная броня столбцом, предмет в основной руке, щит или тотем во второй.",
+    "fr": "ArmorLine 0.3.0 : armure compacte en colonne, outil en main principale, bouclier ou totem en main secondaire.",
+    "az": "ArmorLine 0.3.0: şəkildəki kimi zireh sütunu, əsas əldə alət, digər əldə qalxan və ya ölümsüzlük totemi."
+  },
+  "tags": [
+    "HUD",
+    "Armor",
+    "Durability",
+    "QoL"
+  ],
+  "minecraftVersions": [
+    "1.21.10"
+  ],
+  "loaders": [
+    "Fabric"
+  ],
+  "authors": [
+    "ruslan"
+  ],
+  "updatedAt": "2026-11-11",
+  "license": "MIT",
+  "source": "https://github.com/RuslanSharifov/zovrax/tree/main/mods/armorline",
+  "features": [
+    {
+      "en": "Screenshot-inspired transparent armor HUD: helmet, chestplate, leggings and boots stacked vertically",
+      "ru": "Компактный прозрачный HUD: шлем, нагрудник, поножи и ботинки",
+      "fr": "HUD transparent compact : casque, plastron, pantalon et bottes"
+    },
+    {
+      "en": "Live main-hand tool (pickaxe, axe, sword, etc.) shown to the right of armor; toggle independently",
+      "ru": "Предмет основной руки справа от брони, можно отключить",
+      "fr": "Objet de la main principale affiché à droite, désactivable"
+    },
+    {
+      "en": "Automatically shows held shield, Totem of Undying or other offhand item when equipped; separate toggle",
+      "ru": "Отображение щита, тотема бессмертия и других предметов второй руки",
+      "fr": "Affiche bouclier, totem d'immortalité ou tout autre objet en main secondaire"
+    },
+    {
+      "en": "White remaining durability numbers near damageable equipment; non-damageable totems have no fake durability",
+      "ru": "Оставшаяся прочность белыми числами без выдуманной прочности тотема",
+      "fr": "Durabilité restante en chiffres blancs, sans fausse valeur pour le totem"
+    },
+    {
+      "en": "Default background 0%; opacity, text, item icons, scale, layout and indicator side still adjustable",
+      "ru": "Фон 0 % по умолчанию, прозрачность, размер и расположение настраиваются",
+      "fr": "Fond transparent par défaut, opacité, taille et disposition personnalisables"
+    },
+    {
+      "en": "P opens settings; whole HUD remains draggable, with vertical or horizontal layouts",
+      "ru": "Настройки по P; перетаскивание HUD, вертикальный или горизонтальный режим",
+      "fr": "Réglages avec P ; HUD déplaçable, vertical ou horizontal"
+    }
+  ],
+  "screenshots": [],
+  "releases": [
+    {
+      "version": "0.3.0",
+      "releasedAt": "2026-11-11",
+      "prerelease": true,
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "loaders": [
+        "Fabric"
+      ],
+      "downloads": [
+        {
+          "label": "Fabric 1.21.10 · Beta 0.3.0",
+          "url": "data/mods/armorline/releases/zovrax-armorline-0.3.0-fabric-1.21.10.jar",
+          "name": "zovrax-armorline-0.3.0-fabric-1.21.10.jar",
+          "minecraftVersions": [
+            "1.21.10"
+          ],
+          "loaders": [
+            "Fabric"
+          ],
+          "size": 20327,
+          "sha256": "c8cf55a004f2f8a60b237599fb2fa95d683541737980f0326adec8814e4a97a3"
+        }
+      ],
+      "changelog": {
+        "en": "**Beta 0.3.0.** HUD redesigned to match the user reference: four centered armor icons, white durability numbers beside them, selected main-hand tool on the right and equipped offhand shield/totem beneath it. New main-hand and offhand visibility toggles. Fresh installs use fully transparent background and numeric durability by default; previous custom settings are preserved. Existing opacity, layout and position controls remain. Java/Fabric build tested; live gameplay test still needed.",
+        "ru": "**Бета 0.3.0.** Новый вид по образцу: четыре предмета брони столбцом, числа прочности, инструмент справа, щит или тотем второй руки. Отдельное отключение предметов рук. Фон по умолчанию прозрачный для новых настроек.",
+        "fr": "**Bêta 0.3.0.** Nouveau HUD inspiré de l'exemple : quatre armures en colonne, nombres de durabilité, outil à droite, bouclier ou totem en main secondaire. Affichage des mains réglable, fond transparent par défaut pour une nouvelle configuration."
+      }
+    },
+    {
+      "version": "0.2.0",
+      "releasedAt": "2026-11-11",
+      "prerelease": true,
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "loaders": [
+        "Fabric"
+      ],
+      "downloads": [
+        {
+          "label": "Fabric 1.21.10 · Beta 0.2.0",
+          "url": "data/mods/armorline/releases/zovrax-armorline-0.2.0-fabric-1.21.10.jar",
+          "name": "zovrax-armorline-0.2.0-fabric-1.21.10.jar",
+          "minecraftVersions": [
+            "1.21.10"
+          ],
+          "loaders": [
+            "Fabric"
+          ],
+          "size": 20048,
+          "sha256": "12c41b9cd177c4216c15a277f39aa6bfb64b2558a1e18f9047d88e5674cfac3e"
+        }
+      ],
+      "changelog": {
+        "en": "**Beta 0.2.0.** Fixes contextual editor controls sometimes not responding when they overlap the draggable HUD. Default vertical connected armor display; optional horizontal layout. Configurable durability indicators (bars and numbers / bars only / numbers only / hidden) on the left/right/automatic side. Independent opacity sliders for overall HUD, background (down to 0%), armor icons, and text/bars. Two-page in-game settings and improved live HUD editor. Previous settings migrate; Inventory Pickup is unaffected. Compilation verified; game testing remains necessary.",
+        "ru": "**Бета 0.2.0.** Исправлена обработка нажатий в редакторе HUD. Вертикальное расположение по умолчанию, полоса/числа прочности и их сторона, независимая прозрачность HUD, фона (до 0%), иконок и текста. Настройки предыдущих версий сохраняются.",
+        "fr": "**Bêta 0.2.0.** Correction des clics dans l'éditeur. Colonne verticale par défaut, barres et valeurs de durabilité configurables à gauche ou à droite, transparence indépendante du HUD, du fond (jusqu'à 0 %), des icônes et du texte. Configuration antérieure préservée."
+      }
+    },
+    {
+      "version": "0.1.0",
+      "releasedAt": "2026-11-11",
+      "prerelease": true,
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "loaders": [
+        "Fabric"
+      ],
+      "downloads": [
+        {
+          "label": "Fabric 1.21.10 · Beta 0.1.0",
+          "url": "data/mods/armorline/releases/zovrax-armorline-0.1.0-fabric-1.21.10.jar",
+          "name": "zovrax-armorline-0.1.0-fabric-1.21.10.jar",
+          "minecraftVersions": [
+            "1.21.10"
+          ],
+          "loaders": [
+            "Fabric"
+          ],
+          "size": 17891,
+          "sha256": "4e2a83bd1eef0d8579e7faee16a72fc632d7f227e7917a84bc0df13e068b1490"
+        }
+      ],
+      "changelog": {
+        "en": "**Public Beta 0.1.0.** First real compiled release of ArmorLine. One connected armor display, live equipment icons, optional durability bars and remaining/max numbers, layout orientation, draggable HUD, size/opacity sliders, and rebindable P settings key. Built by Gradle CI; gameplay testing required.",
+        "ru": "**Бета 0.1.0.** Первый JAR: единый HUD брони, прочность, горизонтальное/вертикальное положение, размеры, прозрачность и редактирование по клавише P.",
+        "fr": "**Bêta 0.1.0.** Premier JAR : armure reliée, durabilité, orientation, taille, transparence et déplacement à la souris via P."
+      }
+    }
+  ],
+  "monetization": {
+    "type": "free",
+    "premiumUrl": null,
+    "premiumLabel": "Get Premium"
+  },
+  "seo": {
+    "title": "ArmorLine — Armor Durability HUD for Minecraft Fabric | Zovrax",
+    "description": "ArmorLine shows armor, item durability, held tools and offhand gear in a configurable Minecraft 1.21.10 Fabric HUD.",
+    "keywords": [
+      "ArmorLine Minecraft",
+      "armor durability HUD",
+      "Minecraft armor display",
+      "Fabric armor HUD",
+      "offhand shield display",
+      "Minecraft tool durability",
+      "armor overlay",
+      "ArmorLine Minecraft mod",
+      "Minecraft Java Edition",
+      "HUD",
+      "Armor",
+      "Durability",
+      "QoL",
+      "Fabric mod",
+      "Minecraft 1.21.10"
+    ]
+  },
+  "readme": {
+    "en": "# ArmorLine\r\n\r\n**Beta 0.2.0 · Minecraft Java 1.21.10 · Fabric**\r\n\r\nSee the durability of your helmet, chestplate, leggings and boots directly on screen in a **single connected vertical armor HUD**. The display updates whenever you change your armor, and empty equipment slots stay empty. Change to a horizontal row whenever you prefer.\r\n\r\n## Your layout, your rules\r\n\r\nPress **P** to open the dedicated ArmorLine settings. Choose:\r\n\r\n- **Durability information:** bar with exact remaining/maximum number, bar only, numbers only, or hidden.\r\n- **Indicator position:** automatically choose the screen-facing side, force left, force right, or hide indicators.\r\n- **Layout:** vertical (default) or horizontal.\r\n- **Size:** 50–200% of normal.\r\n- **Independent transparency:** overall HUD, background, armor icons, and durability text/bars, each configurable from 0–100%. You can have a completely transparent background while keeping the armor visible.\r\n\r\nSelect **Customize HUD position**, drag the connected panel anywhere, and click it for the compact contextual editor. The editor has live controls for layout, durability, side and all opacity settings. Clicking **Done** preserves the edits. Version 0.2.0 specifically fixes contextual controls that were sometimes mistaken for a drag.\r\n\r\nSettings persist to `config/zovrax-armorline.json`, and settings from beta 0.1.0 migrate automatically.\r\n\r\n## Installation\r\n\r\nThis free client-side Fabric mod requires Minecraft **1.21.10**, Fabric API, and Java 21. Download **0.2.0** from the Downloads menu and remove any older ArmorLine JAR to avoid duplicate mod IDs. It works independently of Inventory Pickup (P opens ArmorLine, O opens Inventory Pickup).\r\n\r\n*This release has passed automated compilation and JAR checks; please test its real in-game behaviour and report bugs.*\r\n\r\n\r\n## New in beta 0.3.0 — Screenshot-inspired equipment layout\r\n\r\nArmorLine now shows **four armor icons in a tight, vertical line**, with **white remaining-durability numbers** to the left, based on your reference screenshot. To the right is the **currently equipped main-hand tool** (such as a pickaxe); below it, if equipped, appears the **offhand shield or Totem of Undying**. The offhand is hidden when empty, and non-damageable items do not get an imaginary durability counter.\r\n\r\nYou can independently enable or disable **Show main hand** and **Show offhand** using the in-game **P** settings. Background opacity defaults to **0% for new installations**, so the equipment floats over the game view, without a colored card. Other appearance, positions, layouts and durability options remain. Existing saved settings are retained; set your background opacity to 0% manually for the new fully transparent look.\r\n\r\n**Beta 0.3.0** is compiled for Fabric 1.21.10 and requires Fabric API. Remove previous ArmorLine JARs before installing the new one.\r\n",
+    "ru": "# ArmorLine\r\n\r\n**Бета 0.2.0 · Minecraft Java 1.21.10 · Fabric**\r\n\r\nArmorLine отображает шлем, нагрудник, поножи и ботинки в **одном вертикальном связанном HUD**. При смене экипировки иконки обновляются, пустые слоты остаются пустыми. Можно выбрать и горизонтальное расположение.\r\n\r\nНажмите **P** для настроек. Выбирайте вид прочности: **полоса и числа**, только полоса, только оставшаяся/максимальная прочность или полностью скрыть. Показатели можно расположить **автоматически, слева, справа или скрыть**.\r\n\r\nПрозрачность **всего HUD, фона, иконок брони и текста/полос** задаётся отдельно (0–100%). Фон можно сделать полностью прозрачным. Размер — 50–200%.\r\n\r\nВ редакторе **Customize HUD position** перетаскивайте весь блок мышью, нажмите на него, чтобы изменить расположение и прозрачность. Версия 0.2.0 исправляет проблему, при которой нажатие кнопки могло ошибочно перемещать HUD, а изменения после Done иногда не применялись. Настройки сохраняются, старые настройки 0.1.0 переносимы.\r\n\r\nMinecraft 1.21.10, Fabric API, Java 21. Удалите предыдущую версию ArmorLine перед установкой новой 0.2.0. Автоматическая компиляция выполнена, тесты в игре ещё необходимы.\r\n\r\n\r\n## Новое в бете 0.3.0\r\n\r\nИнтерфейс теперь повторяет пример: **четыре иконки брони вертикально**, белые числа оставшейся прочности слева. **Инструмент в основной руке** показывается справа, а **щит, тотем бессмертия или другой предмет во второй руке** — ниже, если слот не пуст. Предметы без прочности не получают фиктивные числа.\r\n\r\nВ настройках по **P** можно независимо отключать отображение основной и второй руки. Для новых настроек фон полностью прозрачный (0 %). Старые настройки сохраняются; прозрачность фона можно вручную выставить на 0 %. Другие параметры HUD остаются доступны.\r\n",
+    "fr": "# ArmorLine\r\n\r\n**Bêta 0.2.0 · Minecraft Java 1.21.10 · Fabric**\r\n\r\nArmorLine affiche le casque, le plastron, le pantalon et les bottes dans un **seul panneau vertical relié**, avec des emplacements vides distincts et une mise à jour immédiate. Une disposition horizontale est également disponible.\r\n\r\nAppuyez sur **P** pour les réglages. Choisissez l'affichage de la durabilité : **barre et valeurs restantes/maximales**, barre seule, valeurs seules, ou masqué. Placez les indicateurs **automatiquement, à gauche, à droite ou masqués**.\r\n\r\nL'opacité **globale**, celle du **fond**, des **icônes** et des **valeurs/barres** sont chacune réglables de 0 à 100 %, indépendamment. Le fond peut être entièrement transparent. La taille va de 50 à 200 %.\r\n\r\nDans **Customize HUD position**, déplacez l'ensemble à la souris, puis cliquez dessus pour modifier les options. La bêta 0.2.0 corrige les clics interprétés par erreur comme des déplacements et conserve les changements après **Done**. Les réglages de la version 0.1.0 sont récupérés.\r\n\r\nNécessite Minecraft 1.21.10, Fabric API et Java 21. Retirez l'ancien JAR avant l'installation. Le build est validé, mais les tests en jeu restent nécessaires.\r\n\r\n\r\n## Nouveautés de la bêta 0.3.0\r\n\r\nLe HUD reprend l'apparence de l'exemple : **quatre icônes d'armure à la verticale**, avec les chiffres blancs de durabilité restante à gauche. **L'outil en main principale** apparaît à droite et, s'il est équipé, **le bouclier ou le Totem d'immortalité de la main secondaire** est affiché en dessous. Les objets sans durabilité n'ont pas de faux compteur.\r\n\r\nLes options avec **P** permettent de masquer séparément la main principale et secondaire. Les nouveaux réglages utilisent un **fond transparent à 0 %**. Les anciens paramètres sont conservés ; vous pouvez mettre manuellement l'opacité du fond à 0 %.\r\n"
+  },
+  "latestVersion": "0.3.0"
+}
