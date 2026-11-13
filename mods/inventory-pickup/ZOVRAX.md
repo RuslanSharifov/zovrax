@@ -4,6 +4,12 @@
 
 Inventory Pickup shows animated HUD messages for **items you actually pick up from the ground** and **experience orbs**. The notification slides into place while fading from 0 to 100%, then slides away and fades out.
 
+## Gameplay preview
+
+![Inventory Pickup animated item and XP notifications](assets/pickup-preview.gif)
+
+See pickup and experience notifications in action.
+
 ## Pickup notifications
 
 - Pick up an item from the ground to see its Minecraft icon, name, **+N gained** and inventory total.
