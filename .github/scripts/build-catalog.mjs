@@ -60,7 +60,9 @@ function copyAssets(slug) {
       if (entry.isDirectory()) walk(absolute);
       else if (entry.isFile()) {
         const relative = path.relative(path.join(modsDir, slug), absolute).split(path.sep).join('/');
-        copyFile(slug, relative, assetPattern, 10 * 1024 * 1024);
+        // GIF previews uploaded through GitHub may exceed 10 MiB; keep other images capped.
+        const assetLimit = /\.gif$/i.test(relative) ? 30 * 1024 * 1024 : 10 * 1024 * 1024;
+        copyFile(slug, relative, assetPattern, assetLimit);
       }
     }
   }
