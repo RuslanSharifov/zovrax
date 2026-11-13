@@ -1,0 +1,10 @@
+{
+  "required": true,
+  "package": "az.zovrax.smoothdoors.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "ClientLevelMixin",
+    "RenderSectionRegionMixin"
+  ],
+  "injectors": {"defaultRequire": 1}
+}
