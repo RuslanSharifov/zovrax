@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 2,
+  "slug": "smooth-doors",
+  "name": "Smooth Doors",
+  "category": "visual",
+  "status": "development",
+  "featured": false,
+  "accent": "teal",
+  "icon": "assets/icon.svg",
+  "summary": {
+    "en": "Smooth opening and closing for Minecraft doors and trapdoors, with independent speed sliders and on/off settings.",
+    "ru": "Плавное открывание и закрывание дверей и люков с настройкой скорости и переключателями.",
+    "fr": "Ouverture et fermeture fluides des portes et trappes, avec vitesses réglables et interrupteurs.",
+    "az": "Qapı və trapdoor-ların açılıb-bağlanmasına yumşaq animasiya, sürət və aç/söndür ayarları."
+  },
+  "tags": [
+    "Animation",
+    "Doors",
+    "Trapdoors",
+    "Visual",
+    "Client-side",
+    "QoL"
+  ],
+  "minecraftVersions": [
+    "1.21.10"
+  ],
+  "loaders": [
+    "Fabric"
+  ],
+  "authors": [
+    "ruslan"
+  ],
+  "updatedAt": "2026-11-14",
+  "license": "MIT",
+  "source": "https://github.com/RuslanSharifov/zovrax/tree/main/mods/smooth-doors",
+  "features": [
+    {
+      "en": "Smooth open and close easing for every standard door and trapdoor",
+      "ru": "Плавное открывание и закрывание дверей и люков",
+      "fr": "Ouverture et fermeture fluides des portes et trappes"
+    },
+    {
+      "en": "Separate opening and closing duration sliders (100–2000 ms)",
+      "ru": "Отдельная скорость открытия и закрытия (100–2000 мс)",
+      "fr": "Durées d'ouverture et de fermeture distinctes (100–2000 ms)"
+    },
+    {
+      "en": "In-game J settings key; toggle all, doors or trapdoors",
+      "ru": "Меню J: отключение всех анимаций или отдельных типов",
+      "fr": "Menu J : désactiver toutes les animations ou certains types"
+    },
+    {
+      "en": "Client-side visuals only; vanilla redstone and collisions unchanged",
+      "ru": "Только визуальные изменения, физика и редстоун прежние",
+      "fr": "Effets visuels seulement, collisions et redstone inchangées"
+    }
+  ],
+  "screenshots": [],
+  "releases": [],
+  "monetization": {
+    "type": "free",
+    "premiumUrl": null,
+    "premiumLabel": "Get Premium"
+  },
+  "seo": {
+    "title": "Smooth Doors — Door and Trapdoor Animation | Zovrax",
+    "description": "Add smooth customizable open and close motion to Minecraft doors and trapdoors on Fabric 1.21.10.",
+    "keywords": [
+      "smooth doors Fabric 1.21.10",
+      "Minecraft animated trapdoors",
+      "Minecraft smooth door opening",
+      "Zovrax Smooth Doors"
+    ]
+  }
+}

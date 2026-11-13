@@ -1,0 +1,65 @@
+name: Build Smooth Doors (Fabric 1.21.10)
+
+on:
+  push:
+    branches: [feat/smooth-doors-fabric-12110]
+    paths:
+      - 'mods/smooth-doors/**'
+      - '.github/workflows/build-smooth-doors.yml'
+  pull_request:
+    paths:
+      - 'mods/smooth-doors/**'
+      - '.github/workflows/build-smooth-doors.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fabric-build:
+    name: Compile, test and package Smooth Doors
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.1.0'
+      - name: Headless animation math tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/smooth-tests
+          javac -d /tmp/smooth-tests mods/smooth-doors/src/main/java/az/zovrax/smoothdoors/AnimationCurve.java mods/smooth-doors/tools/AnimationCurveCheck.java
+          java -cp /tmp/smooth-tests AnimationCurveCheck
+      - name: Compile and remap real Fabric JAR
+        run: gradle --no-daemon --project-dir mods/smooth-doors build
+      - name: Package only verified JAR and release metadata
+        run: node mods/smooth-doors/tools/package-release.mjs
+      - name: Validate release archive and Zovrax catalog
+        shell: bash
+        run: |
+          set -euo pipefail
+          jar tf mods/smooth-doors/releases/zovrax-smooth-doors-0.1.0-fabric-1.21.10.jar | grep -Fx 'fabric.mod.json'
+          node .github/scripts/build-catalog.mjs
+          node .github/scripts/validate-catalog.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: zovrax-smooth-doors-0.1.0-fabric-1.21.10
+          path: mods/smooth-doors/releases/zovrax-smooth-doors-0.1.0-fabric-1.21.10.jar
+          if-no-files-found: error
+      - name: Commit compiled release to feature branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/feat/smooth-doors-fabric-12110'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git config user.name 'github-actions[bot]'
+          git add -A mods/smooth-doors
+          if ! git diff --cached --quiet; then
+            git commit -m 'release(smooth-doors): add verified Fabric 1.21.10 beta JAR'
+            git push origin HEAD:refs/heads/feat/smooth-doors-fabric-12110
+          fi
