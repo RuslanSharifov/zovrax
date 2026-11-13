@@ -70,9 +70,9 @@
   ],
   "screenshots": [
     {
-      "src": "assets/harvest-preview.gif",
+      "src": "assets/pickup-preview.gif",
       "alt": {
-        "en": "harvest preview gameplay preview"
+        "en": "Inventory Pickup gameplay preview"
       }
     }
   ],
