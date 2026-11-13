@@ -3,7 +3,7 @@
 An independent Fabric 1.21.10 **client-only** mod that animates state transitions for vanilla doors (including both halves of tall doors and independently operated double doors) and trapdoors/shutters.
 
 ## Install
-1. Use **Minecraft Java 1.21.10**, **Fabric Loader 0.17.3+**, **Java 21**, and a matching **Fabric API**.
+1. Use **Minecraft Java 1.21.10**, **Fabric Loader 0.17.3+**, **Java 21**, and **Fabric API 0.137.0+1.21.10 or newer for Minecraft 1.21.10**.
 2. Put a genuine release JAR in the Minecraft mods directory. Do not use the sources ZIP as a mod.
 3. Launch the game. Press **J** to open the options. The key can be rebound under Controls.
 4. Toggle all motion, doors, or trapdoors independently; drag the opening and closing duration sliders between **100 ms** and **2000 ms**. Saved to config/zovrax_smooth_doors.json.
