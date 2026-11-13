@@ -13,6 +13,6 @@
 
 ### Install
 
-Minecraft **1.21.10** + **Fabric** + **Fabric API** + **Java 21**. Put the published JAR into your `mods` folder. The server does not need this mod.
+Minecraft **1.21.10** + **Fabric** + **Fabric API 0.137.0+1.21.10 or newer** + **Java 21**. Put the published JAR into your `mods` folder. The server does not need this mod.
 
 **Note:** Double doors animate on either side when the corresponding door state changes. This mod intentionally does not make two doors open together automatically. Shader/third-party renderer combinations have not been verified in Minecraft yet.
