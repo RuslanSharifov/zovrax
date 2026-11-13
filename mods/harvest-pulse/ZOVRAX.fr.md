@@ -1,3 +1,11 @@
+
+
+## Gameplay Preview
+
+![HarvestPulse farm monitoring preview](assets/harvest-preview.gif)
+
+Watch farm selection, crop progress and harvest notifications in action.
+
 # HarvestPulse — Suivi intelligent des champs
 
 **Bêta gratuite 0.2.0 · Minecraft Java 1.21.10 · Fabric**

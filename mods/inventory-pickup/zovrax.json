@@ -68,7 +68,14 @@
       "az": "Eyni əşya yenidən götürüləndə say artır və bildiriş vaxtı sıfırlanır"
     }
   ],
-  "screenshots": [],
+  "screenshots": [
+    {
+      "src": "assets/harvest-preview.gif",
+      "alt": {
+        "en": "harvest preview gameplay preview"
+      }
+    }
+  ],
   "releases": [
     {
       "version": "0.2.2",
