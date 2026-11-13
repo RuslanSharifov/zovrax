@@ -1,5 +1,11 @@
 # Inventory Pickup
 
+## Aperçu du gameplay
+
+![Notifications animées de ramassage et d'expérience](assets/pickup-preview.gif)
+
+Découvrez les notifications de ramassage et d'expérience en action.
+
 > **Bêta publique 0.2.2 — Minecraft Java 1.21.10, Fabric.** Le JAR est disponible pour les essais. La compilation a réussi, mais les tests en jeu restent nécessaires.
 
 Les notifications HUD animées apparaissent uniquement pour les **objets réellement ramassés au sol et les orbes d'expérience**. Si vous ramassez à nouveau le même objet pendant que sa notification est visible, le compteur **+N** augmente dans la carte existante et sa durée est **réinitialisée**. Les gains **+N XP** se regroupent de la même manière.

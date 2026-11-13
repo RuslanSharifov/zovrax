@@ -1,5 +1,11 @@
 # HarvestPulse — Suivi intelligent des champs
 
+## Aperçu du gameplay
+
+![Aperçu animé de HarvestPulse](assets/harvest-preview.gif)
+
+Découvrez la sélection des champs, la progression des cultures et les alertes de récolte.
+
 **Bêta gratuite 0.2.0 · Minecraft Java 1.21.10 · Fabric**
 
 Sélectionnez la taille maximale (16×16, 32×32, 64×64 ou 128×128) et cliquez sur deux coins du terrain. L’aperçu translucide suit le terrain visible : **vert** sélection valide, **rouge** invalide, **cyan** champ déjà enregistré. Appuyez sur H pour annuler la sélection.

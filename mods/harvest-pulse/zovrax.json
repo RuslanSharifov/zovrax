@@ -69,7 +69,14 @@
       "fr": "Icône de 128x128 visible dans la liste des mods."
     }
   ],
-  "screenshots": [],
+  "screenshots": [
+    {
+      "src": "assets/harvest-preview.gif",
+      "alt": {
+        "en": "HarvestPulse farm monitoring gameplay preview"
+      }
+    }
+  ],
   "releases": [
     {
       "version": "0.2.0",

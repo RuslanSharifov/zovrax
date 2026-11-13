@@ -68,7 +68,14 @@
       "az": "Eyni əşya yenidən götürüləndə say artır və bildiriş vaxtı sıfırlanır"
     }
   ],
-  "screenshots": [],
+  "screenshots": [
+    {
+      "src": "assets/pickup-preview.gif",
+      "alt": {
+        "en": "Inventory Pickup gameplay preview"
+      }
+    }
+  ],
   "releases": [
     {
       "version": "0.2.2",
