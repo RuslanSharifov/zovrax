@@ -48,3 +48,5 @@ CI validates compilation, JAR packaging and metadata. Manual gameplay/UI testing
 ## Verified CI build
 
 The 0.1.0 feature-branch workflow completed on 2026-11-14: Java compilation, Fabric remap, JAR class and manifest inspection, artifact upload, catalog generation and catalog validation all succeeded. This does not constitute in-game testing.
+
+The 0.1.1 feature-branch workflow also succeeded: SVG icons were rasterized to nine PNGs, Fabric Java code compiled, the JAR was remapped and validated, and site catalog generation and validation passed. The original 0.1.0 release remains available for rollback. No in-game test has been claimed.
