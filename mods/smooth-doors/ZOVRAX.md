@@ -20,3 +20,7 @@ Minecraft **1.21.10** + **Fabric** + **Fabric API 0.137.0+1.21.10 or newer** + *
 ### Beta 0.1.1 visual fix
 
 The animation now begins **only after** the original door's static chunk mesh has been hidden, eliminating the overlapping bright copy seen in 0.1.0. It uses normal world lighting and restores the original chunk mesh cleanly after closing/opening. The earlier beta is retained for rollback. Shader/modded renderer compatibility still needs in-game verification.
+
+### 0.1.2 compatibility beta
+
+Adds a second, chunk-compiler-level static-model suppression hook for renderers that bypass the block-state callback. An animation starts only once the original mesh has actually been replaced; if the renderer does not support the hook, the normal vanilla door remains visible instead of spawning a bright duplicate. **J → Copy diagnostic info** writes the renderer status to chat for troubleshooting. Minecraft/mobile renderer testing is still required.

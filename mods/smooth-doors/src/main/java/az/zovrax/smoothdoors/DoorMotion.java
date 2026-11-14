@@ -25,6 +25,7 @@ public final class DoorMotion {
     public Phase phase;
     public long startedNs;
     public long phaseStartedNs;
+    public boolean rebuildRetried;
     public int hideObserved;
     public int hideUploaded;
     public int revealObserved;

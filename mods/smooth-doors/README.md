@@ -44,3 +44,9 @@ License: MIT. Developer: Ruslan Sharifov.
 - Test with and without Sodium/Iris/shaders or mobile renderers; alternate render pipelines may require additional compatibility hooks.
 
 The Java build and math checks do **not** substitute for these in-game visual tests.
+
+## 0.1.2 renderer compatibility diagnostics
+
+This beta attempts to fix cases where 0.1.1 showed **no** animation: vanilla section compilation can use its own cached block state, bypassing the region's block-state callback. A targeted `ModelBlockRenderer.tesselateBlock` mixin now suppresses the original static door quads during chunk compilation and records when suppression happened. The mesh-upload handoff remains required to avoid rendering two doors. A single rebuild retry is attempted after 300 ms. The optional section upload hook no longer hard-crashes if another renderer replaces it.
+
+In game, press **J** and select **Copy diagnostic info** (the label writes status to chat, not clipboard) immediately after operating a door. A stuck `WAIT_HIDE` phase with `suppressed=0` and `mesh uploads=0` means the active renderer is bypassing the vanilla callbacks. Please provide `latest.log` if Minecraft crashes before a world loads. No in-game validation is claimed from the automated Java build.

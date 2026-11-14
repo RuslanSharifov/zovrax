@@ -5,7 +5,8 @@
   "client": [
     "ClientLevelMixin",
     "RenderSectionRegionMixin",
-    "SectionMeshMixin"
+    "SectionMeshMixin",
+    "BlockModelRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
