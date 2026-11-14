@@ -63,6 +63,34 @@
   "screenshots": [],
   "releases": [
     {
+      "version": "0.1.1",
+      "releasedAt": "2026-11-14",
+      "prerelease": true,
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "loaders": [
+        "Fabric"
+      ],
+      "downloads": [
+        {
+          "file": "releases/zovrax-hub-0.1.1-fabric-1.21.10.jar",
+          "label": "Fabric 1.21.10 · Beta 0.1.1",
+          "minecraftVersions": [
+            "1.21.10"
+          ],
+          "loaders": [
+            "Fabric"
+          ]
+        }
+      ],
+      "changelog": {
+        "en": "Adds bundled rasterized thumbnails derived from official ZOVRAX icons while preserving settings and catalog features. CI compilation verified; in-game testing pending.",
+        "ru": "Добавлены PNG-иконки модов в меню. Сборка проверена; игра не тестировалась.",
+        "fr": "Ajout des icônes PNG officielles intégrées. Compilation vérifiée, jeu non testé."
+      }
+    },
+    {
       "version": "0.1.0",
       "releasedAt": "2026-11-14",
       "prerelease": true,
