@@ -58,6 +58,34 @@
   "screenshots": [],
   "releases": [
     {
+      "version": "0.1.1",
+      "releasedAt": "2026-11-14",
+      "prerelease": true,
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "loaders": [
+        "Fabric"
+      ],
+      "downloads": [
+        {
+          "file": "releases/zovrax-smooth-doors-0.1.1-fabric-1.21.10.jar",
+          "label": "Fabric 1.21.10 · Beta 0.1.1 (visual fix)",
+          "minecraftVersions": [
+            "1.21.10"
+          ],
+          "loaders": [
+            "Fabric"
+          ]
+        }
+      ],
+      "changelog": {
+        "en": "Fix: animated door no longer overlays the static vanilla door. Animation starts after the original section mesh has been hidden and stops after the normal mesh is restored. Correct world lighting replaces full-bright rendering. Headless tests and compilation passed; in-game validation pending.",
+        "ru": "Исправление: анимированная дверь больше не накладывается на обычную. Синхронизация с мешем секции, нормальное освещение. Сборка проверена; тесты в игре ещё требуются.",
+        "fr": "Correctif : plus de porte animée en double sur la porte d’origine. Synchronisation du maillage et éclairage naturel. Compilation validée, essais en jeu à confirmer."
+      }
+    },
+    {
       "version": "0.1.0",
       "releasedAt": "2026-11-14",
       "prerelease": true,
