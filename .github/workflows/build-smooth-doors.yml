@@ -51,6 +51,30 @@ jobs:
           node --check mods/smooth-doors/tools/package-release.mjs
       - name: Compile and remap real Fabric JAR
         run: gradle --no-daemon --project-dir mods/smooth-doors build
+      - name: Start Minecraft client under software GL (mixin smoke check)
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq xvfb xauth libgl1-mesa-dri
+          set +e
+          LIBGL_ALWAYS_SOFTWARE=1 timeout 150s xvfb-run -a \
+            gradle --no-daemon --project-dir mods/smooth-doors runClient > /tmp/smooth-client-boot.log 2>&1
+          rc=$?
+          set -e
+          tail -n 100 /tmp/smooth-client-boot.log || true
+          if grep -Eiq 'Mixin apply failed|MixinApplyError|InvalidInjectionException|InvalidMixinException|InjectionError|Could not find target|Error loading class az\.zovrax\.smoothdoors' /tmp/smooth-client-boot.log; then
+            echo "Minecraft startup hit a mixin/compatibility error" >&2
+            exit 1
+          fi
+          if ! grep -Eq '\[(Render thread|Client thread)/INFO\]' /tmp/smooth-client-boot.log; then
+            echo "Client did not reach render-thread initialization" >&2
+            exit 1
+          fi
+          if [ "$rc" -ne 0 ] && [ "$rc" -ne 124 ]; then
+            echo "Minecraft client quit unexpectedly: exit $rc" >&2
+            exit 1
+          fi
       - name: Package only verified 0.1.2 and preserve 0.1.0
         run: node mods/smooth-doors/tools/package-release.mjs
       - name: Validate JAR and Zovrax release catalog
