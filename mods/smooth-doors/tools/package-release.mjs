@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const version = '0.1.1';
+const version = '0.1.2';
 const releaseName = 'zovrax-smooth-doors-' + version + '-fabric-1.21.10.jar';
 const built = path.join(root, 'build/libs/zovrax-smooth-doors-' + version + '.jar');
 const target = path.join(root, 'releases', releaseName);
@@ -18,7 +18,8 @@ for (const required of [
   'az/zovrax/smoothdoors/SmoothDoorsClient.class',
   'az/zovrax/smoothdoors/MotionRenderer.class',
   'az/zovrax/smoothdoors/MotionTracker.class',
-  'az/zovrax/smoothdoors/mixin/SectionMeshMixin.class'
+  'az/zovrax/smoothdoors/mixin/SectionMeshMixin.class',
+  'az/zovrax/smoothdoors/mixin/BlockModelRendererMixin.class'
 ]) {
   if (!entries.includes(required)) throw new Error('Missing actual compiled JAR entry: ' + required);
 }
@@ -31,23 +32,26 @@ if (modJson.id !== 'zovrax_smooth_doors' ||
   throw new Error('Fabric mod metadata mismatch');
 }
 const mixins = JSON.parse(execFileSync('unzip', ['-p', built, 'zovrax_smooth_doors.mixins.json'], { encoding: 'utf8' }));
-if (!mixins.client?.includes('SectionMeshMixin')) throw new Error('Static chunk mesh handoff mixin is missing');
+if (!mixins.client?.includes('SectionMeshMixin') ||
+    !mixins.client?.includes('BlockModelRendererMixin')) throw new Error('Static mesh suppression mixin missing');
 const data = JSON.parse(fs.readFileSync(manifest, 'utf8'));
-const preserved = data.releases?.find(r => r.version === '0.1.0');
-if (!preserved || !preserved.downloads?.length ||
-    !preserved.downloads.every(d => fs.existsSync(path.join(root, d.file)))) {
-  throw new Error('0.1.0 rollback release missing; refusing to overwrite');
+for (const oldVersion of ['0.1.0', '0.1.1']) {
+  const preserved = data.releases?.find(r => r.version === oldVersion);
+  if (!preserved || !preserved.downloads?.length ||
+      !preserved.downloads.every(d => fs.existsSync(path.join(root, d.file)))) {
+    throw new Error(oldVersion + ' rollback release missing; refusing to overwrite');
+  }
 }
 const nextRelease = {
   version, releasedAt: '2026-11-14', prerelease: true,
   minecraftVersions: ['1.21.10'], loaders: ['Fabric'],
   downloads: [{ file: 'releases/' + releaseName,
-    label: 'Fabric 1.21.10 · Beta 0.1.1 (visual fix)',
+    label: 'Fabric 1.21.10 · Beta 0.1.2 (renderer compatibility)',
     minecraftVersions: ['1.21.10'], loaders: ['Fabric'] }],
   changelog: {
-    en: 'Fix: animated door no longer overlays the static vanilla door. Animation starts after the original section mesh has been hidden and stops after the normal mesh is restored. Correct world lighting replaces full-bright rendering. Headless tests and compilation passed; in-game validation pending.',
-    ru: 'Исправление: анимированная дверь больше не накладывается на обычную. Синхронизация с мешем секции, нормальное освещение. Сборка проверена; тесты в игре ещё требуются.',
-    fr: 'Correctif : plus de porte animée en double sur la porte d’origine. Synchronisation du maillage et éclairage naturel. Compilation validée, essais en jeu à confirmer.'
+    en: 'Renderer compatibility beta: additional vanilla block-model compilation suppression hook, mesh handoff retry, reversal and cleanup fixes, and in-game chat diagnostics. Real build and metadata verified; actual Minecraft/mobile visual behavior is not yet tested.',
+    ru: 'Исправления совместимости рендера: дополнительное скрытие статической модели, повторная проверка меша, диагностика через чат. Сборка проверена; тест в игре ещё требуется.',
+    fr: 'Correctif de compatibilité : suppression complémentaire du modèle statique, reprise de chargement du maillage et diagnostics en chat. Compilation validée ; test en jeu nécessaire.'
   }
 };
 
@@ -57,4 +61,4 @@ data.status = 'released';
 data.updatedAt = '2026-11-14';
 data.releases = [nextRelease, ...data.releases.filter(r => r.version !== version)];
 fs.writeFileSync(manifest, JSON.stringify(data, null, 2) + '\n');
-console.log('Verified real JAR and preserved all older releases:', target);
+console.log('Verified real JAR and preserved old rollback releases:', target);

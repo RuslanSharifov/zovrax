@@ -35,6 +35,11 @@ public final class MotionTracker {
     private static final long HIDE_TIMEOUT_NS = 5_000_000_000L;
     private static final long REVEAL_TIMEOUT_NS = 8_000_000_000L;
     private static ClientLevel world;
+    private static long modelSuppressions;
+    private static long meshNotifications;
+    private static long animationsStarted;
+    private static long timeoutFallbacks;
+    private static String lastTransition = "No door state changes detected";
 
     private MotionTracker() {}
 
@@ -43,6 +48,7 @@ public final class MotionTracker {
         ACTIVE.clear();
         HIDDEN.clear();
         TRACKED.clear();
+        lastTransition = "World changed";
         world = level;
     }
 
@@ -87,12 +93,14 @@ public final class MotionTracker {
         long now = System.nanoTime();
         DoorMotion prior = ACTIVE.get(key);
         float target = isOpen ? 1f : 0f;
+        lastTransition = "Transition " + anchor.toShortString() + " to " + (isOpen ? "open" : "closed");
 
         // Both halves of a tall door can produce events for the same interaction.
         if (prior != null && prior.target == target && prior.door == door) return;
 
         float from = prior == null ? (wasOpen ? 1f : 0f) : prior.openness(now);
-        boolean alreadyHidden = prior != null && prior.phase != DoorMotion.Phase.WAIT_HIDE;
+        // A prior WAIT_REVEAL has already restored the vanilla mesh: it is NOT hidden.
+        boolean alreadyHidden = prior != null && prior.phase == DoorMotion.Phase.ANIMATING;
         int millis = isOpen ? config.openingMs : config.closingMs;
         DoorMotion motion = new DoorMotion(anchor,
                 next.setValue(BlockStateProperties.OPEN, false), door,
@@ -111,6 +119,27 @@ public final class MotionTracker {
      * The chunk compiler has read this particular position. A callback from
      * the GPU mesh upload will confirm when that version becomes visible.
      */
+    public static synchronized void modelSuppressed(BlockPos pos) {
+        ++modelSuppressions;
+        regionRead(pos, true);
+    }
+
+    public static synchronized String diagnostics() {
+        StringBuilder message = new StringBuilder("Smooth Doors: tracked=")
+                .append(ACTIVE.size()).append(", suppressed=").append(modelSuppressions)
+                .append(", mesh uploads=").append(meshNotifications)
+                .append(", started=").append(animationsStarted)
+                .append(", timeouts=").append(timeoutFallbacks);
+        for (DoorMotion motion : ACTIVE.values()) {
+            message.append(" | ").append(motion.basePos.toShortString())
+                    .append(" ").append(motion.phase)
+                    .append(" observed=").append(motion.hideObserved)
+                    .append(" uploaded=").append(motion.hideUploaded);
+            break;
+        }
+        return message.append(" | ").append(lastTransition).toString();
+    }
+
     public static synchronized void regionRead(BlockPos pos, boolean isHidden) {
         DoorMotion motion = ACTIVE.get(pos.asLong());
         if (motion == null) motion = ACTIVE.get(pos.below().asLong());
@@ -133,6 +162,7 @@ public final class MotionTracker {
         int sy = sectionOrigin.getY() >> 4;
         int sz = sectionOrigin.getZ() >> 4;
         long now = System.nanoTime();
+        ++meshNotifications;
         Iterator<DoorMotion> cursor = ACTIVE.values().iterator();
         while (cursor.hasNext()) {
             DoorMotion motion = cursor.next();
@@ -143,6 +173,7 @@ public final class MotionTracker {
                 motion.hideUploaded |= relevantSection;
                 if ((motion.hideUploaded & motion.requiredMask()) == motion.requiredMask()) {
                     motion.activate(now);
+                    ++animationsStarted;
                 }
             } else if (motion.phase == DoorMotion.Phase.WAIT_REVEAL
                     && (motion.revealObserved & relevantSection) == relevantSection) {
@@ -173,9 +204,19 @@ public final class MotionTracker {
                 continue;
             }
             if (motion.phase == DoorMotion.Phase.WAIT_HIDE
+                    && !motion.rebuildRetried && now - motion.phaseStartedNs > 300_000_000L) {
+                // Some renderers coalesce the first section dirtiness notification.
+                // Retry once, never on every tick.
+                motion.rebuildRetried = true;
+                for (BlockPos p : positions(motion)) dirty(p);
+            }
+            if (motion.phase == DoorMotion.Phase.WAIT_HIDE
                     && now - motion.phaseStartedNs > HIDE_TIMEOUT_NS) {
-                // A missing upload callback must never leave an invisible door.
+                // Do not draw a bright second door if a modded renderer bypasses the mesh hook.
+                ++timeoutFallbacks;
+                lastTransition = "Render handoff timed out: keep vanilla door visible";
                 unhideAndDirty(motion);
+                untrack(motion);
                 cursor.remove();
             } else if (motion.phase == DoorMotion.Phase.ANIMATING
                     && now - motion.startedNs >= motion.durationNs) {

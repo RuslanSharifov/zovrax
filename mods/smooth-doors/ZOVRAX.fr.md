@@ -7,3 +7,7 @@ Mod client pour Minecraft Java **1.21.10**, Fabric, Fabric API et Java 21. La co
 ### Version bêta 0.1.1
 
 Corrige la seconde porte trop lumineuse superposée à la porte d’origine : l’animation ne démarre qu’après l’actualisation du maillage statique, et la porte normale revient après la transition. L’éclairage suit celui du monde. Les rendus Sodium, Iris et mobiles doivent encore être vérifiés en jeu.
+
+### Bêta 0.1.2
+
+Le modèle statique est supprimé directement pendant la compilation du maillage pour éviter les doubles portes. **J → Show diagnostics in chat** affiche un état de diagnostic pour les rendus non standard. Compilation vérifiée, essai en jeu nécessaire.
