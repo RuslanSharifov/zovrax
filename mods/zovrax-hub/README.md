@@ -44,3 +44,7 @@ Only the Hub open shortcut is added. Existing mods' settings shortcuts and gamep
 ## Verification status
 
 CI validates compilation, JAR packaging and metadata. Manual gameplay/UI testing has not been performed by the build pipeline. Successful compilation must not be represented as an in-game test.
+
+## Verified CI build
+
+The 0.1.0 feature-branch workflow completed on 2026-11-14: Java compilation, Fabric remap, JAR class and manifest inspection, artifact upload, catalog generation and catalog validation all succeeded. This does not constitute in-game testing.
