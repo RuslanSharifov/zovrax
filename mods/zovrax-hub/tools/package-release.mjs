@@ -1,0 +1,46 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { spawnSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
+const dir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const source = path.join(dir, 'build/libs/zovrax-hub-0.1.0.jar');
+const target = path.join(dir, 'releases/zovrax-hub-0.1.0-fabric-1.21.10.jar');
+const manifest = path.join(dir, 'zovrax.json');
+if (!fs.existsSync(source) || fs.statSync(source).size < 2000)
+  throw new Error('The remapped Gradle JAR is missing or suspiciously small');
+const listing = spawnSync('jar', ['tf', source], { encoding:'utf8' });
+if (listing.status !== 0) throw new Error('Cannot inspect JAR');
+const names = listing.stdout.split(/\r?\n/);
+for (const required of [
+  'fabric.mod.json',
+  'az/zovrax/hub/HubClient.class',
+  'az/zovrax/hub/HubScreen.class',
+  'az/zovrax/hub/HubCatalog.class',
+  'az/zovrax/hub/HubRegistry.class',
+  'az/zovrax/hub/HubLinkScreen.class'
+]) if (!names.includes(required)) throw new Error('Missing class/resource: '+required);
+const raw = spawnSync('unzip', ['-p', source, 'fabric.mod.json'], { encoding:'utf8' });
+if (raw.status !== 0) throw new Error('Missing Fabric metadata');
+const meta = JSON.parse(raw.stdout);
+if (meta.id !== 'zovrax_hub' || meta.version !== '0.1.0'
+  || meta.depends?.minecraft !== '1.21.10' || meta.environment !== 'client')
+  throw new Error('Incorrect Fabric manifest');
+fs.mkdirSync(path.dirname(target), { recursive: true });
+fs.copyFileSync(source, target);
+const data = JSON.parse(fs.readFileSync(manifest,'utf8'));
+data.status = 'released';
+data.updatedAt = '2026-11-14';
+data.releases = [{
+  version:'0.1.0', releasedAt:'2026-11-14', prerelease:true,
+  minecraftVersions:['1.21.10'], loaders:['Fabric'],
+  downloads:[{file:'releases/zovrax-hub-0.1.0-fabric-1.21.10.jar',
+    label:'Fabric 1.21.10 · Beta 0.1.0',
+    minecraftVersions:['1.21.10'],loaders:['Fabric']}],
+  changelog:{
+    en:'Initial beta. One ZOVRAX settings shortcut, official installed-mod detection and native screen navigation, searchable/filterable online catalog, release compatibility, offline cache and confirmation before browser downloads. CI compilation verified; in-game testing pending.',
+    ru:'Первая бета: горячая клавиша, настройки модов, поиск по каталогу, версии и безопасные ссылки. Сборка проверена; игра не тестировалась.',
+    fr:'Première bêta : raccourci, réglages, recherche, compatibilité et liens sûrs. Compilation vérifiée, jeu non testé.'
+  }
+}];
+fs.writeFileSync(manifest, JSON.stringify(data,null,2)+'\n');
+console.log('Packaged and inspected:', target, fs.statSync(target).size, 'bytes');

@@ -1,0 +1,59 @@
+name: Build ZOVRAX Hub (Fabric 1.21.10)
+
+on:
+  push:
+    branches: [feat/zovrax-hub-catalog-fabric-12110]
+    paths:
+      - 'mods/zovrax-hub/**'
+      - '.github/workflows/build-zovrax-hub.yml'
+  pull_request:
+    paths:
+      - 'mods/zovrax-hub/**'
+      - '.github/workflows/build-zovrax-hub.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fabric-build:
+    runs-on: ubuntu-latest
+    name: Compile, validate and release ZOVRAX Hub
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.1.0'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Compile and remap the Fabric mod
+        run: gradle --no-daemon --project-dir mods/zovrax-hub build
+      - name: Verify Fabric metadata, then package real JAR
+        run: node mods/zovrax-hub/tools/package-release.mjs
+      - name: Validate site catalog and release selector
+        run: |
+          node .github/scripts/build-catalog.mjs
+          node .github/scripts/validate-catalog.mjs
+      - name: Upload compiled beta
+        uses: actions/upload-artifact@v4
+        with:
+          name: zovrax-hub-0.1.0-fabric-1.21.10
+          path: mods/zovrax-hub/releases/zovrax-hub-0.1.0-fabric-1.21.10.jar
+          if-no-files-found: error
+      - name: Commit validated build to feature branch only
+        if: github.event_name == 'push' && github.ref == 'refs/heads/feat/zovrax-hub-catalog-fabric-12110'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git config user.name 'github-actions[bot]'
+          git add mods/zovrax-hub/zovrax.json mods/zovrax-hub/releases/
+          if ! git diff --cached --quiet; then
+            git commit -m 'release(zovrax-hub): add validated Fabric 1.21.10 beta'
+            git push origin HEAD:refs/heads/feat/zovrax-hub-catalog-fabric-12110
+          fi

@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 2,
+  "slug": "zovrax-hub",
+  "name": "ZOVRAX Hub",
+  "category": "utility",
+  "status": "development",
+  "featured": false,
+  "accent": "blue",
+  "icon": "assets/icon.svg",
+  "summary": {
+    "en": "One shortcut for official ZOVRAX mod settings, plus a searchable in-game catalog with filters, release compatibility and safe browser downloads.",
+    "ru": "Один хоткей для настроек модов ZOVRAX и встроенный каталог с поиском, фильтрами и проверкой совместимых версий.",
+    "fr": "Un raccourci pour les réglages des mods ZOVRAX et un catalogue intégré avec recherche, filtres et versions compatibles.",
+    "az": "ZOVRAX modlarının ayarları üçün tək qısayol və axtarış, kateqoriya, versiya yoxlaması olan oyun daxili kataloq."
+  },
+  "tags": [
+    "ZOVRAX",
+    "Mod Manager",
+    "Settings",
+    "Catalog",
+    "Search",
+    "Fabric"
+  ],
+  "minecraftVersions": [
+    "1.21.10"
+  ],
+  "loaders": [
+    "Fabric"
+  ],
+  "authors": [
+    "ruslan"
+  ],
+  "updatedAt": "2026-11-14",
+  "license": "MIT",
+  "source": "https://github.com/RuslanSharifov/zovrax/tree/main/mods/zovrax-hub",
+  "features": [
+    {
+      "en": "Right Shift opens the ZOVRAX Hub; existing gameplay keybinds remain untouched",
+      "ru": "Right Shift открывает Hub без изменения игровых клавиш других модов",
+      "fr": "Right Shift ouvre Hub sans modifier les raccourcis de jeu"
+    },
+    {
+      "en": "Installed official mods are identified from curated IDs and metadata; each native settings screen stays responsible for saving",
+      "ru": "Официальные моды распознаются по ID и метаданным; их собственные экраны сохраняют настройки",
+      "fr": "Modules officiels reconnus par leur ID et métadonnées, réglages conservés"
+    },
+    {
+      "en": "Browse the official GitHub Pages JSON catalog, search, filter by category and sort by update date or name",
+      "ru": "Каталог JSON: поиск, категории и сортировка по дате или имени",
+      "fr": "Catalogue JSON, recherche, catégories et tri par date ou nom"
+    },
+    {
+      "en": "Check exact Fabric 1.21.10 release downloads and confirm before opening an official HTTPS browser link",
+      "ru": "Проверка совместимых загрузок Fabric 1.21.10 с подтверждением внешней ссылки",
+      "fr": "Téléchargements Fabric 1.21.10 vérifiés avec confirmation"
+    },
+    {
+      "en": "A saved JSON cache works when the site is unreachable; visual design uses Minecraft translucent panels",
+      "ru": "Офлайн-кэш и полупрозрачные панели в стиле Minecraft",
+      "fr": "Cache hors ligne et panneaux translucides Minecraft"
+    }
+  ],
+  "screenshots": [],
+  "releases": [],
+  "monetization": {
+    "type": "free",
+    "premiumUrl": null,
+    "premiumLabel": "Get Premium"
+  },
+  "seo": {
+    "title": "ZOVRAX Hub — In-Game Mod Settings & Catalog for Fabric 1.21.10",
+    "description": "Open official ZOVRAX settings from one key and explore compatible Fabric mods directly in Minecraft.",
+    "keywords": [
+      "ZOVRAX Hub",
+      "Minecraft mod manager",
+      "Fabric mod catalog",
+      "ZOVRAX settings",
+      "Minecraft 1.21.10"
+    ]
+  }
+}
