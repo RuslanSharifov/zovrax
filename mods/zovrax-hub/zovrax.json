@@ -3,7 +3,7 @@
   "slug": "zovrax-hub",
   "name": "ZOVRAX Hub",
   "category": "utility",
-  "status": "development",
+  "status": "released",
   "featured": false,
   "accent": "blue",
   "icon": "assets/icon.svg",
@@ -61,7 +61,36 @@
     }
   ],
   "screenshots": [],
-  "releases": [],
+  "releases": [
+    {
+      "version": "0.1.0",
+      "releasedAt": "2026-11-14",
+      "prerelease": true,
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "loaders": [
+        "Fabric"
+      ],
+      "downloads": [
+        {
+          "file": "releases/zovrax-hub-0.1.0-fabric-1.21.10.jar",
+          "label": "Fabric 1.21.10 · Beta 0.1.0",
+          "minecraftVersions": [
+            "1.21.10"
+          ],
+          "loaders": [
+            "Fabric"
+          ]
+        }
+      ],
+      "changelog": {
+        "en": "Initial beta. One ZOVRAX settings shortcut, official installed-mod detection and native screen navigation, searchable/filterable online catalog, release compatibility, offline cache and confirmation before browser downloads. CI compilation verified; in-game testing pending.",
+        "ru": "Первая бета: горячая клавиша, настройки модов, поиск по каталогу, версии и безопасные ссылки. Сборка проверена; игра не тестировалась.",
+        "fr": "Première bêta : raccourci, réglages, recherche, compatibilité et liens sûrs. Compilation vérifiée, jeu non testé."
+      }
+    }
+  ],
   "monetization": {
     "type": "free",
     "premiumUrl": null,
