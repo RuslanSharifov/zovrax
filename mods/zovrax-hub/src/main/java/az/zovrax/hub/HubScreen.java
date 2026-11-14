@@ -19,8 +19,8 @@ import net.minecraft.text.Text;
  * Explore tab: searchable online catalog, filters, date sorting, verified downloads.
  */
 public final class HubScreen extends Screen {
-    private static final int BG = 0xD6162334;
-    private static final int PANEL = 0xB7111A2A;
+    private static final int BG = 0x66162334;
+    private static final int PANEL = 0x55111A2A;
     private static final int TEXT = 0xFFE9F8FA;
     private static final int SUB = 0xFFA8C1D0;
     private static final int CYAN = 0xFF90F0E4;
@@ -37,6 +37,7 @@ public final class HubScreen extends Screen {
     private int page;
     private TextFieldWidget searchField;
     private int x, y, w, h, sidebar, rightX, rightW;
+    private boolean compact;
     private List<HubCatalog.Item> matched = List.of();
     private List<HubRegistry.Known> installed = List.of();
 
@@ -46,19 +47,20 @@ public final class HubScreen extends Screen {
     }
 
     @Override protected void init() {
-        x = 14;
-        y = 12;
-        w = Math.max(220, width - 28);
-        h = Math.max(145, height - 24);
-        sidebar = Math.max(112, Math.min(212, (w * 37) / 100));
+        x = 8;
+        y = 8;
+        w = Math.max(1, width - 16);
+        h = Math.max(1, height - 16);
+        compact = w < 450;
+        sidebar = compact ? 54 : Math.max(112, Math.min(180, (w * 30) / 100));
         rightX = x + sidebar + 8;
         rightW = Math.max(95, w - sidebar - 18);
         installed = HubRegistry.installed();
         matched = filteredCatalog();
 
-        addDrawableChild(ButtonWidget.builder(Text.literal("My Mods"), b -> switchTab(false))
+        addDrawableChild(ButtonWidget.builder(Text.literal(compact ? "M" : "My Mods"), b -> switchTab(false))
             .dimensions(x + 8, y + 24, (sidebar - 20) / 2, 20).build());
-        addDrawableChild(ButtonWidget.builder(Text.literal("Explore"), b -> switchTab(true))
+        addDrawableChild(ButtonWidget.builder(Text.literal(compact ? "E" : "Explore"), b -> switchTab(true))
             .dimensions(x + 12 + (sidebar - 20) / 2, y + 24,
                 (sidebar - 20) / 2, 20).build());
 
@@ -84,7 +86,7 @@ public final class HubScreen extends Screen {
             if (selectedId == null && !installed.isEmpty()) selectedId = installed.getFirst().id();
         }
 
-        int rows = Math.max(1, (y + h - 43 - listTop) / 23);
+        int rows = Math.max(1, (y + h - 43 - listTop) / 28);
         int total = explore ? matched.size() : installed.size();
         int maxPage = Math.max(0, (total - 1) / rows);
         page = Math.min(Math.max(0, page), maxPage);
@@ -93,9 +95,9 @@ public final class HubScreen extends Screen {
             if (index >= total) break;
             String id = explore ? matched.get(index).slug() : installed.get(index).id();
             String name = explore ? matched.get(index).name() : installed.get(index).name();
-            String label = (id.equals(selectedId) ? "• " : "  ") + name;
-            addDrawableChild(ButtonWidget.builder(Text.literal(shortText(label, sidebar - 24)),
-                b -> choose(id)).dimensions(x + 8, listTop + row * 23, sidebar - 16, 20).build());
+            String label = compact ? "" : shortText(name, sidebar - 55);
+            addDrawableChild(ButtonWidget.builder(Text.literal(label),
+                b -> choose(id)).dimensions(x + 8, listTop + row * 28, sidebar - 16, 26).build());
         }
 
         int bottom = y + h - 30;
@@ -135,11 +137,10 @@ public final class HubScreen extends Screen {
         } else {
             HubRegistry.Known mod = selectedInstalled();
             if (mod != null) {
-                ButtonWidget settings = addDrawableChild(ButtonWidget.builder(Text.literal(
-                    mod.hasSettings() ? "Open mod settings" : "No settings (resource-only)"),
-                    b -> openSettings(mod)).dimensions(rightX + 6, y + h - 61,
-                    Math.max(90, rightW - 12), 21).build());
-                settings.active = mod.hasSettings();
+                addDrawableChild(ButtonWidget.builder(Text.literal("ZOVRAX website"),
+                    b -> client.setScreen(new HubLinkScreen(this, HubCatalog.modPage(mod.slug()),
+                        "Open " + mod.name()))).dimensions(rightX + 6, y + h - 61,
+                    Math.max(70, rightW - 12), 21).build());
             }
         }
         addDrawableChild(ButtonWidget.builder(Text.literal("Done"), b -> close())
@@ -204,6 +205,13 @@ public final class HubScreen extends Screen {
 
     private void choose(String id) {
         selectedId = id;
+        if (!explore) {
+            HubRegistry.Known mod = selectedInstalled();
+            if (mod != null && mod.hasSettings()) {
+                openSettings(mod);
+                return;
+            }
+        }
         clearAndInit();
     }
 
@@ -237,8 +245,8 @@ public final class HubScreen extends Screen {
     }
 
     @Override public void render(DrawContext ctx, int mouseX, int mouseY, float delta) {
-        renderBackground(ctx, mouseX, mouseY, delta);
-        ctx.fill(x + 2, y + 2, x + w + 2, y + h + 2, 0x66101520);
+        // Preserve the world behind the translucent Hub; no opaque menu background.
+        ctx.fill(x + 2, y + 2, x + w + 2, y + h + 2, 0x22101520);
         ctx.fill(x, y, x + w, y + h, BG);
         ctx.fill(x + 3, y + 3, x + w - 3, y + 4, 0x668CF8EC);
         ctx.fill(x + 2, y + 49, x + sidebar + 3, y + h - 4, PANEL);
@@ -249,6 +257,28 @@ public final class HubScreen extends Screen {
         if (explore) renderExplore(ctx);
         else renderInstalled(ctx);
         super.render(ctx, mouseX, mouseY, delta);
+        renderSidebarIcons(ctx);
+    }
+
+    private void renderSidebarIcons(DrawContext ctx) {
+        int listTop = explore ? y + 121 : y + 53;
+        int rows = Math.max(1, (y + h - 43 - listTop) / 28);
+        int count = explore ? matched.size() : installed.size();
+        for (int i = 0; i < rows && page * rows + i < count; i++) {
+            int index = page * rows + i;
+            String slug = explore ? matched.get(index).slug() : installed.get(index).slug();
+            String name = explore ? matched.get(index).name() : installed.get(index).name();
+            int bx = x + 12, by = listTop + i * 28 + 2;
+            if (BUNDLED_ICONS.contains(slug)) {
+                ctx.drawTexture(RenderPipelines.GUI_TEXTURED,
+                    Identifier.of("zovrax_hub", "textures/mod_icons/" + slug + ".png"),
+                    bx, by, 0.0f, 0.0f, 22, 22, 22, 22, 64, 64);
+            } else {
+                ctx.drawTextWithShadow(textRenderer,
+                    name.isEmpty() ? "Z" : name.substring(0, 1).toUpperCase(Locale.ROOT),
+                    bx + 7, by + 7, CYAN);
+            }
+        }
     }
 
     private void renderInstalled(DrawContext ctx) {
@@ -264,7 +294,7 @@ public final class HubScreen extends Screen {
         ctx.drawTextWithShadow(textRenderer, "Version: " + mod.version(),
             rightX + 71, y + 81, SUB);
         lines(ctx, mod.description(), rightX + 12, y + 125, rightW - 25, TEXT, 5);
-        lines(ctx, "Settings stay in the original mod. Opening the native editor returns to Hub.",
+        lines(ctx, "Choose an icon to open the mod's settings. Return here when finished.",
             rightX + 12, y + 192, rightW - 25, SUB, 5);
     }
 
@@ -306,12 +336,11 @@ public final class HubScreen extends Screen {
 
     private void tile(DrawContext ctx, String name, String slug) {
         int bx = rightX + 12, by = y + 55;
-        ctx.fill(bx, by, bx + 51, by + 51, 0xC4498197);
-        ctx.fill(bx + 2, by + 2, bx + 49, by + 49, 0xC9213D56);
+        ctx.fill(bx, by, bx + 51, by + 51, 0x33498197);
         if (BUNDLED_ICONS.contains(slug)) {
             ctx.drawTexture(RenderPipelines.GUI_TEXTURED,
                 Identifier.of("zovrax_hub", "textures/mod_icons/" + slug + ".png"),
-                bx + 2, by + 2, 0.0f, 0.0f, 47, 47, 64, 64);
+                bx + 2, by + 2, 0.0f, 0.0f, 47, 47, 47, 47, 64, 64);
         } else {
             String initials = name.isEmpty() ? "Z" : name.substring(0, 1).toUpperCase(Locale.ROOT);
             ctx.drawCenteredTextWithShadow(textRenderer, initials, bx + 25, by + 22, CYAN);
