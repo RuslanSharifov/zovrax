@@ -4,7 +4,10 @@
   "compatibilityLevel": "JAVA_21",
   "client": [
     "ClientLevelMixin",
-    "RenderSectionRegionMixin"
+    "RenderSectionRegionMixin",
+    "SectionMeshMixin"
   ],
-  "injectors": {"defaultRequire": 1}
+  "injectors": {
+    "defaultRequire": 1
+  }
 }

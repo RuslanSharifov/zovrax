@@ -10,11 +10,13 @@ An independent Fabric 1.21.10 **client-only** mod that animates state transition
 
 Defaults: both block types enabled, 350 ms opening and closing.
 
+**0.1.1 beta (visual regression fix):** Fixes overlapping/duplicate doors by waiting for the static chunk mesh to be replaced before starting the animation; holds the final pose until the normal chunk mesh is restored. Uses real world lightmap values instead of full brightness. Existing 0.1.0 release remains available for rollback.
+
 ## Behavior and limitations
 * Cosmetic animations only. Vanilla hitboxes, redstone, door interaction rules, sounds and networking remain unchanged.
 * Each half of a two-block-tall door is treated as one hinge animation; adjacent double doors animate when their own OPEN state changes. **No automatic two-door linking** is introduced.
 * Server installation is not required. Existing worlds and resource-pack-provided block models are used as the visual source.
-* Animation may briefly overlap chunk rebuilding. Shader or Sodium-specific renderer combinations still require in-game compatibility testing.
+* Animation may briefly overlap chunk rebuilding. Shader or Sodium-specific renderer combinations still require in-game compatibility testing. Some renderers replace vanilla section compilation or upload methods; on those renderers, animation may fall back to the static door rather than duplicating it.
 * This mod does not add new doors, windows, blocks or recipes.
 
 ## Build
@@ -32,3 +34,13 @@ Gradle 9.1 and Java 21 are used by CI. Fabric Loom produces the actual remapped 
 **Validation:** build and archive validation are distinct from Minecraft launch/in-game testing. Do not publish a release until the CI build is successful.
 
 License: MIT. Developer: Ruslan Sharifov.
+
+## Visual regression checklist (manual)
+
+- Toggle a normal wooden door and an iron/redstone-controlled door in both directions: never see a second standing or bright door.
+- Toggle upper and lower half of a tall door, and doors across y=15/16 section boundaries; check that the moving parts stay aligned.
+- Set both durations to 100 ms and 2000 ms, then reverse a door mid-motion; check no duplicate, holes, or lingering static meshes.
+- Turn the mod off while animating; make sure the vanilla door remains usable and reappears.
+- Test with and without Sodium/Iris/shaders or mobile renderers; alternate render pipelines may require additional compatibility hooks.
+
+The Java build and math checks do **not** substitute for these in-game visual tests.

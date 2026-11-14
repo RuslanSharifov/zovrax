@@ -10,11 +10,15 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-/** Prevents a second static door from appearing behind its moving visual. */
+/** Hide the real block model only in the compiled rendering mesh, never in world/collision. */
 @Mixin(RenderSectionRegion.class)
 public abstract class RenderSectionRegionMixin {
     @Inject(method = "getBlockState", at = @At("HEAD"), cancellable = true)
-    private void zovrax$skipStatic(BlockPos pos, CallbackInfoReturnable<BlockState> cir) {
-        if (MotionTracker.hidden(pos)) cir.setReturnValue(Blocks.AIR.defaultBlockState());
+    private void zovrax$hideDoorInSection(BlockPos pos, CallbackInfoReturnable<BlockState> cir) {
+        boolean hidden = MotionTracker.hidden(pos);
+        if (hidden || MotionTracker.tracked(pos)) {
+            MotionTracker.regionRead(pos, hidden);
+        }
+        if (hidden) cir.setReturnValue(Blocks.AIR.defaultBlockState());
     }
 }
