@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "zovrax_hub",
+  "version": "${version}",
+  "name": "ZOVRAX Hub",
+  "description": "One settings shortcut and an in-game browser for the official ZOVRAX mod catalog.",
+  "authors": [
+    "Ruslan Sharifov"
+  ],
+  "contact": {
+    "homepage": "https://ruslansharifov.github.io/zovrax/",
+    "sources": "https://github.com/RuslanSharifov/zovrax"
+  },
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "az.zovrax.hub.HubClient"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.17.3",
+    "minecraft": "1.21.10",
+    "java": ">=21",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "modmenu": "*"
+  },
+  "custom": {
+    "zovraxHub": {
+      "api": 1,
+      "official": true,
+      "settingsScreen": "az.zovrax.hub.HubScreen"
+    }
+  }
+}
