@@ -58,6 +58,34 @@
   "screenshots": [],
   "releases": [
     {
+      "version": "0.1.2",
+      "releasedAt": "2026-11-14",
+      "prerelease": true,
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "loaders": [
+        "Fabric"
+      ],
+      "downloads": [
+        {
+          "file": "releases/zovrax-smooth-doors-0.1.2-fabric-1.21.10.jar",
+          "label": "Fabric 1.21.10 · Beta 0.1.2 (renderer compatibility)",
+          "minecraftVersions": [
+            "1.21.10"
+          ],
+          "loaders": [
+            "Fabric"
+          ]
+        }
+      ],
+      "changelog": {
+        "en": "Renderer compatibility beta: additional vanilla block-model compilation suppression hook, mesh handoff retry, reversal and cleanup fixes, and in-game chat diagnostics. Real build and metadata verified; actual Minecraft/mobile visual behavior is not yet tested.",
+        "ru": "Исправления совместимости рендера: дополнительное скрытие статической модели, повторная проверка меша, диагностика через чат. Сборка проверена; тест в игре ещё требуется.",
+        "fr": "Correctif de compatibilité : suppression complémentaire du modèle statique, reprise de chargement du maillage et diagnostics en chat. Compilation validée ; test en jeu nécessaire."
+      }
+    },
+    {
       "version": "0.1.1",
       "releasedAt": "2026-11-14",
       "prerelease": true,
