@@ -8,19 +8,31 @@ import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
-/** Tracks visible transitions only; no world scan and no server-side mutations. */
+/**
+ * Controls handoff from the real compiled chunk geometry to a moving model.
+ *
+ * Never draw the moving model until the chunk mesh that omits the static door
+ * has been uploaded. Keep the moving model at its final pose until the normal
+ * chunk mesh has been uploaded again. This removes both overlapping doors and
+ * holes during asynchronous rebuilds.
+ *
+ * RenderSectionRegion is accessed by chunk-builder worker threads; all state
+ * mutations except HIDDEN.contains use the same lock.
+ */
 public final class MotionTracker {
     private static final Map<Long, DoorMotion> ACTIVE = new HashMap<>();
-    private static final Set<Long> HIDDEN = new HashSet<>();
-    private static final long REBUILD_GRACE_NS = 170_000_000L;
+    private static final Set<Long> HIDDEN = ConcurrentHashMap.newKeySet();
+    private static final long HIDE_TIMEOUT_NS = 5_000_000_000L;
+    private static final long REVEAL_TIMEOUT_NS = 8_000_000_000L;
     private static ClientLevel world;
 
     private MotionTracker() {}
@@ -36,26 +48,27 @@ public final class MotionTracker {
         return HIDDEN.contains(pos.asLong());
     }
 
-    public static List<DoorMotion> snapshot() {
+    public static synchronized List<DoorMotion> snapshot() {
         return new ArrayList<>(ACTIVE.values());
     }
 
-    public static void changed(ClientLevel level, BlockPos pos, BlockState oldState, BlockState newState) {
+    public static synchronized void changed(ClientLevel level, BlockPos pos,
+                                             BlockState previous, BlockState next) {
         setWorld(level);
-        if (oldState == newState) return;
-        boolean door = oldState.getBlock() instanceof DoorBlock;
-        boolean trapdoor = oldState.getBlock() instanceof TrapDoorBlock;
-        if (oldState.getBlock() != newState.getBlock() || (!door && !trapdoor)) {
+        if (previous == next) return;
+        boolean door = previous.getBlock() instanceof DoorBlock;
+        boolean trapdoor = previous.getBlock() instanceof TrapDoorBlock;
+        if (previous.getBlock() != next.getBlock() || (!door && !trapdoor)) {
             cancelContaining(pos);
             return;
         }
-        if (!oldState.hasProperty(BlockStateProperties.OPEN)
-                || !newState.hasProperty(BlockStateProperties.OPEN)) return;
-        boolean oldOpen = oldState.getValue(BlockStateProperties.OPEN);
-        boolean newOpen = newState.getValue(BlockStateProperties.OPEN);
-        if (oldOpen == newOpen) return;
+        if (!previous.hasProperty(BlockStateProperties.OPEN)
+                || !next.hasProperty(BlockStateProperties.OPEN)) return;
+        boolean wasOpen = previous.getValue(BlockStateProperties.OPEN);
+        boolean isOpen = next.getValue(BlockStateProperties.OPEN);
+        if (wasOpen == isOpen) return;
 
-        BlockPos anchor = door && newState.getValue(DoorBlock.HALF) == DoubleBlockHalf.UPPER
+        BlockPos anchor = door && next.getValue(DoorBlock.HALF) == DoubleBlockHalf.UPPER
                 ? pos.below() : pos;
         long key = anchor.asLong();
         MotionConfig config = SmoothDoorsClient.config();
@@ -65,43 +78,104 @@ public final class MotionTracker {
         }
 
         long now = System.nanoTime();
-        DoorMotion previous = ACTIVE.get(key);
-        float from = previous == null ? (oldOpen ? 1f : 0f) : previous.openness(now);
-        float target = newOpen ? 1f : 0f;
-        int durationMs = newOpen ? config.openingMs : config.closingMs;
-        DoorMotion next = new DoorMotion(anchor, newState.setValue(BlockStateProperties.OPEN, false),
-                door, from, target, now, AnimationCurve.durationNs(durationMs, from, target));
-        ACTIVE.put(key, next);
-        hide(next);
+        DoorMotion prior = ACTIVE.get(key);
+        float target = isOpen ? 1f : 0f;
+
+        // Both halves of a tall door can produce events for the same interaction.
+        if (prior != null && prior.target == target && prior.door == door) return;
+
+        float from = prior == null ? (wasOpen ? 1f : 0f) : prior.openness(now);
+        boolean alreadyHidden = prior != null && prior.phase != DoorMotion.Phase.WAIT_HIDE;
+        int millis = isOpen ? config.openingMs : config.closingMs;
+        DoorMotion motion = new DoorMotion(anchor,
+                next.setValue(BlockStateProperties.OPEN, false), door,
+                from, target, now, AnimationCurve.durationNs(millis, from, target),
+                alreadyHidden);
+        ACTIVE.put(key, motion);
+
+        for (BlockPos affected : positions(motion)) {
+            HIDDEN.add(affected.asLong());
+            dirty(affected);
+        }
     }
 
-    public static void tick(ClientLevel level) {
+    /**
+     * The chunk compiler has read this particular position. A callback from
+     * the GPU mesh upload will confirm when that version becomes visible.
+     */
+    public static synchronized void regionRead(BlockPos pos, boolean isHidden) {
+        DoorMotion motion = ACTIVE.get(pos.asLong());
+        if (motion == null) motion = ACTIVE.get(pos.below().asLong());
+        if (motion == null) return;
+        int mask = motion.maskForPosition(pos);
+        if (mask == 0) return;
+        if (isHidden && motion.phase == DoorMotion.Phase.WAIT_HIDE) {
+            motion.hideObserved |= mask;
+        } else if (!isHidden && motion.phase == DoorMotion.Phase.WAIT_REVEAL) {
+            motion.revealObserved |= mask;
+        }
+    }
+
+    /**
+     * Invoked after SectionRenderDispatcher installs an uploaded section mesh.
+     * This is later than its compile and later than its region blockstate reads.
+     */
+    public static synchronized void meshUploaded(BlockPos sectionOrigin) {
+        int sx = sectionOrigin.getX() >> 4;
+        int sy = sectionOrigin.getY() >> 4;
+        int sz = sectionOrigin.getZ() >> 4;
+        long now = System.nanoTime();
+        Iterator<DoorMotion> cursor = ACTIVE.values().iterator();
+        while (cursor.hasNext()) {
+            DoorMotion motion = cursor.next();
+            int relevantSection = motion.maskForSection(sx, sy, sz);
+            if (relevantSection == 0) continue;
+            if (motion.phase == DoorMotion.Phase.WAIT_HIDE
+                    && (motion.hideObserved & relevantSection) == relevantSection) {
+                motion.hideUploaded |= relevantSection;
+                if ((motion.hideUploaded & motion.requiredMask()) == motion.requiredMask()) {
+                    motion.activate(now);
+                }
+            } else if (motion.phase == DoorMotion.Phase.WAIT_REVEAL
+                    && (motion.revealObserved & relevantSection) == relevantSection) {
+                motion.revealUploaded |= relevantSection;
+                if ((motion.revealUploaded & motion.requiredMask()) == motion.requiredMask()) {
+                    cursor.remove();
+                }
+            }
+        }
+    }
+
+    public static synchronized void tick(ClientLevel level) {
         setWorld(level);
         if (level == null || ACTIVE.isEmpty()) return;
         MotionConfig config = SmoothDoorsClient.config();
-        if (!config.enabled) {
-            for (DoorMotion motion : snapshot()) reveal(motion);
-            ACTIVE.clear();
-            return;
-        }
-
         long now = System.nanoTime();
-        Iterator<Map.Entry<Long, DoorMotion>> cursor = ACTIVE.entrySet().iterator();
+        Iterator<DoorMotion> cursor = ACTIVE.values().iterator();
         while (cursor.hasNext()) {
-            DoorMotion motion = cursor.next().getValue();
-            BlockState state = level.getBlockState(motion.basePos);
-            if (state.getBlock() != motion.closedModelState.getBlock()
-                    || (motion.door && !config.doors)
-                    || (!motion.door && !config.trapdoors)) {
-                reveal(motion);
+            DoorMotion motion = cursor.next();
+            BlockState current = level.getBlockState(motion.basePos);
+            boolean disabled = !config.enabled || (motion.door && !config.doors)
+                    || (!motion.door && !config.trapdoors);
+            if (disabled || current.getBlock() != motion.closedModelState.getBlock()) {
+                unhideAndDirty(motion);
                 cursor.remove();
                 continue;
             }
-            if (now >= motion.endNs() && !motion.revealed) {
-                reveal(motion);
-                motion.revealed = true;
+            if (motion.phase == DoorMotion.Phase.WAIT_HIDE
+                    && now - motion.phaseStartedNs > HIDE_TIMEOUT_NS) {
+                // A missing upload callback must never leave an invisible door.
+                unhideAndDirty(motion);
+                cursor.remove();
+            } else if (motion.phase == DoorMotion.Phase.ANIMATING
+                    && now - motion.startedNs >= motion.durationNs) {
+                motion.beginReveal(now);
+                unhideAndDirty(motion);
+            } else if (motion.phase == DoorMotion.Phase.WAIT_REVEAL
+                    && now - motion.phaseStartedNs > REVEAL_TIMEOUT_NS) {
+                // Recovery if renderer is replaced or this chunk is unloaded.
+                cursor.remove();
             }
-            if (now >= motion.endNs() + REBUILD_GRACE_NS) cursor.remove();
         }
     }
 
@@ -109,37 +183,29 @@ public final class MotionTracker {
         return motion.door ? List.of(motion.basePos, motion.basePos.above()) : List.of(motion.basePos);
     }
 
-    private static void hide(DoorMotion motion) {
-        for (BlockPos at : positions(motion)) {
-            HIDDEN.add(at.asLong());
-            dirty(at);
-        }
-    }
-
-    private static void reveal(DoorMotion motion) {
-        for (BlockPos at : positions(motion)) {
-            HIDDEN.remove(at.asLong());
-            dirty(at);
+    private static void unhideAndDirty(DoorMotion motion) {
+        for (BlockPos pos : positions(motion)) {
+            HIDDEN.remove(pos.asLong());
+            dirty(pos);
         }
     }
 
     private static void cancel(long key) {
         DoorMotion motion = ACTIVE.remove(key);
-        if (motion != null) reveal(motion);
+        if (motion != null) unhideAndDirty(motion);
     }
 
     private static void cancelContaining(BlockPos pos) {
-        for (DoorMotion motion : snapshot()) {
-            if (motion.basePos.equals(pos) || (motion.door && motion.basePos.above().equals(pos))) {
-                cancel(motion.basePos.asLong());
-            }
+        for (DoorMotion motion : new ArrayList<>(ACTIVE.values())) {
+            if (motion.maskForPosition(pos) != 0) cancel(motion.basePos.asLong());
         }
     }
 
     private static void dirty(BlockPos pos) {
         Minecraft client = Minecraft.getInstance();
         if (client.level != null && client.levelRenderer != null) {
-            client.levelRenderer.setSectionDirty(pos.getX() >> 4, pos.getY() >> 4, pos.getZ() >> 4);
+            client.levelRenderer.setSectionDirty(pos.getX() >> 4,
+                    pos.getY() >> 4, pos.getZ() >> 4);
         }
     }
 }

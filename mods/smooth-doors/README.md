@@ -10,11 +10,13 @@ An independent Fabric 1.21.10 **client-only** mod that animates state transition
 
 Defaults: both block types enabled, 350 ms opening and closing.
 
+**0.1.1 beta:** Fixes overlapping/duplicate doors by waiting for the static chunk mesh to be replaced before starting the animation; holds the final pose until the normal chunk mesh is restored. Uses real world lightmap values instead of full brightness. Existing 0.1.0 release remains available for rollback.
+
 ## Behavior and limitations
 * Cosmetic animations only. Vanilla hitboxes, redstone, door interaction rules, sounds and networking remain unchanged.
 * Each half of a two-block-tall door is treated as one hinge animation; adjacent double doors animate when their own OPEN state changes. **No automatic two-door linking** is introduced.
 * Server installation is not required. Existing worlds and resource-pack-provided block models are used as the visual source.
-* Animation may briefly overlap chunk rebuilding. Shader or Sodium-specific renderer combinations still require in-game compatibility testing.
+* Animation may briefly overlap chunk rebuilding. Shader or Sodium-specific renderer combinations still require in-game compatibility testing. Some renderers replace vanilla section compilation or upload methods; on those renderers, animation may fall back to the static door rather than duplicating it.
 * This mod does not add new doors, windows, blocks or recipes.
 
 ## Build

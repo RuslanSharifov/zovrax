@@ -2,7 +2,7 @@ name: Build Smooth Doors (Fabric 1.21.10)
 
 on:
   push:
-    branches: [feat/smooth-doors-fabric-12110]
+    branches: [fix/smooth-doors-static-render-12110]
     paths:
       - 'mods/smooth-doors/**'
       - '.github/workflows/build-smooth-doors.yml'
@@ -17,7 +17,7 @@ permissions:
 
 jobs:
   fabric-build:
-    name: Compile, test and package Smooth Doors
+    name: Compile, test and package Smooth Doors 0.1.1
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -28,31 +28,39 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '9.1.0'
-      - name: Headless animation math tests
+      - name: Headless easing and reversal tests
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p /tmp/smooth-tests
           javac -d /tmp/smooth-tests mods/smooth-doors/src/main/java/az/zovrax/smoothdoors/AnimationCurve.java mods/smooth-doors/tools/AnimationCurveCheck.java
           java -cp /tmp/smooth-tests AnimationCurveCheck
-      - name: Compile and remap real Fabric JAR
-        run: gradle --no-daemon --project-dir mods/smooth-doors build
-      - name: Package only verified JAR and release metadata
-        run: node mods/smooth-doors/tools/package-release.mjs
-      - name: Validate release archive and Zovrax catalog
+      - name: Assert no fullbright and no drawing before mesh handoff
         shell: bash
         run: |
           set -euo pipefail
-          jar tf mods/smooth-doors/releases/zovrax-smooth-doors-0.1.0-fabric-1.21.10.jar | grep -Fx 'fabric.mod.json'
+          grep -F 'if (motion.phase == DoorMotion.Phase.WAIT_HIDE) continue' mods/smooth-doors/src/main/java/az/zovrax/smoothdoors/MotionRenderer.java
+          grep -F 'LevelRenderer.getLightColor(level, pos)' mods/smooth-doors/src/main/java/az/zovrax/smoothdoors/MotionRenderer.java
+          ! grep -F '15728880' mods/smooth-doors/src/main/java/az/zovrax/smoothdoors/MotionRenderer.java
+      - name: Compile and remap real Fabric JAR
+        run: gradle --no-daemon --project-dir mods/smooth-doors build
+      - name: Package only verified 0.1.1 and preserve 0.1.0
+        run: node mods/smooth-doors/tools/package-release.mjs
+      - name: Validate JAR and Zovrax release catalog
+        shell: bash
+        run: |
+          set -euo pipefail
+          jar tf mods/smooth-doors/releases/zovrax-smooth-doors-0.1.1-fabric-1.21.10.jar | grep -Fx 'fabric.mod.json'
+          jar tf mods/smooth-doors/releases/zovrax-smooth-doors-0.1.1-fabric-1.21.10.jar | grep -Fx 'az/zovrax/smoothdoors/mixin/SectionMeshMixin.class'
           node .github/scripts/build-catalog.mjs
           node .github/scripts/validate-catalog.mjs
       - uses: actions/upload-artifact@v4
         with:
-          name: zovrax-smooth-doors-0.1.0-fabric-1.21.10
-          path: mods/smooth-doors/releases/zovrax-smooth-doors-0.1.0-fabric-1.21.10.jar
+          name: zovrax-smooth-doors-0.1.1-fabric-1.21.10
+          path: mods/smooth-doors/releases/zovrax-smooth-doors-0.1.1-fabric-1.21.10.jar
           if-no-files-found: error
-      - name: Commit compiled release to feature branch
-        if: github.event_name == 'push' && github.ref == 'refs/heads/feat/smooth-doors-fabric-12110'
+      - name: Commit real beta and metadata back to feature branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/fix/smooth-doors-static-render-12110'
         shell: bash
         run: |
           set -euo pipefail
@@ -60,6 +68,6 @@ jobs:
           git config user.name 'github-actions[bot]'
           git add -A mods/smooth-doors
           if ! git diff --cached --quiet; then
-            git commit -m 'release(smooth-doors): add verified Fabric 1.21.10 beta JAR'
-            git push origin HEAD:refs/heads/feat/smooth-doors-fabric-12110
+            git commit -m 'release(smooth-doors): add compiled Fabric 0.1.1 visual fix beta'
+            git push origin HEAD:refs/heads/fix/smooth-doors-static-render-12110
           fi

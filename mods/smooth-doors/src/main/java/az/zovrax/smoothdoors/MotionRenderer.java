@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderContext;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -18,7 +19,7 @@ import org.joml.Matrix4f;
 
 /**
  * Render the *closed* vanilla baked model rotated around its physical hinge.
- * Draw using Fabric's 1.21.10 world render event in the extraction pass.
+ * Draw using Fabric's 1.21.10 world render event after the static mesh handoff.
  */
 public final class MotionRenderer {
     private static final float NEAR = 1.5f / 16f;
@@ -33,7 +34,7 @@ public final class MotionRenderer {
         PoseStack pose = new PoseStack();
         long now = System.nanoTime();
         for (DoorMotion motion : MotionTracker.snapshot()) {
-            if (motion.revealed) continue;
+            if (motion.phase == DoorMotion.Phase.WAIT_HIDE) continue;
             float angle = motion.openness(now) * ((float) Math.PI / 2f);
             renderOne(context, pose, level, camera, motion, motion.basePos, false, angle);
             if (motion.door) {
@@ -54,7 +55,8 @@ public final class MotionRenderer {
         pose.pushPose();
         pose.translate(pos.getX() - camera.x, pos.getY() - camera.y, pos.getZ() - camera.z);
         pose.mulPose(transform);
-        int light = 15728880;
+        // Use the actual world's packed sky/block light, not the old full-bright constant.
+        int light = LevelRenderer.getLightColor(level, pos);
         Minecraft.getInstance().getBlockRenderer().renderSingleBlock(
                 state, pose, context.consumers(), light, OverlayTexture.NO_OVERLAY);
         pose.popPose();
