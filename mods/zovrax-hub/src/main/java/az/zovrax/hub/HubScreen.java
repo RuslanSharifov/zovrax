@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
+import net.minecraft.client.gl.RenderPipelines;
+import net.minecraft.util.Identifier;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -21,6 +24,9 @@ public final class HubScreen extends Screen {
     private static final int TEXT = 0xFFE9F8FA;
     private static final int SUB = 0xFFA8C1D0;
     private static final int CYAN = 0xFF90F0E4;
+    private static final Set<String> BUNDLED_ICONS = Set.of(
+        "armorline", "chroma-outline", "clear-connected-glass", "dayclock",
+        "extended-reach", "harvest-pulse", "inventory-pickup", "smart-return", "smooth-doors");
 
     private final Screen parent;
     private boolean explore;
@@ -252,7 +258,7 @@ public final class HubScreen extends Screen {
                 y + 78, rightW - 25, SUB, 4);
             return;
         }
-        tile(ctx, mod.name());
+        tile(ctx, mod.name(), mod.slug());
         ctx.drawTextWithShadow(textRenderer, shortText(mod.name(), rightW - 82),
             rightX + 71, y + 63, TEXT);
         ctx.drawTextWithShadow(textRenderer, "Version: " + mod.version(),
@@ -273,7 +279,7 @@ public final class HubScreen extends Screen {
                 y + 75, rightW - 25, SUB, 6);
             return;
         }
-        tile(ctx, item.name());
+        tile(ctx, item.name(), item.slug());
         ctx.drawTextWithShadow(textRenderer, shortText(item.name(), rightW - 81),
             rightX + 71, y + 63, TEXT);
         ctx.drawTextWithShadow(textRenderer, "Category: " + item.category(),
@@ -298,12 +304,18 @@ public final class HubScreen extends Screen {
         }
     }
 
-    private void tile(DrawContext ctx, String name) {
+    private void tile(DrawContext ctx, String name, String slug) {
         int bx = rightX + 12, by = y + 55;
         ctx.fill(bx, by, bx + 51, by + 51, 0xC4498197);
         ctx.fill(bx + 2, by + 2, bx + 49, by + 49, 0xC9213D56);
-        String initials = name.isEmpty() ? "Z" : name.substring(0, 1).toUpperCase(Locale.ROOT);
-        ctx.drawCenteredTextWithShadow(textRenderer, initials, bx + 25, by + 22, CYAN);
+        if (BUNDLED_ICONS.contains(slug)) {
+            ctx.drawTexture(RenderPipelines.GUI_TEXTURED,
+                Identifier.of("zovrax_hub", "textures/mod_icons/" + slug + ".png"),
+                bx + 2, by + 2, 0.0f, 0.0f, 47, 47, 64, 64);
+        } else {
+            String initials = name.isEmpty() ? "Z" : name.substring(0, 1).toUpperCase(Locale.ROOT);
+            ctx.drawCenteredTextWithShadow(textRenderer, initials, bx + 25, by + 22, CYAN);
+        }
     }
 
     private String shortText(String value, int pixels) {

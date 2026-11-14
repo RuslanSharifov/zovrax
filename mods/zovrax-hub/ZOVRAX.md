@@ -9,7 +9,7 @@ Manage official ZOVRAX Minecraft mods from a single, rebindable key: **Right Shi
 - **Version-aware downloads:** Hub checks a mod's real releases before enabling the Fabric 1.21.10 download action. Confirm before opening the official download in your browser.
 - **Offline cache:** Previously fetched information remains available when the website is offline.
 
-The interface uses native Minecraft controls with translucent dark-glass styling. Initial-letter tiles are used in the first release; remote SVG thumbnails are not yet rendered inside Minecraft.
+The interface uses native Minecraft controls with translucent dark-glass styling. The 0.1.1 update bundles rasterized PNG previews derived from the current official SVG icons, with initials as fallback for future entries.
 
 ## Compatibility
 

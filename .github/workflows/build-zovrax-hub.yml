@@ -31,6 +31,20 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Rasterize reviewed official mod icons for Minecraft GUI
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq librsvg2-bin
+          ICON_DIR=mods/zovrax-hub/src/main/resources/assets/zovrax_hub/textures/mod_icons
+          mkdir -p "$ICON_DIR"
+          for slug in armorline chroma-outline clear-connected-glass dayclock extended-reach harvest-pulse inventory-pickup smart-return smooth-doors; do
+            SVG="mods/$slug/assets/icon.svg"
+            test -s "$SVG"
+            rsvg-convert -w 64 -h 64 "$SVG" -o "$ICON_DIR/$slug.png"
+            test -s "$ICON_DIR/$slug.png"
+          done
       - name: Compile and remap the Fabric mod
         run: gradle --no-daemon --project-dir mods/zovrax-hub build
       - name: Verify Fabric metadata, then package real JAR
@@ -42,8 +56,8 @@ jobs:
       - name: Upload compiled beta
         uses: actions/upload-artifact@v4
         with:
-          name: zovrax-hub-0.1.0-fabric-1.21.10
-          path: mods/zovrax-hub/releases/zovrax-hub-0.1.0-fabric-1.21.10.jar
+          name: zovrax-hub-0.1.1-fabric-1.21.10
+          path: mods/zovrax-hub/releases/zovrax-hub-0.1.1-fabric-1.21.10.jar
           if-no-files-found: error
       - name: Commit validated build to feature branch only
         if: github.event_name == 'push' && github.ref == 'refs/heads/feat/zovrax-hub-catalog-fabric-12110'
@@ -52,7 +66,7 @@ jobs:
           set -euo pipefail
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git config user.name 'github-actions[bot]'
-          git add mods/zovrax-hub/zovrax.json mods/zovrax-hub/releases/
+          git add mods/zovrax-hub/zovrax.json mods/zovrax-hub/releases/ mods/zovrax-hub/src/main/resources/assets/
           if ! git diff --cached --quiet; then
             git commit -m 'release(zovrax-hub): add validated Fabric 1.21.10 beta'
             git push origin HEAD:refs/heads/feat/zovrax-hub-catalog-fabric-12110

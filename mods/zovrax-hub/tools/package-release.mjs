@@ -3,8 +3,8 @@ import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 const dir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const source = path.join(dir, 'build/libs/zovrax-hub-0.1.0.jar');
-const target = path.join(dir, 'releases/zovrax-hub-0.1.0-fabric-1.21.10.jar');
+const source = path.join(dir, 'build/libs/zovrax-hub-0.1.1.jar');
+const target = path.join(dir, 'releases/zovrax-hub-0.1.1-fabric-1.21.10.jar');
 const manifest = path.join(dir, 'zovrax.json');
 if (!fs.existsSync(source) || fs.statSync(source).size < 2000)
   throw new Error('The remapped Gradle JAR is missing or suspiciously small');
@@ -22,7 +22,7 @@ for (const required of [
 const raw = spawnSync('unzip', ['-p', source, 'fabric.mod.json'], { encoding:'utf8' });
 if (raw.status !== 0) throw new Error('Missing Fabric metadata');
 const meta = JSON.parse(raw.stdout);
-if (meta.id !== 'zovrax_hub' || meta.version !== '0.1.0'
+if (meta.id !== 'zovrax_hub' || meta.version !== '0.1.1'
   || meta.depends?.minecraft !== '1.21.10' || meta.environment !== 'client')
   throw new Error('Incorrect Fabric manifest');
 fs.mkdirSync(path.dirname(target), { recursive: true });
@@ -30,17 +30,18 @@ fs.copyFileSync(source, target);
 const data = JSON.parse(fs.readFileSync(manifest,'utf8'));
 data.status = 'released';
 data.updatedAt = '2026-11-14';
+const oldReleases = data.releases ?? [];
 data.releases = [{
-  version:'0.1.0', releasedAt:'2026-11-14', prerelease:true,
+  version:'0.1.1', releasedAt:'2026-11-14', prerelease:true,
   minecraftVersions:['1.21.10'], loaders:['Fabric'],
-  downloads:[{file:'releases/zovrax-hub-0.1.0-fabric-1.21.10.jar',
-    label:'Fabric 1.21.10 · Beta 0.1.0',
+  downloads:[{file:'releases/zovrax-hub-0.1.1-fabric-1.21.10.jar',
+    label:'Fabric 1.21.10 · Beta 0.1.1',
     minecraftVersions:['1.21.10'],loaders:['Fabric']}],
   changelog:{
-    en:'Initial beta. One ZOVRAX settings shortcut, official installed-mod detection and native screen navigation, searchable/filterable online catalog, release compatibility, offline cache and confirmation before browser downloads. CI compilation verified; in-game testing pending.',
-    ru:'Первая бета: горячая клавиша, настройки модов, поиск по каталогу, версии и безопасные ссылки. Сборка проверена; игра не тестировалась.',
-    fr:'Première bêta : raccourci, réglages, recherche, compatibilité et liens sûrs. Compilation vérifiée, jeu non testé.'
+    en:'Adds bundled rasterized thumbnails derived from official ZOVRAX icons while preserving settings and catalog features. CI compilation verified; in-game testing pending.',
+    ru:'Добавлены PNG-иконки модов в меню. Сборка проверена; игра не тестировалась.',
+    fr:'Ajout des icônes PNG officielles intégrées. Compilation vérifiée, jeu non testé.'
   }
-}];
+}, ...oldReleases.filter(r => r.version !== '0.1.1')];
 fs.writeFileSync(manifest, JSON.stringify(data,null,2)+'\n');
 console.log('Packaged and inspected:', target, fs.statSync(target).size, 'bytes');

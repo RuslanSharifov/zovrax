@@ -5,7 +5,7 @@ Independent, client-only Minecraft mod (Java 21, Fabric). It adds a **Right Shif
 - **My Mods** lists known official ZOVRAX mods actually installed and exposes an **Open mod settings** action. The original settings screens handle their own persistence and return to the Hub when closed. Resource-only mods have no settings button.
 - **Explore** reads the public ZOVRAX GitHub Pages JSON catalog, supports search, category filtering, recently-updated/name sorting, and checks detailed release metadata for **Fabric 1.21.10** before enabling a download action. An explicit confirmation opens the trusted HTTPS file URL in the system browser. It **never installs or executes downloaded JARs**.
 
-The screen has translucent dark-glass panels and a mod tile. The public site's SVG thumbnails are not rasterized inside Minecraft in this first version; tiles show initials. Full icons/images remain available on the opened website mod page.
+The screen has translucent frosted-glass panels and mod thumbnails. CI rasterizes the reviewed official SVG icons to bundled PNG textures (no remote executable SVG parser). Unknown/new mods use initial-letter tiles until their icons are bundled. Full gallery images remain available on each website mod page.
 
 ## Build
 
