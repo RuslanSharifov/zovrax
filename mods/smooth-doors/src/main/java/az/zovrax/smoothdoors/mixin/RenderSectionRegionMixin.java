@@ -16,7 +16,9 @@ public abstract class RenderSectionRegionMixin {
     @Inject(method = "getBlockState", at = @At("HEAD"), cancellable = true)
     private void zovrax$hideDoorInSection(BlockPos pos, CallbackInfoReturnable<BlockState> cir) {
         boolean hidden = MotionTracker.hidden(pos);
-        MotionTracker.regionRead(pos, hidden);
+        if (hidden || MotionTracker.tracked(pos)) {
+            MotionTracker.regionRead(pos, hidden);
+        }
         if (hidden) cir.setReturnValue(Blocks.AIR.defaultBlockState());
     }
 }

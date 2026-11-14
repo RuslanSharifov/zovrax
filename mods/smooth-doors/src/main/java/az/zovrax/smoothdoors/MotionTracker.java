@@ -31,6 +31,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class MotionTracker {
     private static final Map<Long, DoorMotion> ACTIVE = new HashMap<>();
     private static final Set<Long> HIDDEN = ConcurrentHashMap.newKeySet();
+    private static final Set<Long> TRACKED = ConcurrentHashMap.newKeySet();
     private static final long HIDE_TIMEOUT_NS = 5_000_000_000L;
     private static final long REVEAL_TIMEOUT_NS = 8_000_000_000L;
     private static ClientLevel world;
@@ -41,11 +42,17 @@ public final class MotionTracker {
         if (world == level) return;
         ACTIVE.clear();
         HIDDEN.clear();
+        TRACKED.clear();
         world = level;
     }
 
     public static boolean hidden(BlockPos pos) {
         return HIDDEN.contains(pos.asLong());
+    }
+
+    /** Lock-free hot-path filter: almost all chunk blocks are not animating. */
+    public static boolean tracked(BlockPos pos) {
+        return TRACKED.contains(pos.asLong());
     }
 
     public static synchronized List<DoorMotion> snapshot() {
@@ -95,6 +102,7 @@ public final class MotionTracker {
 
         for (BlockPos affected : positions(motion)) {
             HIDDEN.add(affected.asLong());
+            TRACKED.add(affected.asLong());
             dirty(affected);
         }
     }
@@ -140,6 +148,7 @@ public final class MotionTracker {
                     && (motion.revealObserved & relevantSection) == relevantSection) {
                 motion.revealUploaded |= relevantSection;
                 if ((motion.revealUploaded & motion.requiredMask()) == motion.requiredMask()) {
+                    untrack(motion);
                     cursor.remove();
                 }
             }
@@ -159,6 +168,7 @@ public final class MotionTracker {
                     || (!motion.door && !config.trapdoors);
             if (disabled || current.getBlock() != motion.closedModelState.getBlock()) {
                 unhideAndDirty(motion);
+                untrack(motion);
                 cursor.remove();
                 continue;
             }
@@ -174,6 +184,7 @@ public final class MotionTracker {
             } else if (motion.phase == DoorMotion.Phase.WAIT_REVEAL
                     && now - motion.phaseStartedNs > REVEAL_TIMEOUT_NS) {
                 // Recovery if renderer is replaced or this chunk is unloaded.
+                untrack(motion);
                 cursor.remove();
             }
         }
@@ -181,6 +192,10 @@ public final class MotionTracker {
 
     private static List<BlockPos> positions(DoorMotion motion) {
         return motion.door ? List.of(motion.basePos, motion.basePos.above()) : List.of(motion.basePos);
+    }
+
+    private static void untrack(DoorMotion motion) {
+        for (BlockPos pos : positions(motion)) TRACKED.remove(pos.asLong());
     }
 
     private static void unhideAndDirty(DoorMotion motion) {
@@ -192,7 +207,10 @@ public final class MotionTracker {
 
     private static void cancel(long key) {
         DoorMotion motion = ACTIVE.remove(key);
-        if (motion != null) unhideAndDirty(motion);
+        if (motion != null) {
+            unhideAndDirty(motion);
+            untrack(motion);
+        }
     }
 
     private static void cancelContaining(BlockPos pos) {
