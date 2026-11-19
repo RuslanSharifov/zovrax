@@ -35,7 +35,7 @@ public final class BiomeBoundaryRenderer {
                     .map(key -> key.getValue().toString()).orElse("");
                 if ((!here.equals(east) || !here.equals(south)) &&
                     (here.equals(centerBiome) || east.equals(centerBiome) || south.equals(centerBiome))) {
-                    client.world.addParticle(ParticleTypes.END_ROD, false, false,
+                    client.particleManager.addParticle(ParticleTypes.END_ROD,
                         worldX + 0.5, y + 0.15, worldZ + 0.5, 0, 0.002, 0);
                 }
             }
