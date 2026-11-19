@@ -2,7 +2,7 @@ name: Build Biome Tracker (Fabric 1.21.10)
 
 on:
   push:
-    branches: [feat/biome-tracker-fabric-12110]
+    branches: [feat/biome-tracker-fabric-12110, fix/biome-tracker-release-download]
     paths:
       - 'mods/biome-tracker/**'
       - '.github/workflows/build-biome-tracker.yml'
@@ -13,7 +13,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   fabric-build:
@@ -38,6 +38,20 @@ jobs:
           jar tf "$JAR" | grep -Fx 'fabric.mod.json'
           jar tf "$JAR" | grep -Fx 'az/zovrax/biometracker/BiomeTrackerClient.class'
           unzip -p "$JAR" fabric.mod.json | grep -q '"id": "zovrax_biome_tracker"'
+      - name: Commit release JAR to the release-fix branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/fix/biome-tracker-release-download'
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p mods/biome-tracker/releases
+          cp mods/biome-tracker/build/libs/zovrax-biome-tracker-0.1.0.jar mods/biome-tracker/releases/zovrax-biome-tracker-0.1.0-fabric-1.21.10.jar
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add mods/biome-tracker/releases/zovrax-biome-tracker-0.1.0-fabric-1.21.10.jar
+          if ! git diff --cached --quiet; then
+            git commit -m "release(biome-tracker): add Fabric 1.21.10 beta JAR"
+            git push origin HEAD
+          fi
       - name: Validate Zovrax catalog
         run: |
           node .github/scripts/build-catalog.mjs
