@@ -2,6 +2,7 @@ package az.zovrax.biometracker;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
+import java.util.function.IntSupplier;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -37,11 +38,12 @@ public final class BiomeTrackerSettingsScreen extends Screen {
         addDrawableChild(ButtonWidget.builder(Text.literal(label+": "+(get.getAsBoolean()?"ON":"OFF")),b->{set.accept(!get.getAsBoolean());cfg.save();b.setMessage(Text.literal(label+": "+(get.getAsBoolean()?"ON":"OFF")));}).dimensions(x,y,w,20).build());
     }
 
-    private void adjustRow(int x,int y,int w,String label,java.util.function.IntSupplier get,Consumer<Integer> set,int min,int max,int step,String suffix) {
+    private void adjustRow(int x,int y,int w,String label,IntSupplier get,Consumer<Integer> set,int min,int max,int step,String suffix) {
         int buttonW=24;
-        addDrawableChild(ButtonWidget.builder(Text.literal("−"),b->{set.accept(Math.max(min,get.getAsInt()-step));cfg.save();}).dimensions(x,y,buttonW,20).build());
-        addDrawableChild(ButtonWidget.builder(Text.literal(label+": "+get.getAsInt()+suffix),b->{set.accept(get.getAsInt());cfg.save();b.setMessage(Text.literal(label+": "+get.getAsInt()+suffix));}).dimensions(x+buttonW+4,y,w-2*buttonW-8,20).build());
-        addDrawableChild(ButtonWidget.builder(Text.literal("+"),b->{set.accept(Math.min(max,get.getAsInt()+step));cfg.save();}).dimensions(x+w-buttonW,y,buttonW,20).build());
+        ButtonWidget value = ButtonWidget.builder(Text.literal(label+": "+get.getAsInt()+suffix),b->{}).dimensions(x+buttonW+4,y,w-2*buttonW-8,20).build();
+        addDrawableChild(value);
+        addDrawableChild(ButtonWidget.builder(Text.literal("−"),b->{set.accept(Math.max(min,get.getAsInt()-step));cfg.save();value.setMessage(Text.literal(label+": "+get.getAsInt()+suffix));}).dimensions(x,y,buttonW,20).build());
+        addDrawableChild(ButtonWidget.builder(Text.literal("+"),b->{set.accept(Math.min(max,get.getAsInt()+step));cfg.save();value.setMessage(Text.literal(label+": "+get.getAsInt()+suffix));}).dimensions(x+w-buttonW,y,buttonW,20).build());
     }
 
     @Override public void render(DrawContext ctx,int mouseX,int mouseY,float delta) {
