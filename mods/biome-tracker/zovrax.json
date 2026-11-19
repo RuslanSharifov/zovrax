@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 2,
+  "slug": "biome-tracker",
+  "name": "Biome Tracker",
+  "category": "hud",
+  "status": "development",
+  "featured": false,
+  "accent": "lime",
+  "icon": "assets/icon.svg",
+  "summary": {
+    "en": "A configurable biome HUD with transition alerts, visual biome boundaries and persistent time-spent statistics.",
+    "ru": "Настраиваемый HUD биомов с уведомлениями о переходах, визуальными границами и статистикой времени.",
+    "fr": "Un HUD de biome configurable avec alertes de transition, frontières visuelles et statistiques de temps."
+  },
+  "tags": [
+    "HUD",
+    "Biomes",
+    "Exploration",
+    "Statistics",
+    "QoL"
+  ],
+  "minecraftVersions": [
+    "1.21.10"
+  ],
+  "loaders": [
+    "Fabric"
+  ],
+  "authors": [
+    "ruslan"
+  ],
+  "updatedAt": "2026-11-19",
+  "license": "MIT",
+  "source": "https://github.com/RuslanSharifov/zovrax",
+  "features": [
+    {
+      "en": "Toggle the biome HUD and adjust its screen position, scale and opacity.",
+      "ru": "Включайте HUD биомов и настраивайте его положение, размер и прозрачность.",
+      "fr": "Activez le HUD et réglez sa position, sa taille et son opacité."
+    },
+    {
+      "en": "Receive Minecraft title notifications and an optional sound when entering a new biome.",
+      "ru": "Получайте уведомление Minecraft и звук при входе в новый биом.",
+      "fr": "Recevez une notification Minecraft et un son en entrant dans un nouveau biome."
+    },
+    {
+      "en": "Visualize nearby biome edges with optional boundary particles.",
+      "ru": "Показывайте ближайшие границы биомов частицами.",
+      "fr": "Visualisez les limites proches des biomes avec des particules facultatives."
+    },
+    {
+      "en": "Track time spent in every biome and review persistent per-dimension statistics.",
+      "ru": "Отслеживайте время в каждом биоме и просматривайте статистику по измерениям.",
+      "fr": "Suivez le temps passé dans chaque biome et consultez les statistiques persistantes par dimension."
+    },
+    {
+      "en": "Optionally show the current biome session time directly in the HUD.",
+      "ru": "При желании показывайте время текущего посещения в HUD.",
+      "fr": "Affichez éventuellement le temps de la session actuelle dans le HUD."
+    }
+  ],
+  "screenshots": [],
+  "releases": [],
+  "monetization": {
+    "type": "free",
+    "premiumUrl": null,
+    "premiumLabel": "Get Premium"
+  },
+  "seo": {
+    "title": "Biome Tracker — Minecraft Fabric Biome HUD | Zovrax",
+    "description": "Discover biomes, see nearby biome boundaries and track your playtime in every Minecraft biome.",
+    "keywords": [
+      "Minecraft biome HUD",
+      "Fabric biome tracker",
+      "biome statistics",
+      "Minecraft 1.21.10 mod"
+    ]
+  }
+}\n
