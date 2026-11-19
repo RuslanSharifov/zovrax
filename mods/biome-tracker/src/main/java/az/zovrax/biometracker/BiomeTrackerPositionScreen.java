@@ -1,20 +1,18 @@
 package az.zovrax.biometracker;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
+import org.lwjgl.glfw.GLFW;
 
 public final class BiomeTrackerPositionScreen extends Screen {
     private final Screen parent;
     private final BiomeTrackerConfig cfg = BiomeTrackerClient.config();
     private boolean dragging;
     private boolean dragMoved;
-    private double dragOffsetX;
-    private double dragOffsetY;
-    private double pressX;
-    private double pressY;
 
     public BiomeTrackerPositionScreen(Screen parent) {
         super(Text.literal("Move Biome HUD"));
@@ -49,46 +47,42 @@ public final class BiomeTrackerPositionScreen extends Screen {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (button == 0 && isInsideHud(mouseX, mouseY)) {
-            MinecraftClient client = MinecraftClient.getInstance();
-            int hudX = BiomeTrackerHud.drawX(client, width, BiomeTrackerHud.contentWidth(client));
-            int hudY = BiomeTrackerHud.drawY(client, height);
+    public boolean mouseClicked(Click click, boolean doubled) {
+        // Let buttons (especially Done) handle their own clicks before starting a HUD drag.
+        if (super.mouseClicked(click, doubled)) return true;
+        if (click.buttonInfo().button() == GLFW.GLFW_MOUSE_BUTTON_LEFT && isInsideHud(click.x(), click.y())) {
             dragging = true;
             dragMoved = false;
-            pressX = mouseX;
-            pressY = mouseY;
-            dragOffsetX = mouseX - hudX;
-            dragOffsetY = mouseY - hudY;
             return true;
         }
-        return super.mouseClicked(mouseX, mouseY, button);
+        return false;
     }
 
     @Override
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-        if (dragging && button == 0) {
-            if (Math.abs(mouseX - pressX) > 2 || Math.abs(mouseY - pressY) > 2) dragMoved = true;
+    public boolean mouseDragged(Click click, double deltaX, double deltaY) {
+        if (dragging) {
+            if (Math.abs(deltaX) > 0 || Math.abs(deltaY) > 0) dragMoved = true;
             MinecraftClient client = MinecraftClient.getInstance();
-            int maxX = Math.max(0, width - BiomeTrackerHud.renderedWidth(client));
-            int maxY = Math.max(0, height - BiomeTrackerHud.renderedHeight());
-            cfg.x = maxX == 0 ? 0 : Math.clamp((mouseX - dragOffsetX) / maxX, 0.0, 1.0);
-            cfg.y = maxY == 0 ? 0 : Math.clamp((mouseY - dragOffsetY) / maxY, 0.0, 1.0);
+            int maxX = Math.max(1, width - BiomeTrackerHud.renderedWidth(client));
+            int maxY = Math.max(1, height - BiomeTrackerHud.renderedHeight());
+            cfg.x = Math.clamp(cfg.x + deltaX / maxX, 0.0, 1.0);
+            cfg.y = Math.clamp(cfg.y + deltaY / maxY, 0.0, 1.0);
             cfg.save();
             return true;
         }
-        return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+        return super.mouseDragged(click, deltaX, deltaY);
     }
 
     @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        if (dragging && button == 0) {
+    public boolean mouseReleased(Click click) {
+        if (dragging) {
             dragging = false;
             cfg.save();
+            // A click without movement exits the editor back to the full settings screen.
             if (!dragMoved && client != null) client.setScreen(parent);
             return true;
         }
-        return super.mouseReleased(mouseX, mouseY, button);
+        return super.mouseReleased(click);
     }
 
     private boolean isInsideHud(double mouseX, double mouseY) {
