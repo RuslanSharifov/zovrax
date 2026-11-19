@@ -43,6 +43,14 @@ The remapped mod JAR is written to `mods/biome-tracker/build/libs/`.
 
 Boundary markers are client-side particles placed along sampled horizontal biome transitions within 24 blocks of the player. This is a lightweight nearby outline, not a full-height world geometry overlay. It is independent of vanilla chunk-border rendering.
 
+## Release
+
+- Beta version: `0.1.0`
+- Minecraft: `1.21.10`
+- Loader: Fabric
+- Download artifact: `releases/zovrax-biome-tracker-0.1.0-fabric-1.21.10.jar`
+- The release JAR is compiled and archive metadata-validated in CI. In-game testing is still pending.
+
 ## Compatibility
 
 Client-only; no server installation is required. No optional integrations or Mixins are used.

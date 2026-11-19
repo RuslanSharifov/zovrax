@@ -25,6 +25,6 @@ Appuyez sur **B** pour ouvrir les paramètres. Configurez le HUD, les alertes, l
 
 Mod côté client ; aucune installation serveur n'est nécessaire.
 
-## Statut
+## Statut de publication
 
-En développement. Le téléchargement sera publié après la compilation et la validation du véritable fichier JAR Fabric.
+**La bêta 0.1.0 est disponible** pour Minecraft Java 1.21.10 avec Fabric. Sélectionnez le téléchargement Fabric 1.21.10 dans l’onglet Téléchargements. Le JAR a été compilé et ses métadonnées Fabric ainsi que le contenu de l’archive ont été vérifiés. Les tests en jeu restent à effectuer.

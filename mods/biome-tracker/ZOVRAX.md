@@ -25,6 +25,6 @@ Press **B** to open Biome Tracker settings. From there, customize the HUD, alert
 
 Client-side mod. The server does not need to install it.
 
-## Status
+## Release status
 
-Currently in development. A downloadable release will be listed here after the real Fabric JAR has been built and validated.
+**Beta 0.1.0 is available now** for Minecraft Java 1.21.10 with Fabric. Select the Fabric 1.21.10 download in the Downloads tab. The JAR has been built and its Fabric metadata and archive contents have been validated. In-game testing is still pending.
