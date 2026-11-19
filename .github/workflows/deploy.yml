@@ -47,7 +47,7 @@ jobs:
           set -euo pipefail
           gradle --no-daemon --project-dir mods/biome-tracker build
           mkdir -p mods/biome-tracker/releases
-          cp mods/biome-tracker/build/libs/zovrax-biome-tracker-0.1.0.jar mods/biome-tracker/releases/zovrax-biome-tracker-0.1.0-fabric-1.21.10.jar
+          cp mods/biome-tracker/build/libs/zovrax-biome-tracker-0.1.1.jar mods/biome-tracker/releases/zovrax-biome-tracker-0.1.1-fabric-1.21.10.jar
       - name: Build catalog from approved mod folders
         run: |
           node .github/scripts/build-catalog.mjs
