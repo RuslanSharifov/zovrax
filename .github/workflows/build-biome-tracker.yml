@@ -2,7 +2,7 @@ name: Build Biome Tracker (Fabric 1.21.10)
 
 on:
   push:
-    branches: [feat/biome-tracker-fabric-12110]
+    branches: [feat/biome-tracker-fabric-12110, fix/biome-tracker-release-download]
     paths:
       - 'mods/biome-tracker/**'
       - '.github/workflows/build-biome-tracker.yml'
@@ -38,6 +38,12 @@ jobs:
           jar tf "$JAR" | grep -Fx 'fabric.mod.json'
           jar tf "$JAR" | grep -Fx 'az/zovrax/biometracker/BiomeTrackerClient.class'
           unzip -p "$JAR" fabric.mod.json | grep -q '"id": "zovrax_biome_tracker"'
+      - name: Stage release JAR for catalog validation
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p mods/biome-tracker/releases
+          cp mods/biome-tracker/build/libs/zovrax-biome-tracker-0.1.0.jar mods/biome-tracker/releases/zovrax-biome-tracker-0.1.0-fabric-1.21.10.jar
       - name: Validate Zovrax catalog
         run: |
           node .github/scripts/build-catalog.mjs
