@@ -3,7 +3,7 @@
   "slug": "biome-tracker",
   "name": "Biome Tracker",
   "category": "hud",
-  "status": "development",
+  "status": "released",
   "featured": false,
   "accent": "lime",
   "icon": "assets/icon.svg",
@@ -59,7 +59,36 @@
     }
   ],
   "screenshots": [],
-  "releases": [],
+  "releases": [
+    {
+      "version": "0.1.0",
+      "releasedAt": "2026-11-19",
+      "prerelease": true,
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "loaders": [
+        "Fabric"
+      ],
+      "downloads": [
+        {
+          "file": "releases/zovrax-biome-tracker-0.1.0-fabric-1.21.10.jar",
+          "label": "Fabric 1.21.10 · Beta 0.1.0",
+          "minecraftVersions": [
+            "1.21.10"
+          ],
+          "loaders": [
+            "Fabric"
+          ]
+        }
+      ],
+      "changelog": {
+        "en": "First beta release. Configurable biome HUD, biome transition notifications and optional sound, nearby biome-boundary markers, and persistent per-biome playtime statistics. Fabric JAR compiled and metadata-validated; in-game testing remains pending.",
+        "ru": "Первая бета-версия: настраиваемый HUD биомов, уведомления и звук при переходе, маркеры границ биомов и постоянная статистика времени. JAR собран и проверен по метаданным; тестирование в игре ещё предстоит.",
+        "fr": "Première bêta : HUD des biomes configurable, notifications et son lors des transitions, marqueurs de frontières et statistiques persistantes. Le JAR Fabric est compilé et ses métadonnées vérifiées ; les tests en jeu restent à effectuer."
+      }
+    }
+  ],
   "monetization": {
     "type": "free",
     "premiumUrl": null,
