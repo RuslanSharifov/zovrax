@@ -1,0 +1,49 @@
+name: Build Biome Tracker (Fabric 1.21.10)
+
+on:
+  push:
+    branches: [feat/biome-tracker-fabric-12110]
+    paths:
+      - 'mods/biome-tracker/**'
+      - '.github/workflows/build-biome-tracker.yml'
+  pull_request:
+    paths:
+      - 'mods/biome-tracker/**'
+      - '.github/workflows/build-biome-tracker.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fabric-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.1.0'
+      - name: Compile and package Fabric mod
+        run: gradle --no-daemon --project-dir mods/biome-tracker build
+      - name: Verify mod archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          JAR=$(find mods/biome-tracker/build/libs -maxdepth 1 -name 'zovrax-biome-tracker-0.1.0.jar' -print -quit)
+          test -n "$JAR"
+          jar tf "$JAR" | grep -Fx 'fabric.mod.json'
+          jar tf "$JAR" | grep -Fx 'az/zovrax/biometracker/BiomeTrackerClient.class'
+          unzip -p "$JAR" fabric.mod.json | grep -q '"id": "zovrax_biome_tracker"'
+      - name: Validate Zovrax catalog
+        run: |
+          node .github/scripts/build-catalog.mjs
+          node .github/scripts/validate-catalog.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: zovrax-biome-tracker-0.1.0-fabric-1.21.10
+          path: mods/biome-tracker/build/libs/zovrax-biome-tracker-0.1.0.jar
+          if-no-files-found: error
