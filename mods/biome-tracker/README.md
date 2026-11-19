@@ -4,7 +4,8 @@ A client-side Fabric mod for Minecraft Java 1.21.10.
 
 ## Features
 
-- Toggleable biome HUD with configurable screen position, scale, text opacity and panel opacity.
+- Toggleable biome HUD with mouse-drag positioning, configurable scale, text opacity and panel opacity.
+- Click the HUD preview in the position editor to return directly to the settings screen.
 - Minecraft title/subtitle notification and optional toast sound on biome changes.
 - Optional nearby biome-boundary particle markers.
 - Persistent playtime totals for every biome, separated by dimension.
@@ -27,7 +28,7 @@ Statistics count active client game ticks (20 ticks = approximately one second o
 
 ## Controls
 
-Press **B** to open settings. Use the settings screen to toggle the HUD, alerts, sound, boundary markers and current-biome timer. The position screen moves the HUD with arrow buttons; size and opacity are adjustable in settings.
+Press **B** to open settings. Select **Move HUD / position** to enter the live preview editor. Hold the left mouse button on the HUD and drag it to reposition it; release without moving to return to the settings screen. Use **Center** to reset its position. HUD size, text opacity, panel opacity and all other options remain adjustable in the settings screen.
 
 ## Build
 
@@ -45,11 +46,11 @@ Boundary markers are client-side particles placed along sampled horizontal biome
 
 ## Release
 
-- Beta version: `0.1.0`
+- Version: `0.1.1`
 - Minecraft: `1.21.10`
 - Loader: Fabric
-- Download artifact: `releases/zovrax-biome-tracker-0.1.0-fabric-1.21.10.jar`
-- The release JAR is compiled and archive metadata-validated in CI. In-game testing is still pending.
+- Download artifact: `releases/zovrax-biome-tracker-0.1.1-fabric-1.21.10.jar`
+- Build and archive metadata are verified by the repository's GitHub Actions workflow. In-game testing must be confirmed separately.
 
 ## Compatibility
 

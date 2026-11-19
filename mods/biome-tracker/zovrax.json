@@ -8,9 +8,9 @@
   "accent": "lime",
   "icon": "assets/icon.svg",
   "summary": {
-    "en": "A configurable biome HUD with transition alerts, visual biome boundaries and persistent time-spent statistics.",
-    "ru": "Настраиваемый HUD биомов с уведомлениями о переходах, визуальными границами и статистикой времени.",
-    "fr": "Un HUD de biome configurable avec alertes de transition, frontières visuelles et statistiques de temps."
+    "en": "A configurable biome HUD with mouse-drag positioning, transition alerts, visual biome boundaries and persistent time-spent statistics.",
+    "ru": "Настраиваемый HUD биомов с перемещением мышью, уведомлениями о переходах, визуальными границами и статистикой времени.",
+    "fr": "Un HUD de biome configurable avec déplacement à la souris, alertes de transition, frontières visuelles et statistiques de temps."
   },
   "tags": [
     "HUD",
@@ -33,9 +33,9 @@
   "source": "https://github.com/RuslanSharifov/zovrax",
   "features": [
     {
-      "en": "Toggle the biome HUD and adjust its screen position, scale and opacity.",
-      "ru": "Включайте HUD биомов и настраивайте его положение, размер и прозрачность.",
-      "fr": "Activez le HUD et réglez sa position, sa taille et son opacité."
+      "en": "Toggle the biome HUD and drag it to any screen position with your mouse; adjust scale and opacity.",
+      "ru": "Включайте HUD биомов, перемещайте его мышью и настраивайте размер и прозрачность.",
+      "fr": "Activez le HUD, déplacez-le à la souris et réglez sa taille et son opacité."
     },
     {
       "en": "Receive Minecraft title notifications and an optional sound when entering a new biome.",
@@ -60,6 +60,34 @@
   ],
   "screenshots": [],
   "releases": [
+    {
+      "version": "0.1.1",
+      "releasedAt": "2026-11-19",
+      "prerelease": true,
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "loaders": [
+        "Fabric"
+      ],
+      "downloads": [
+        {
+          "file": "releases/zovrax-biome-tracker-0.1.1-fabric-1.21.10.jar",
+          "label": "Fabric 1.21.10 · Beta 0.1.1",
+          "minecraftVersions": [
+            "1.21.10"
+          ],
+          "loaders": [
+            "Fabric"
+          ]
+        }
+      ],
+      "changelog": {
+        "en": "Adds a live HUD position editor: hold and drag the HUD preview to reposition it, or click it to return to the settings screen. Keeps the existing scale, opacity and display controls.",
+        "ru": "Добавлен редактор положения HUD: удерживайте и перетаскивайте его предварительный просмотр мышью или нажмите на него, чтобы вернуться к настройкам. Сохранены настройки размера, прозрачности и отображения.",
+        "fr": "Ajout d'un éditeur de position HUD : maintenez et faites glisser l'aperçu avec la souris, ou cliquez dessus pour revenir aux paramètres. Les réglages de taille, d'opacité et d'affichage sont conservés."
+      }
+    },
     {
       "version": "0.1.0",
       "releasedAt": "2026-11-19",
