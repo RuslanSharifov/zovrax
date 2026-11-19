@@ -2,13 +2,13 @@ package az.zovrax.biometracker;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.registry.RegistryKey;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -31,6 +31,7 @@ public final class BiomeTrackerClient implements ClientModInitializer {
         settingsKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "key.zovrax_biome_tracker.settings", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_B, category));
         ClientTickEvents.END_CLIENT_TICK.register(this::endTick);
+        ClientLifecycleEvents.CLIENT_STOPPING.register(client -> STATS.endSession());
         HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT,
             Identifier.of(MOD_ID, "biome_hud"), BiomeTrackerHud::render);
     }
@@ -42,6 +43,7 @@ public final class BiomeTrackerClient implements ClientModInitializer {
             }
         }
         if (client.player == null || client.world == null) {
+            if (!previousBiome.isEmpty()) STATS.endSession();
             previousBiome = "";
             return;
         }
@@ -49,16 +51,16 @@ public final class BiomeTrackerClient implements ClientModInitializer {
         BlockPos pos = client.player.getBlockPos();
         String biomeId = client.world.getBiome(pos).getKey()
             .map(key -> key.getValue().toString()).orElse("minecraft:unknown");
+        String worldBiomeKey = client.world.getRegistryKey().getValue() + "|" + biomeId;
         STATS.tick(biomeId, client.world.getRegistryKey().getValue().toString());
 
-        if (!previousBiome.isEmpty() && !previousBiome.equals(biomeId) && CONFIG.notifications) {
-            Text biomeName = biomeText(biomeId);
+        if (!previousBiome.isEmpty() && !previousBiome.equals(worldBiomeKey) && CONFIG.notifications) {
             client.inGameHud.setTitle(Text.translatable("text.zovrax_biome_tracker.discovered"));
-            client.inGameHud.setSubtitle(biomeName);
+            client.inGameHud.setSubtitle(biomeText(biomeId));
             client.inGameHud.setTitleTicks(10, 55, 20);
             if (CONFIG.notificationSound) client.player.playSound(SoundEvents.UI_TOAST_IN, 0.85f, 1.0f);
         }
-        previousBiome = biomeId;
+        previousBiome = worldBiomeKey;
 
         if (CONFIG.showBoundaries && client.world.getTime() % 8 == 0) {
             BiomeBoundaryRenderer.showNearby(client, pos, biomeId);
