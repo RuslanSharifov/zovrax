@@ -46,8 +46,13 @@ public final class BiomeStats {
         if (++ticksSinceSave >= 100) save();
     }
 
+    public void endSession() {
+        currentKey = "";
+        currentSessionTicks = 0;
+        save();
+    }
+
     public long currentSessionTicks() { return currentSessionTicks; }
-    public long ticksFor(String key) { return ticks.getOrDefault(key, 0L); }
     public Map<String, Long> snapshot() { return new LinkedHashMap<>(ticks); }
 
     public static String formatTicks(long ticks) {
