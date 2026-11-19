@@ -41,7 +41,7 @@ public final class BiomeTrackerPositionScreen extends Screen {
         BiomeTrackerHud.renderPreview(context);
         context.drawCenteredTextWithShadow(textRenderer, title, width / 2, 12, 0xFFFFFFFF);
         context.drawCenteredTextWithShadow(textRenderer,
-            Text.literal("Hold and drag the HUD to move it. Click the HUD to open settings."),
+            Text.literal("Left-click and drag the HUD to move it. Click without dragging to open settings."),
             width / 2, 28, 0xFFE0E8F0);
         super.render(context, mouseX, mouseY, delta);
     }
