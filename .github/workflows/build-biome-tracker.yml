@@ -2,7 +2,7 @@ name: Build Biome Tracker (Fabric 1.21.10)
 
 on:
   push:
-    branches: [feat/biome-tracker-fabric-12110, fix/biome-tracker-release-download, fix/biome-tracker-published-copy]
+    branches: [feat/biome-tracker-fabric-12110, fix/biome-tracker-release-download, fix/biome-tracker-published-copy, fix/biome-tracker-drag-hud]
     paths:
       - 'mods/biome-tracker/**'
       - '.github/workflows/build-biome-tracker.yml'
@@ -33,7 +33,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          JAR=mods/biome-tracker/build/libs/zovrax-biome-tracker-0.1.0.jar
+          JAR=mods/biome-tracker/build/libs/zovrax-biome-tracker-0.1.1.jar
           test -f "$JAR"
           jar tf "$JAR" | grep -Fx 'fabric.mod.json'
           jar tf "$JAR" | grep -Fx 'az/zovrax/biometracker/BiomeTrackerClient.class'
@@ -43,17 +43,17 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p mods/biome-tracker/releases
-          cp mods/biome-tracker/build/libs/zovrax-biome-tracker-0.1.0.jar mods/biome-tracker/releases/zovrax-biome-tracker-0.1.0-fabric-1.21.10.jar
-      - name: Commit release JAR to the published-copy branch
-        if: github.event_name == 'push' && github.ref == 'refs/heads/fix/biome-tracker-published-copy'
+          cp mods/biome-tracker/build/libs/zovrax-biome-tracker-0.1.1.jar mods/biome-tracker/releases/zovrax-biome-tracker-0.1.1-fabric-1.21.10.jar
+      - name: Commit release JAR to the feature branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/fix/biome-tracker-drag-hud'
         shell: bash
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add mods/biome-tracker/releases/zovrax-biome-tracker-0.1.0-fabric-1.21.10.jar
+          git add mods/biome-tracker/releases/zovrax-biome-tracker-0.1.1-fabric-1.21.10.jar
           if ! git diff --cached --quiet; then
-            git commit -m "release(biome-tracker): add Fabric 1.21.10 beta JAR"
+            git commit -m "release(biome-tracker): add Fabric 1.21.10 beta 0.1.1 JAR"
             git fetch origin "$GITHUB_REF_NAME"
             git rebase FETCH_HEAD
             git push origin HEAD:"$GITHUB_REF_NAME"
@@ -64,6 +64,6 @@ jobs:
           node .github/scripts/validate-catalog.mjs
       - uses: actions/upload-artifact@v4
         with:
-          name: zovrax-biome-tracker-0.1.0-fabric-1.21.10
-          path: mods/biome-tracker/build/libs/zovrax-biome-tracker-0.1.0.jar
+          name: zovrax-biome-tracker-0.1.1-fabric-1.21.10
+          path: mods/biome-tracker/build/libs/zovrax-biome-tracker-0.1.1.jar
           if-no-files-found: error
