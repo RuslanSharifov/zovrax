@@ -1,0 +1,60 @@
+name: Build ChronoHarvest (Fabric 1.21.10)
+on:
+  push:
+    branches: [feat/chrono-harvest]
+    paths: ['mods/chrono-harvest/**', '.github/workflows/build-chrono-harvest.yml']
+  pull_request:
+    paths: ['mods/chrono-harvest/**', '.github/workflows/build-chrono-harvest.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+        with: {gradle-version: '9.1.0'}
+      - name: Compile Fabric mod
+        run: gradle --no-daemon --project-dir mods/chrono-harvest build
+      - name: Package and validate release JAR
+        run: |
+          set -euo pipefail
+          SRC=mods/chrono-harvest/build/libs/zovrax-chrono-harvest-0.1.0.jar
+          DEST=mods/chrono-harvest/releases/zovrax-chrono-harvest-0.1.0-fabric-1.21.10.jar
+          test -s "$SRC"
+          mkdir -p mods/chrono-harvest/releases
+          cp "$SRC" "$DEST"
+          for entry in fabric.mod.json chrono-harvest.mixins.json az/zovrax/chronoharvest/ChronoHarvest.class az/zovrax/chronoharvest/ChronoHarvestClient.class az/zovrax/chronoharvest/mixin/BlockItemMixin.class az/zovrax/chronoharvest/mixin/CropRandomTickMixin.class assets/zovrax_chronoharvest/icon.png; do jar tf "$DEST" | grep -Fx "$entry"; done
+          unzip -t "$DEST" | tail -n 1
+          unzip -p "$DEST" fabric.mod.json | grep -q '"id":"zovrax_chronoharvest"'
+      - name: Set release metadata before catalog validation
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('mods/chrono-harvest/zovrax.json')
+          m=json.loads(p.read_text())
+          m['status']='released'
+          m['releases']=[{'version':'0.1.0','releasedAt':'2026-11-21','prerelease':True,'minecraftVersions':['1.21.10'],'loaders':['Fabric'],'downloads':[{'file':'releases/zovrax-chrono-harvest-0.1.0-fabric-1.21.10.jar','label':'Fabric 1.21.10 · Beta 0.1.0','minecraftVersions':['1.21.10'],'loaders':['Fabric']}],'changelog':{'en':'Initial beta: elapsed-time crop growth, non-destructive mature harvest, Shift-to-harvest immature crops, Mod Menu settings and K shortcut. Build and catalog validation passed; live gameplay testing is still required.'}}]
+          p.write_text(json.dumps(m,indent=2,ensure_ascii=False)+'\n')
+          PY
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - name: Build and validate website catalog
+        run: node .github/scripts/build-catalog.mjs && node .github/scripts/validate-catalog.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: chrono-harvest-0.1.0-fabric-1.21.10
+          path: mods/chrono-harvest/releases/zovrax-chrono-harvest-0.1.0-fabric-1.21.10.jar
+          if-no-files-found: error
+      - name: Commit generated release JAR and metadata
+        if: github.event_name == 'push' && github.ref == 'refs/heads/feat/chrono-harvest'
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add mods/chrono-harvest/zovrax.json mods/chrono-harvest/releases/zovrax-chrono-harvest-0.1.0-fabric-1.21.10.jar
+          if ! git diff --cached --quiet; then git commit -m 'build(chrono-harvest): add verified Fabric release'; git push origin HEAD:refs/heads/feat/chrono-harvest; fi

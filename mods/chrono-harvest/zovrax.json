@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 2,
+  "slug": "chrono-harvest",
+  "name": "ChronoHarvest",
+  "category": "gameplay",
+  "status": "released",
+  "featured": false,
+  "accent": "lime",
+  "icon": "assets/icon.svg",
+  "summary": {
+    "en": "Elapsed-time crop growth, harvest without uprooting, and Shift-to-harvest immature crops.",
+    "ru": "Рост культур по прошедшему времени, повторный урожай без пересадки и сбор незрелых культур с Shift.",
+    "fr": "Croissance selon le temps écoulé, récolte sans déraciner et récolte anticipée avec Shift.",
+    "az": "Əkinlər chunk yüklənməsə də əkilmə vaxtına görə böyüyür; məhsul yığımı bitkini kökündən çıxarmır."
+  },
+  "tags": [
+    "Farming",
+    "Crops",
+    "Growth",
+    "Quality of Life"
+  ],
+  "minecraftVersions": [
+    "1.21.10"
+  ],
+  "loaders": [
+    "Fabric"
+  ],
+  "authors": [
+    "ruslan"
+  ],
+  "updatedAt": "2026-11-21",
+  "license": "MIT",
+  "source": "https://github.com/RuslanSharifov/zovrax/tree/main/mods/chrono-harvest",
+  "features": [
+    {
+      "en": "Crop age is calculated from a saved planting timestamp when chunks load, without force-loading chunks.",
+      "ru": "Возраст урожая рассчитывается по сохранённой временной метке при загрузке чанка.",
+      "fr": "L'âge des cultures est recalculé depuis l'horodatage à la recharge du chunk.",
+      "az": "Chunk yenidən yüklənəndə əkin vaxtından keçən müddətə görə böyümə hesablanır."
+    },
+    {
+      "en": "Harvesting mature crops collects loot and leaves the plant at age 0.",
+      "ru": "Сбор зрелого урожая оставляет растение на стадии 0.",
+      "fr": "La récolte laisse la plante au stade 0.",
+      "az": "Tam yetişmiş məhsul yığılanda bitki 0% mərhələsində qalır."
+    },
+    {
+      "en": "Immature crops require holding Shift to harvest.",
+      "ru": "Для раннего сбора удерживайте Shift.",
+      "fr": "Maintenez Shift pour récolter avant maturité.",
+      "az": "Yetişməmiş məhsulu yığmaq üçün Shift basılı saxlanılır."
+    },
+    {
+      "en": "Settings are available in Mod Menu and through an in-game keybind.",
+      "ru": "Настройки доступны в Mod Menu и по клавише.",
+      "fr": "Réglages via Mod Menu et raccourci clavier.",
+      "az": "Mod Menu və K qısayolu ilə parametrlər."
+    }
+  ],
+  "screenshots": [],
+  "releases": [
+    {
+      "version": "0.1.0",
+      "releasedAt": "2026-11-21",
+      "prerelease": true,
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "loaders": [
+        "Fabric"
+      ],
+      "downloads": [
+        {
+          "file": "releases/zovrax-chrono-harvest-0.1.0-fabric-1.21.10.jar",
+          "label": "Fabric 1.21.10 · Beta 0.1.0",
+          "minecraftVersions": [
+            "1.21.10"
+          ],
+          "loaders": [
+            "Fabric"
+          ]
+        }
+      ],
+      "changelog": {
+        "en": "Initial beta: elapsed-time crop growth, non-destructive mature harvest, Shift-to-harvest immature crops, Mod Menu settings and K shortcut. Build and catalog validation passed; live gameplay testing is still required."
+      }
+    }
+  ],
+  "monetization": {
+    "type": "free",
+    "premiumUrl": null,
+    "premiumLabel": "Get Premium"
+  },
+  "seo": {
+    "title": "ChronoHarvest — Minecraft Crop Growth & Harvest Mod | Zovrax",
+    "description": "Make crops grow from their planting time across unloaded chunks, harvest without uprooting, and require Shift for early harvesting.",
+    "keywords": [
+      "Minecraft farming mod",
+      "crop growth",
+      "Fabric 1.21.10",
+      "harvest mod",
+      "unloaded chunks"
+    ]
+  }
+}

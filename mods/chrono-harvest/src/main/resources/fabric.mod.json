@@ -1,0 +1,10 @@
+{
+ "schemaVersion":1,"id":"zovrax_chronoharvest","version":"${version}","name":"ChronoHarvest",
+ "description":"Crops mature from their planting timestamp, even while chunks are unloaded. Harvest ripe crops without uprooting them.",
+ "authors":["Ruslan Sharifov"],"license":"MIT","environment":"*",
+ "entrypoints":{"main":["az.zovrax.chronoharvest.ChronoHarvest"],"client":["az.zovrax.chronoharvest.ChronoHarvestClient"],"modmenu":["az.zovrax.chronoharvest.ChronoHarvestModMenu"]},
+ "mixins":["chrono-harvest.mixins.json"],
+ "depends":{"fabricloader":">=0.17.3","minecraft":"1.21.10","java":">=21","fabric-api":">=0.138.0"},
+ "suggests":{"modmenu":">=16.0.1 <17"},
+ "icon":"assets/zovrax_chronoharvest/icon.png"
+}
