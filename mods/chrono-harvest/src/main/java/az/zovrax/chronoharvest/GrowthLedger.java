@@ -55,7 +55,8 @@ public final class GrowthLedger {
  }
  public static void onChunkLoad(ServerWorld w,WorldChunk c){
   if(!ChronoHarvest.CONFIG.enabled)return;int sx=c.getPos().getStartX(),sz=c.getPos().getStartZ();
-  for(int x=0;x<16;x++)for(int z=0;z<16;z++)for(int y=w.getBottomY();y<w.getTopY();y++){
+  int topY=w.getBottomY()+w.getHeight();
+  for(int x=0;x<16;x++)for(int z=0;z<16;z++)for(int y=w.getBottomY();y<topY;y++){
    BlockPos p=new BlockPos(sx+x,y,sz+z);if(supported(c.getBlockState(p)))applyElapsedGrowth(w,p);
   }
  }
