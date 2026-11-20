@@ -22,9 +22,10 @@ public final class ChronoHarvest implements ModInitializer {
    int current=state.get(age), max=age.getValues().stream().mapToInt(Integer::intValue).max().orElse(current);
    boolean mature=current>=max;
    if(!mature&&CONFIG.requireShiftForImmatureHarvest&&!sp.isSneaking()){
-    sp.sendMessage(Text.literal("ChronoHarvest: not ripe yet. Hold Shift to harvest early."),true);return false;
+    sp.sendMessage(Text.literal("ChronoHarvest: not ripe yet. Hold Shift to harvest early; Shift uproots the plant."),true);return false;
    }
-   if(!mature&&!sp.isSneaking())return false;
+   // Sneak-harvesting always performs a full vanilla break, removing the plant.
+   if(sp.isSneaking()){ GrowthLedger.forget(sw,pos); return true; }
    if(CONFIG.regrowAfterHarvest){
     net.minecraft.block.Block.dropStacks(state,sw,pos,blockEntity,sp,sp.getMainHandStack());
     sw.setBlockState(pos,state.with(age,0),3); GrowthLedger.markPlanted(sw,pos); return false;

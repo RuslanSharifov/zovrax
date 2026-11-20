@@ -1,7 +1,7 @@
 name: Build ChronoHarvest (Fabric 1.21.10)
 on:
   push:
-    branches: [feat/chrono-harvest]
+    branches: [feat/chrono-harvest, feat/chrono-harvest-0.1.1]
     paths: ['mods/chrono-harvest/**', '.github/workflows/build-chrono-harvest.yml']
   pull_request:
     paths: ['mods/chrono-harvest/**', '.github/workflows/build-chrono-harvest.yml']
@@ -22,8 +22,8 @@ jobs:
       - name: Package and validate release JAR
         run: |
           set -euo pipefail
-          SRC=mods/chrono-harvest/build/libs/zovrax-chrono-harvest-0.1.0.jar
-          DEST=mods/chrono-harvest/releases/zovrax-chrono-harvest-0.1.0-fabric-1.21.10.jar
+          SRC=mods/chrono-harvest/build/libs/zovrax-chrono-harvest-0.1.1.jar
+          DEST=mods/chrono-harvest/releases/zovrax-chrono-harvest-0.1.1-fabric-1.21.10.jar
           test -s "$SRC"
           mkdir -p mods/chrono-harvest/releases
           cp "$SRC" "$DEST"
@@ -38,8 +38,10 @@ jobs:
           p=Path('mods/chrono-harvest/zovrax.json')
           m=json.loads(p.read_text())
           m['status']='released'
-          m['releases']=[{'version':'0.1.0','releasedAt':'2026-11-21','prerelease':True,'minecraftVersions':['1.21.10'],'loaders':['Fabric'],'downloads':[{'file':'releases/zovrax-chrono-harvest-0.1.0-fabric-1.21.10.jar','label':'Fabric 1.21.10 · Beta 0.1.0','minecraftVersions':['1.21.10'],'loaders':['Fabric']}],'changelog':{'en':'Initial beta: elapsed-time crop growth, non-destructive mature harvest, Shift-to-harvest immature crops, Mod Menu settings and K shortcut. Build and catalog validation passed; live gameplay testing is still required.'}}]
-          p.write_text(json.dumps(m,indent=2,ensure_ascii=False)+'\n')
+          releases=[r for r in m.get('releases',[]) if r.get('version')!='0.1.1']
+          releases.insert(0,{'version':'0.1.1','releasedAt':'2026-11-21','prerelease':True,'minecraftVersions':['1.21.10'],'loaders':['Fabric'],'downloads':[{'file':'releases/zovrax-chrono-harvest-0.1.1-fabric-1.21.10.jar','label':'Fabric 1.21.10 · Beta 0.1.1','minecraftVersions':['1.21.10'],'loaders':['Fabric']}],'changelog':{'en':'Shift-harvest now fully uproots/removes the crop. Normal mature harvest collects loot and resets the plant to age 0. Shift is required to harvest immature crops when protection is enabled. Existing 0.1.0 release remains available.'}})
+          m['releases']=releases
+          p.write_text(json.dumps(m,indent=2,ensure_ascii=False)+'\\n')
           PY
       - uses: actions/setup-node@v4
         with: {node-version: '22'}
@@ -47,14 +49,14 @@ jobs:
         run: node .github/scripts/build-catalog.mjs && node .github/scripts/validate-catalog.mjs
       - uses: actions/upload-artifact@v4
         with:
-          name: chrono-harvest-0.1.0-fabric-1.21.10
-          path: mods/chrono-harvest/releases/zovrax-chrono-harvest-0.1.0-fabric-1.21.10.jar
+          name: chrono-harvest-0.1.1-fabric-1.21.10
+          path: mods/chrono-harvest/releases/zovrax-chrono-harvest-0.1.1-fabric-1.21.10.jar
           if-no-files-found: error
       - name: Commit generated release JAR and metadata
-        if: github.event_name == 'push' && github.ref == 'refs/heads/feat/chrono-harvest'
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/feat/chrono-harvest' || github.ref == 'refs/heads/feat/chrono-harvest-0.1.1')
         run: |
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add mods/chrono-harvest/zovrax.json mods/chrono-harvest/releases/zovrax-chrono-harvest-0.1.0-fabric-1.21.10.jar
-          if ! git diff --cached --quiet; then git commit -m 'build(chrono-harvest): add verified Fabric release'; git push origin HEAD:refs/heads/feat/chrono-harvest; fi
+          git add mods/chrono-harvest/zovrax.json mods/chrono-harvest/releases/zovrax-chrono-harvest-0.1.1-fabric-1.21.10.jar
+          if ! git diff --cached --quiet; then git commit -m 'build(chrono-harvest): add verified Fabric 0.1.1 release'; git push origin HEAD:"$GITHUB_REF"; fi
