@@ -30,6 +30,17 @@ jobs:
           for entry in fabric.mod.json chrono-harvest.mixins.json az/zovrax/chronoharvest/ChronoHarvest.class az/zovrax/chronoharvest/ChronoHarvestClient.class az/zovrax/chronoharvest/mixin/BlockItemMixin.class az/zovrax/chronoharvest/mixin/CropRandomTickMixin.class assets/zovrax_chronoharvest/icon.png; do jar tf "$DEST" | grep -Fx "$entry"; done
           unzip -t "$DEST" | tail -n 1
           unzip -p "$DEST" fabric.mod.json | grep -q '"id":"zovrax_chronoharvest"'
+      - name: Set release metadata before catalog validation
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('mods/chrono-harvest/zovrax.json')
+          m=json.loads(p.read_text())
+          m['status']='released'
+          m['releases']=[{'version':'0.1.0','releasedAt':'2026-11-21','prerelease':True,'minecraftVersions':['1.21.10'],'loaders':['Fabric'],'downloads':[{'file':'releases/zovrax-chrono-harvest-0.1.0-fabric-1.21.10.jar','label':'Fabric 1.21.10 · Beta 0.1.0','minecraftVersions':['1.21.10'],'loaders':['Fabric']}],'changelog':{'en':'Initial beta: elapsed-time crop growth, non-destructive mature harvest, Shift-to-harvest immature crops, Mod Menu settings and K shortcut. Build and catalog validation passed; live gameplay testing is still required.'}}]
+          p.write_text(json.dumps(m,indent=2,ensure_ascii=False)+'\\n')
+          PY
       - uses: actions/setup-node@v4
         with: {node-version: '22'}
       - name: Build and validate website catalog
@@ -43,15 +54,6 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/feat/chrono-harvest'
         run: |
           set -euo pipefail
-          python3 - <<'PY'
-          import json
-          from pathlib import Path
-          p=Path('mods/chrono-harvest/zovrax.json')
-          m=json.loads(p.read_text())
-          m['status']='released'
-          m['releases']=[{'version':'0.1.0','releasedAt':'2026-11-21','prerelease':True,'minecraftVersions':['1.21.10'],'loaders':['Fabric'],'downloads':[{'file':'releases/zovrax-chrono-harvest-0.1.0-fabric-1.21.10.jar','label':'Fabric 1.21.10 · Beta 0.1.0','minecraftVersions':['1.21.10'],'loaders':['Fabric']}],'changelog':{'en':'Initial beta: elapsed-time crop growth, non-destructive mature harvest, Shift-to-harvest immature crops, Mod Menu settings and K shortcut. Build and catalog validation passed; live gameplay testing is still required.'}}]
-          p.write_text(json.dumps(m,indent=2,ensure_ascii=False)+'\n')
-          PY
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add mods/chrono-harvest
