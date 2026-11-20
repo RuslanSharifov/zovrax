@@ -39,7 +39,7 @@ jobs:
           m=json.loads(p.read_text())
           m['status']='released'
           m['releases']=[{'version':'0.1.0','releasedAt':'2026-11-21','prerelease':True,'minecraftVersions':['1.21.10'],'loaders':['Fabric'],'downloads':[{'file':'releases/zovrax-chrono-harvest-0.1.0-fabric-1.21.10.jar','label':'Fabric 1.21.10 · Beta 0.1.0','minecraftVersions':['1.21.10'],'loaders':['Fabric']}],'changelog':{'en':'Initial beta: elapsed-time crop growth, non-destructive mature harvest, Shift-to-harvest immature crops, Mod Menu settings and K shortcut. Build and catalog validation passed; live gameplay testing is still required.'}}]
-          p.write_text(json.dumps(m,indent=2,ensure_ascii=False)+'\\n')
+          p.write_text(json.dumps(m,indent=2,ensure_ascii=False)+'\n')
           PY
       - uses: actions/setup-node@v4
         with: {node-version: '22'}
