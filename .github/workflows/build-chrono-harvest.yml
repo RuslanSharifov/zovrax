@@ -41,7 +41,7 @@ jobs:
           releases=[r for r in m.get('releases',[]) if r.get('version')!='0.1.1']
           releases.insert(0,{'version':'0.1.1','releasedAt':'2026-11-21','prerelease':True,'minecraftVersions':['1.21.10'],'loaders':['Fabric'],'downloads':[{'file':'releases/zovrax-chrono-harvest-0.1.1-fabric-1.21.10.jar','label':'Fabric 1.21.10 · Beta 0.1.1','minecraftVersions':['1.21.10'],'loaders':['Fabric']}],'changelog':{'en':'Shift-harvest now fully uproots/removes the crop. Normal mature harvest collects loot and resets the plant to age 0. Shift is required to harvest immature crops when protection is enabled. Existing 0.1.0 release remains available.'}})
           m['releases']=releases
-          p.write_text(json.dumps(m,indent=2,ensure_ascii=False)+'\\n')
+          p.write_text(json.dumps(m,indent=2,ensure_ascii=False)+'\n')
           PY
       - uses: actions/setup-node@v4
         with: {node-version: '22'}
