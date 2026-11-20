@@ -4,8 +4,8 @@ ChronoHarvest makes farming respect the time crops have spent growing, not wheth
 
 ## Features
 - **Elapsed-time growth:** planting timestamps are saved. When an unloaded crop chunk is loaded again, the crop advances to the age it should have reached. Chunks are not force-loaded.
-- **Harvest without uprooting:** harvesting a ripe crop collects its normal loot and leaves the plant at age 0.
-- **Early harvest requires Shift:** immature crops are protected from accidental harvesting. Hold Shift to collect them early.
+- **Regrowing harvest:** a normal harvest of a ripe crop collects its normal loot and leaves the plant at age 0.
+- **Full uproot with Shift:** hold Shift while harvesting to remove the plant completely. Shift is also required to harvest immature crops when the early-harvest protection is enabled.
 - **In-game settings:** open configuration from Mod Menu or press **K**. Configure growth time per stage, early-harvest behavior and replanting.
 - **Independent save data:** settings and planting timestamps are stored separately from other Zovrax mods.
 

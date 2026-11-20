@@ -8,10 +8,10 @@
   "accent": "lime",
   "icon": "assets/icon.svg",
   "summary": {
-    "en": "Elapsed-time crop growth, harvest without uprooting, and Shift-to-harvest immature crops.",
-    "ru": "Рост культур по прошедшему времени, повторный урожай без пересадки и сбор незрелых культур с Shift.",
-    "fr": "Croissance selon le temps écoulé, récolte sans déraciner et récolte anticipée avec Shift.",
-    "az": "Əkinlər chunk yüklənməsə də əkilmə vaxtına görə böyüyür; məhsul yığımı bitkini kökündən çıxarmır."
+    "en": "Elapsed-time crop growth, regrowing harvest, and Shift-to-uproot early harvest.",
+    "ru": "Рост по прошедшему времени, повторный урожай без выкорчёвывания и полное удаление растения с Shift.",
+    "fr": "Croissance selon le temps écoulé, récolte régénérante et déracinement complet avec Shift.",
+    "az": "Əkinlər əkilmə vaxtına görə böyüyür; adi biçində bitki qalır, Shift ilə tam çıxarılır."
   },
   "tags": [
     "Farming",
@@ -39,16 +39,16 @@
       "az": "Chunk yenidən yüklənəndə əkin vaxtından keçən müddətə görə böyümə hesablanır."
     },
     {
-      "en": "Harvesting mature crops collects loot and leaves the plant at age 0.",
-      "ru": "Сбор зрелого урожая оставляет растение на стадии 0.",
-      "fr": "La récolte laisse la plante au stade 0.",
-      "az": "Tam yetişmiş məhsul yığılanda bitki 0% mərhələsində qalır."
+      "en": "A normal harvest of a mature crop collects loot and resets the plant to age 0; holding Shift uproots it completely.",
+      "ru": "Обычный сбор зрелого урожая оставляет растение на стадии 0; Shift полностью удаляет растение.",
+      "fr": "Une récolte normale laisse la plante au stade 0 ; Shift déracine complètement la plante.",
+      "az": "Tam yetişmiş məhsul adi qaydada yığılanda bitki 0% mərhələsində qalır; Shift ilə bitki tam çıxarılır."
     },
     {
-      "en": "Immature crops require holding Shift to harvest.",
-      "ru": "Для раннего сбора удерживайте Shift.",
-      "fr": "Maintenez Shift pour récolter avant maturité.",
-      "az": "Yetişməmiş məhsulu yığmaq üçün Shift basılı saxlanılır."
+      "en": "Immature crops require holding Shift to harvest early when the protection setting is enabled; Shift removes the plant.",
+      "ru": "При включённой защите для раннего сбора незрелых культур удерживайте Shift; растение будет удалено.",
+      "fr": "Si la protection est activée, maintenez Shift pour récolter une culture immature ; la plante est retirée.",
+      "az": "Erkən biçin qoruması aktivdirsə, yetişməmiş məhsulu yığmaq üçün Shift basılır; bitki tam çıxarılır."
     },
     {
       "en": "Settings are available in Mod Menu and through an in-game keybind.",
@@ -59,6 +59,32 @@
   ],
   "screenshots": [],
   "releases": [
+    {
+      "version": "0.1.1",
+      "releasedAt": "2026-11-21",
+      "prerelease": true,
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "loaders": [
+        "Fabric"
+      ],
+      "downloads": [
+        {
+          "file": "releases/zovrax-chrono-harvest-0.1.1-fabric-1.21.10.jar",
+          "label": "Fabric 1.21.10 · Beta 0.1.1",
+          "minecraftVersions": [
+            "1.21.10"
+          ],
+          "loaders": [
+            "Fabric"
+          ]
+        }
+      ],
+      "changelog": {
+        "en": "Shift-harvest now fully uproots/removes the crop. Normal mature harvest collects loot and resets the plant to age 0. Shift is required to harvest immature crops when protection is enabled. Existing 0.1.0 release remains available."
+      }
+    },
     {
       "version": "0.1.0",
       "releasedAt": "2026-11-21",
@@ -93,7 +119,7 @@
   },
   "seo": {
     "title": "ChronoHarvest — Minecraft Crop Growth & Harvest Mod | Zovrax",
-    "description": "Make crops grow from their planting time across unloaded chunks, harvest without uprooting, and require Shift for early harvesting.",
+    "description": "Grow crops from their planting time across unloaded chunks. Harvest mature crops without uprooting, or hold Shift to remove them completely.",
     "keywords": [
       "Minecraft farming mod",
       "crop growth",
