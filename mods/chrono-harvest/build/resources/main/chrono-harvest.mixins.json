@@ -1,1 +1,0 @@
-{"required":true,"package":"az.zovrax.chronoharvest.mixin","compatibilityLevel":"JAVA_21","mixins":["BlockItemMixin","CropRandomTickMixin"],"injectors":{"defaultRequire":1}}
