@@ -8,10 +8,10 @@
   "accent": "lime",
   "icon": "assets/icon.svg",
   "summary": {
-    "en": "Elapsed-time crop growth, regrowing harvest, and Shift-to-uproot early harvest.",
+    "en": "Elapsed-time crop growth with non-blocking chunk catch-up and regrowing harvest.",
     "ru": "Рост по прошедшему времени, повторный урожай без выкорчёвывания и полное удаление растения с Shift.",
     "fr": "Croissance selon le temps écoulé, récolte régénérante et déracinement complet avec Shift.",
-    "az": "Əkinlər əkilmə vaxtına görə böyüyür; adi biçində bitki qalır, Shift ilə tam çıxarılır."
+    "az": "Chunk yüklənməsini bloklamadan real vaxtlı əkin böyüməsi və yenidən məhsul verən biçin."
   },
   "tags": [
     "Farming",
@@ -33,10 +33,10 @@
   "source": "https://github.com/RuslanSharifov/zovrax/tree/main/mods/chrono-harvest",
   "features": [
     {
-      "en": "Crop age is calculated from a saved planting timestamp when chunks load, without force-loading chunks.",
+      "en": "Crop age is calculated from saved planting timestamps using a small per-tick scan budget, keeping chunk loads responsive.",
       "ru": "Возраст урожая рассчитывается по сохранённой временной метке при загрузке чанка.",
       "fr": "L'âge des cultures est recalculé depuis l'horodatage à la recharge du chunk.",
-      "az": "Chunk yenidən yüklənəndə əkin vaxtından keçən müddətə görə böyümə hesablanır."
+      "az": "Əkin yaşı saxlanılan vaxt möhürünə əsasən kiçik tick büdcəsi ilə hesablanır; chunk yüklənməsi bloklanmır."
     },
     {
       "en": "A normal harvest of a mature crop collects loot and resets the plant to age 0; holding Shift uproots it completely.",
@@ -59,6 +59,32 @@
   ],
   "screenshots": [],
   "releases": [
+    {
+      "version": "0.1.2",
+      "releasedAt": "2026-11-21",
+      "prerelease": true,
+      "minecraftVersions": [
+        "1.21.10"
+      ],
+      "loaders": [
+        "Fabric"
+      ],
+      "downloads": [
+        {
+          "file": "releases/zovrax-chrono-harvest-0.1.2-fabric-1.21.10.jar",
+          "label": "Fabric 1.21.10 · Beta 0.1.2",
+          "minecraftVersions": [
+            "1.21.10"
+          ],
+          "loaders": [
+            "Fabric"
+          ]
+        }
+      ],
+      "changelog": {
+        "en": "Fixes world-load stalls by moving crop discovery out of the synchronous chunk-load callback. Chunk scans are processed incrementally with a bounded per-tick budget and cancelled when chunks unload. Preserves planting timestamps and existing harvest/settings behavior."
+      }
+    },
     {
       "version": "0.1.1",
       "releasedAt": "2026-11-21",
