@@ -1,10 +1,11 @@
-# ChronoHarvest 0.1.1
+# ChronoHarvest 0.1.2
 
 Independent Fabric mod for Minecraft Java 1.21.10 and Java 21. Planting timestamps are persisted; crop age is derived from elapsed wall-clock time when chunks load. Chunks are never force-loaded.
 
 ## Features
 - Records planting time after successful block placement.
 - Advances supported vanilla crops by elapsed time, including while their chunks are unloaded and while the server is offline.
+- Chunk discovery is queued and processed incrementally (up to 8,192 block checks per server tick), never as a full synchronous chunk-load scan. Unfinished scans are discarded when a chunk unloads.
 - A normal harvest of a mature crop collects its loot and leaves the plant at age 0.
 - Hold Shift to uproot the crop completely. Shift is also required to harvest immature crops (when that option is enabled).
 - Settings are available from Mod Menu (optional) and by pressing K. The default growth time is 240 seconds per age stage.
