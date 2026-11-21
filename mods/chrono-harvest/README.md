@@ -19,4 +19,6 @@ Independent Fabric mod for Minecraft Java 1.21.10 and Java 21. Planting timestam
 - Install on the logical server and client for multiplayer. A compile does not replace a live game test.
 
 ## Build
+
+Release 0.1.2 uses incremental chunk scanning to avoid blocking world creation.
 Run with Java 21 and Gradle 9.1.0: gradle --no-daemon --project-dir mods/chrono-harvest build
