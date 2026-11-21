@@ -82,7 +82,7 @@
         }
       ],
       "changelog": {
-        "en": "Fixes world-load stalls by moving crop discovery out of the synchronous chunk-load callback. Chunk scans are processed incrementally with a bounded per-tick budget and cancelled when chunks unload. Preserves planting timestamps and existing harvest/settings behavior."
+        "en": "Fixes world-load stalls by moving crop discovery out of the synchronous chunk-load callback. Scans are incremental with a bounded per-tick budget; unfinished scans are cancelled on chunk unload. Existing planting data and harvest behavior are preserved."
       }
     },
     {
