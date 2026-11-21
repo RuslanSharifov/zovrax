@@ -3,6 +3,7 @@
 ChronoHarvest makes farming respect the time crops have spent growing, not whether their chunk happened to be loaded.
 
 ## Features
+- **Responsive chunk loading:** crop discovery is queued and processed incrementally (up to 8,192 block checks per server tick), rather than scanning a full chunk inside the chunk-load callback.
 - **Elapsed-time growth:** planting timestamps are saved. When an unloaded crop chunk is loaded again, the crop advances to the age it should have reached. Chunks are not force-loaded.
 - **Regrowing harvest:** a normal harvest of a ripe crop collects its normal loot and leaves the plant at age 0.
 - **Full uproot with Shift:** hold Shift while harvesting to remove the plant completely. Shift is also required to harvest immature crops when the early-harvest protection is enabled.
