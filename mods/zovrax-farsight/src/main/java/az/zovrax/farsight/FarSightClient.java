@@ -85,7 +85,7 @@ public final class FarSightClient implements ClientModInitializer {
 
         if (memoryPressure || framePressure) {
             next = Math.max(CONFIG.minRenderDistance, current - 1);
-        } else if (fps >= CONFIG.targetFps + CONFIG.fpsRecoveryHeadroom
+        } else if (fps >= CONFIG.targetFps
                 && heapPercent <= CONFIG.heapPressurePercent - CONFIG.heapRecoveryHeadroom) {
             next = Math.min(ceiling, current + 1);
         }
