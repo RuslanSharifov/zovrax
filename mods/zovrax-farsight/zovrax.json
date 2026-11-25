@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 2,
+  "slug": "zovrax-farsight",
+  "name": "Zovrax FarSight",
+  "category": "performance",
+  "status": "development",
+  "featured": false,
+  "accent": "blue",
+  "icon": "assets/icon.svg",
+  "summary": {
+    "en": "An adaptive client render-distance controller that balances visible world range against live FPS and JVM heap pressure.",
+    "ru": "Адаптивное управление дальностью прорисовки клиента с учетом FPS и нагрузки на память JVM.",
+    "fr": "Un contrôleur adaptatif de distance d’affichage qui équilibre la portée visuelle, les FPS et la pression mémoire de la JVM."
+  },
+  "tags": ["Performance", "Render Distance", "Client", "Memory"],
+  "minecraftVersions": ["1.21.10"],
+  "loaders": ["Fabric"],
+  "authors": ["ruslan"],
+  "updatedAt": null,
+  "license": "MIT",
+  "source": "https://github.com/RuslanSharifov/zovrax",
+  "features": [
+    {"en":"Samples current FPS and JVM heap usage at a configurable interval.","ru":"Измеряет текущий FPS и использование кучи JVM через заданные интервалы.","fr":"Échantillonne les FPS et l’utilisation du tas JVM à intervalles configurables."},
+    {"en":"Gradually lowers view distance under frame-time or memory pressure, then restores it when headroom returns.","ru":"Постепенно снижает дальность прорисовки при высокой нагрузке и повышает её после восстановления запаса ресурсов.","fr":"Réduit progressivement la distance d’affichage sous forte charge et la rétablit lorsque les ressources sont disponibles."},
+    {"en":"Never changes simulation distance, server settings, world files or chunk data.","ru":"Не меняет дальность симуляции, настройки сервера, файлы мира или данные чанков.","fr":"Ne modifie ni la distance de simulation, ni les paramètres du serveur, ni les fichiers du monde ou les données des chunks."}
+  ],
+  "screenshots": [],
+  "releases": [],
+  "monetization": {"type":"free","premiumUrl":null,"premiumLabel":"Get Premium"},
+  "seo": {
+    "title":"Zovrax FarSight — Adaptive Minecraft Render Distance | Zovrax",
+    "description":"Balance Minecraft Java render distance against live FPS and JVM heap pressure with a lightweight Fabric client mod.",
+    "keywords":["Minecraft render distance","Fabric performance mod","Minecraft FPS","JVM memory","adaptive chunks"]
+  }
+}
