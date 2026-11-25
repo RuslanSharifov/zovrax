@@ -20,7 +20,6 @@ public final class FarSightConfig {
     public int heapPressurePercent = 82;
     public int sampleIntervalTicks = 100;
     public int fpsDropTolerance = 8;
-    public int fpsRecoveryHeadroom = 15;
     public int heapRecoveryHeadroom = 12;
 
     public static FarSightConfig load() {
@@ -52,7 +51,6 @@ public final class FarSightConfig {
         heapPressurePercent = clamp(heapPressurePercent, 50, 98);
         sampleIntervalTicks = clamp(sampleIntervalTicks, 20, 1200);
         fpsDropTolerance = clamp(fpsDropTolerance, 1, 60);
-        fpsRecoveryHeadroom = clamp(fpsRecoveryHeadroom, 1, 120);
         heapRecoveryHeadroom = clamp(heapRecoveryHeadroom, 1, 40);
     }
 
