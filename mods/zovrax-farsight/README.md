@@ -10,6 +10,9 @@ Zovrax FarSight is a lightweight, client-only Fabric mod for Minecraft Java 1.21
 4. Download `zovrax-farsight-0.1.0-fabric-1.21.10.jar` from this mod's Zovrax page and place it in the instance's `mods` folder.
 5. Launch the Fabric profile. Press **F8** in a world to toggle adaptive mode.
 
+Release file: `releases/zovrax-farsight-0.1.0-fabric-1.21.10.jar`  
+SHA-256: `5906e1dd0d7991a006ecd90f0cb6dee0d3fc1ed9ff73a6631a3105ab67e10372`
+
 ## Current functionality
 
 - Press **F8** to enable or disable adaptive mode.
