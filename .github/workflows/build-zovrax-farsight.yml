@@ -33,13 +33,6 @@ jobs:
           gradle-version: '9.1.0'
       - name: Build Fabric 1.21.10 mod
         run: gradle --no-daemon --project-dir mods/zovrax-farsight build
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-      - name: Validate generated Zovrax catalog
-        run: |
-          node .github/scripts/build-catalog.mjs
-          node .github/scripts/validate-catalog.mjs
       - name: Verify JAR metadata and archive
         run: |
           python3 - <<'PY'
@@ -74,6 +67,13 @@ jobs:
             git commit -m "Add verified FarSight 0.1.0 release JAR"
             git push origin "HEAD:${BRANCH_NAME}"
           fi
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate generated Zovrax catalog
+        run: |
+          node .github/scripts/build-catalog.mjs
+          node .github/scripts/validate-catalog.mjs
       - name: Upload remapped mod JAR
         uses: actions/upload-artifact@v4
         with:
