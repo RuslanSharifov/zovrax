@@ -1,0 +1,60 @@
+name: Build Zovrax FarSight (Fabric 1.21.10)
+
+on:
+  pull_request:
+    paths:
+      - 'mods/zovrax-farsight/**'
+      - '.github/workflows/build-zovrax-farsight.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'mods/zovrax-farsight/**'
+      - '.github/workflows/build-zovrax-farsight.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fabric-build:
+    name: Compile FarSight (Java 21)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.1.0'
+      - name: Build Fabric 1.21.10 mod
+        run: gradle --no-daemon --project-dir mods/zovrax-farsight build
+      - name: Verify JAR metadata and archive
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile
+          import json
+          jars = [p for p in Path('mods/zovrax-farsight/build/libs').glob('*.jar')
+                  if not p.name.endswith(('-sources.jar', '-dev.jar'))]
+          assert len(jars) == 1, f'Expected one remapped mod JAR, found: {jars}'
+          with ZipFile(jars[0]) as jar:
+              assert jar.testzip() is None, 'JAR archive integrity check failed'
+              metadata = json.loads(jar.read('fabric.mod.json'))
+              assert metadata['id'] == 'zovrax_farsight'
+              assert metadata['version'] == '0.1.0'
+              assert metadata['environment'] == 'client'
+              assert 'az/zovrax/farsight/FarSightClient.class' in jar.namelist()
+          print(f'Validated {jars[0]}')
+          PY
+      - name: Upload remapped mod JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: zovrax-farsight-fabric-1.21.10
+          path: |
+            mods/zovrax-farsight/build/libs/*.jar
+            !mods/zovrax-farsight/build/libs/*-sources.jar
+            !mods/zovrax-farsight/build/libs/*-dev.jar
+          if-no-files-found: error
+          retention-days: 14
